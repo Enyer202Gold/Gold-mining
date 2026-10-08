@@ -1,1 +1,13 @@
-Ly8gQHRzLWNoZWNrCmltcG9ydCB7IGRlZmluZUNvbmZpZyB9IGZyb20gJ2FzdHJvL2NvbmZpZyc7CgovLyBodHRwczovL2FzdHJvLmJ1aWxkL2NvbmZpZwovLyBIb3N0aW5nOiBDbG91ZGZsYXJlIFBhZ2VzIGVzdMOhdGljbyAoVEVDSE5JQ0FMX0JJQkxFIMKnMSkuIFZlcmNlbCBzaW4gdXNvLgpleHBvcnQgZGVmYXVsdCBkZWZpbmVDb25maWcoewogIG91dHB1dDogJ3N0YXRpYycsCiAgdml0ZTogewogICAgYnVpbGQ6IHsKICAgICAgYXNzZXRzSW5saW5lTGltaXQ6IDAsCiAgICB9LAogIH0sCn0pOwo=
+// @ts-check
+import { defineConfig } from 'astro/config';
+
+// https://astro.build/config
+// Hosting: Cloudflare Pages estático (TECHNICAL_BIBLE §1). Vercel sin uso.
+export default defineConfig({
+  output: 'static',
+  vite: {
+    build: {
+      assetsInlineLimit: 0,
+    },
+  },
+});
