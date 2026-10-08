@@ -225,7 +225,7 @@
       margin: 0;
       max-width: 15ch;
       font-family: var(--brand);
-      font-size: clamp(33px, 8.9vw, 54px);
+      font-size: clamp(24px, 6.2vw, 36px);
       font-weight: 500;
       line-height: 1.08;
       letter-spacing: -.025em;
@@ -249,9 +249,23 @@
     .telemetry {
       display: grid;
       grid-template-columns: 1fr;
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      background: linear-gradient(90deg, rgba(8,6,4,.58), rgba(8,6,4,.22));
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(10,8,5,.72), rgba(10,8,5,.38));
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 6px 18px;
+    }
+    .telemetry-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0 4px;
+      color: var(--gold-bright);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
     }
     .metric {
       min-height: 76px;
@@ -274,7 +288,7 @@
     .metric-value {
       grid-column: 1;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: clamp(23px, 6vw, 31px);
+      font-size: clamp(27px, 7vw, 36px);
       font-weight: 500;
       line-height: 1;
       letter-spacing: -.025em;
@@ -452,9 +466,9 @@
 
       <section class="workspace" aria-labelledby="hero-title">
         <div class="copy">
-          <p class="eyebrow">Operación minera digital</p>
-          <h1 id="hero-title">Tu capital entra en operación.</h1>
-          <p class="intro">Activa infraestructura minera, monitorea su rendimiento y gestiona retiros desde un solo sistema.</p>
+          <p class="eyebrow">Panel operativo</p>
+          <h1 id="hero-title">Infraestructura minera en operación.</h1>
+          <p class="intro">Monitorea rendimiento, activa máquinas y gestiona retiros.</p>
           <div class="ctas">
             <button class="cta cta-primary" type="button" data-sheet="access">
               Empezar ahora
@@ -464,7 +478,8 @@
           </div>
         </div>
 
-        <section class="telemetry" aria-label="Datos del modelo">
+        <section class="telemetry" aria-label="Datos operativos">
+          <div class="telemetry-head"><span class="pulse" aria-hidden="true"></span><span>Datos operativos</span></div>
           <div class="metric">
             <span class="metric-name">Rendimiento diario</span>
             <strong class="metric-value">2.5%—5.5%</strong>
