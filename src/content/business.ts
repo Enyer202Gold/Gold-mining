@@ -1,1 +1,79 @@
-LyogVGV4dG9zIGRlIG5lZ29jaW8g4oCUIEdvbGQgTWluaW5nIDIuMCAqLwpleHBvcnQgaW50ZXJmYWNlIFBsYW4gewogIGlkOiBzdHJpbmc7IG5hbWU6IHN0cmluZzsgdGFnOiBzdHJpbmc7CiAgbWFjaGluZVByaWNlOiBudW1iZXI7IGNhcGl0YWxNaW46IG51bWJlcjsgY2FwaXRhbE1heDogbnVtYmVyIHwgbnVsbDsKICBjYXBpdGFsTGFiZWw6IHN0cmluZzsgZGFpbHlQY3Q6IG51bWJlcjsKICBleGFtcGxlQ2FwaXRhbDogbnVtYmVyOyBleGFtcGxlRGFpbHk6IG51bWJlcjsgaW1hZ2U6IHN0cmluZzsKfQpleHBvcnQgY29uc3QgcGxhbnM6IFBsYW5bXSA9IFsKICB7IGlkOiAnbWluaS1wZXJmb3JhZG9yYScsIG5hbWU6ICdNaW5pIFBlcmZvcmFkb3JhJywgdGFnOiAnUExBTi4wMScsIG1hY2hpbmVQcmljZTogMjUsIGNhcGl0YWxNaW46IDUwLCBjYXBpdGFsTWF4OiAyNDksIGNhcGl0YWxMYWJlbDogJzUwIOKAkyAyNDkgVVNEVCcsIGRhaWx5UGN0OiAyLjUsIGV4YW1wbGVDYXBpdGFsOiA1MCwgZXhhbXBsZURhaWx5OiAxLjI1LCBpbWFnZTogJy9pbWFnZXMvbWFjaGluZS1taW5pLXBlcmZvcmFkb3JhLmpwZycgfSwKICB7IGlkOiAnZXhjYXZhZG9yYScsIG5hbWU6ICdFeGNhdmFkb3JhIGNvbiBPcnVnYScsIHRhZzogJ1BMQU4uMDInLCBtYWNoaW5lUHJpY2U6IDc1LCBjYXBpdGFsTWluOiAyNTAsIGNhcGl0YWxNYXg6IDc0OSwgY2FwaXRhbExhYmVsOiAnMjUwIOKAkyA3NDkgVVNEVCcsIGRhaWx5UGN0OiAzLjUsIGV4YW1wbGVDYXBpdGFsOiAyNTAsIGV4YW1wbGVEYWlseTogOC43NSwgaW1hZ2U6ICcvaW1hZ2VzL21hY2hpbmUtZXhjYXZhZG9yYS5qcGcnIH0sCiAgeyBpZDogJ3BsYW50YS1taW5lcmEnLCBuYW1lOiAnUGxhbnRhIE1pbmVyYScsIHRhZzogJ1BMQU4uMDMnLCBtYWNoaW5lUHJpY2U6IDIwMCwgY2FwaXRhbE1pbjogNzUwLCBjYXBpdGFsTWF4OiAxOTk5LCBjYXBpdGFsTGFiZWw6ICc3NTAg4oCTIDEsOTk5IFVTRFQnLCBkYWlseVBjdDogNC41LCBleGFtcGxlQ2FwaXRhbDogNzUwLCBleGFtcGxlRGFpbHk6IDMzLjc1LCBpbWFnZTogJy9pbWFnZXMvbWFjaGluZS1wbGFudGEtbWluZXJhLmpwZycgfSwKICB7IGlkOiAncGxhbnRhLWF2YW56YWRhJywgbmFtZTogJ1BsYW50YSBNaW5lcmEgQXZhbnphZGEnLCB0YWc6ICdQTEFOLjA0JywgbWFjaGluZVByaWNlOiA1MDAsIGNhcGl0YWxNaW46IDIwMDAsIGNhcGl0YWxNYXg6IG51bGwsIGNhcGl0YWxMYWJlbDogJzIsMDAwIG8gbcOhcyBVU0RUJywgZGFpbHlQY3Q6IDUuNSwgZXhhbXBsZUNhcGl0YWw6IDIwMDAsIGV4YW1wbGVEYWlseTogMTEwLCBpbWFnZTogJy9pbWFnZXMvbWFjaGluZS1wbGFudGEtbWluZXJhLmpwZycgfSwKXTsKZXhwb3J0IGNvbnN0IGhlcm8gPSB7CiAgYmFkZ2U6ICdTSVNURU1BIEFDVElWTycsIHRpdGxlTGluZTE6ICdHT0xEJywgdGl0bGVMaW5lMjogJ01JTklORycsCiAgc3VidGl0bGU6ICdFbCBvcm8gZGVsIGZ1dHVybywgaG95JywKICBkZXNjcmlwdGlvbjogJ0ludmllcnRlIGVuIG1pbmVyw61hIGRlIG9ybyB5IGhheiBjcmVjZXIgdHUgY2FwaXRhbCcsCiAgY3RhUHJpbWFyeTogJ1JlZ2lzdHJhcm1lIGFob3JhJywgY3RhU2Vjb25kYXJ5OiAnSW5pY2lhciBzZXNpw7NuJywgY3RhVGVydGlhcnk6ICdDb25vY2VyIG3DoXMnLAp9OwpleHBvcnQgY29uc3QgaG93SXRXb3JrcyA9IHsKICB0aXRsZTogJ0PDk01PIEZVTkNJT05BJywKICBzdGVwczogWwogICAgeyBuOiAxLCB0aXRsZTogJ0NvbXByYSB0dSBtw6FxdWluYScsIGRlc2M6ICdFbGlnZSBlbnRyZSA0IHBsYW5lcycgfSwKICAgIHsgbjogMiwgdGl0bGU6ICdDb25lY3RhIHR1IHdhbGxldCcsIGRlc2M6ICdUdSBjYXBpdGFsIHNlIHF1ZWRhIGVuIHR1cyBtYW5vcycgfSwKICAgIHsgbjogMywgdGl0bGU6ICdBY3RpdmEgY2FkYSAyNCBob3JhcycsIGRlc2M6ICdVbiB0b3F1ZSB5IGdlbmVyYSBvcm8nIH0sCiAgICB7IG46IDQsIHRpdGxlOiAnR2VuZXJhIHRvZG9zIGxvcyBkw61hcycsIGRlc2M6ICdQb3JjZW50YWplIGRpYXJpbyBzb2JyZSB0dSBjYXBpdGFsJyB9LAogICAgeyBuOiA3LCB0aXRsZTogJ01hbnRlbmltaWVudG8gY2FkYSA3IGTDrWFzJywgZGVzYzogJ1BhdXNhIGJyZXZlIHkgY29udGluw7phJyB9LAogIF0sCiAgZXhhbXBsZTogeyB0aXRsZTogJ0VqZW1wbG86IE1pbmkgUGVyZm9yYWRvcmEnLCBtYWNoaW5lOiAnMjUgVVNEJywgY2FwaXRhbDogJzEwMCBVU0RUJywgZGFpbHk6ICcyLjUwIFVTRCAvIGTDrWEnIH0sCn07CmV4cG9ydCBjb25zdCBmb3VuZHJ5ID0gewogIHRpdGxlOiAnRlVORElET1JBJywKICBpbnRybzogJ01pbmFzIG9ybyB0b2RvcyBsb3MgZMOtYXMgY29uIHR1IG3DoXF1aW5hLCBwZXJvIGVzZSBvcm8gbmVjZXNpdGEgZnVuZGlyc2UgcGFyYSBjb252ZXJ0aXJzZSBlbiBVU0QgeSBsbGVnYXIgYSB0dSBiaWxsZXRlcmEuJywKICB3YXJuaW5nOiAnU2luIGZ1bmRpciwgbm8gcHVlZGVzIHJldGlyYXIuJywKICBmbG93OiBbJ01pbmFyJywgJ0Z1bmRpcicsICdVU0QnLCAnUmV0aXJhciddLAogIHVubG9ja1RpdGxlOiAnRGVzYmxvcXVlbyBwZXJtYW5lbnRlJywKICB1bmxvY2tTdGVwczogWwogICAgeyB0ZXh0OiAnSW52aXRhIGEnLCBoaWdobGlnaHQ6ICcyIGRpcmVjdG9zJywgc3VmZml4OiAncXVlIGFjdGl2ZW4gc3UgbcOhcXVpbmEnIH0sCiAgICB7IHRleHQ6ICdDYWRhIGRpcmVjdG8gaW52aXRhIGEnLCBoaWdobGlnaHQ6ICcxIHBlcnNvbmEnLCBzdWZmaXg6ICcnIH0sCiAgICB7IHRleHQ6ICdFc29zIDIgZGUgc2VndW5kbyBuaXZlbCcsIGhpZ2hsaWdodDogJ2FjdGl2YW4gc3UgbcOhcXVpbmEnLCBzdWZmaXg6ICcnIH0sCiAgXSwKICBlbmVyZ3lDb3N0czogWwogICAgeyBtYXRlcmlhbDogJ0NhcmLDs24nLCBjb3N0OiAxMjAgfSwgeyBtYXRlcmlhbDogJ0hpZXJybycsIGNvc3Q6IDgwIH0sCiAgICB7IG1hdGVyaWFsOiAnT3JvJywgY29zdDogNDUgfSwgeyBtYXRlcmlhbDogJ0RpYW1hbnRlJywgY29zdDogMTUgfSwKICBdLAogIGVuZXJneU5vdGU6ICdwYXJhIGZ1bmRpciAkNTAnLAogIGVuZXJneUJvbnVzOiBbCiAgICB7IGFtb3VudDogNTAsIGRlc2M6ICdwb3IgY2FkYSBkaXJlY3RvIGRlc2RlIGVsIHRlcmNlcm8nIH0sCiAgICB7IGFtb3VudDogMTUsIGRlc2M6ICdwb3Igc2VndW5kbyBuaXZlbCBxdWUgYWN0aXZlIG3DoXF1aW5hJyB9LAogIF0sCn07CmV4cG9ydCBjb25zdCByZWZlcnJhbHMgPSB7CiAgdGl0bGU6ICdSRUZFUklET1MnLAogIGludHJvOiAnR2FuYXMgdW5hIGNvbWlzacOzbiBwb3IgY2FkYSBtw6FxdWluYSBxdWUgY29tcHJlbiBsYXMgcGVyc29uYXMgcXVlIGludml0YXMsIGVuIDIgbml2ZWxlcy4nLAogIGxldmVsczogWwogICAgeyBuOiAxLCBwY3Q6IDMwLCBkZXNjOiAnZGVsIHBsYW4gcXVlIGNvbXByZSB0dSBkaXJlY3RvJyB9LAogICAgeyBuOiAyLCBwY3Q6IDEwLCBkZXNjOiAnZGVsIHBsYW4gcXVlIGNvbXByZSBzdSBpbnZpdGFkbycgfSwKICBdLAogIGV4YW1wbGVzOiBbCiAgICB7IHRleHQ6ICdUdSBkaXJlY3RvIGNvbXByYSBQbGFudGEgTWluZXJhICgkMjAwKSDihpIgZ2FuYXMnLCBhbW91bnQ6ICckNjAnIH0sCiAgICB7IHRleHQ6ICdTdSBpbnZpdGFkbyBjb21wcmEgRXhjYXZhZG9yYSAoJDc1KSDihpIgZ2FuYXMnLCBhbW91bnQ6ICckNy41MCcgfSwKICBdLAp9OwpleHBvcnQgY29uc3Qgcm91bGV0dGUgPSB7CiAgdGl0bGU6ICdSVUxFVEEnLAogIGludHJvOiAnQ2FkYSBkw61hIHRpZW5lcyAzIHRpcmFkYXMgZ3JhdHVpdGFzIHBhcmEgZ2FuYXIgcHJlbWlvcy4nLAogIHNwaW5zTGFiZWw6ICdUaXJhZGFzIGRpc3BvbmlibGVzOicsIGN0YTogJ0dpcmFyJywKfTsKZXhwb3J0IGNvbnN0IHdpdGhkcmF3YWxzID0gewogIHRpdGxlOiAnUkVUSVJPUycsCiAgaW50cm86ICdMdWVnbyBkZSBmdW5kaXIgdHUgb3JvLCB0dXMgVVNEIHBhc2FuIGEgbGEgYmlsbGV0ZXJhIGludGVybmEgZGUgbGEgcGxhdGFmb3JtYS4gRGVzZGUgYWxsw60gc29saWNpdGFzIHR1IHJldGlybyB5IGxvIHJlY2liZXMgZW4gVVNEVCAocmVkIFRSQy0yMCkgZW4gdHUgd2FsbGV0IGNvbmVjdGFkYS4nLAogIGZsb3c6IFsnRnVuZGlyJywgJ0JpbGxldGVyYSBpbnRlcm5hJywgJ1NvbGljaXRhciByZXRpcm8nLCAnVVNEVCBlbiB0dSB3YWxsZXQnXSwKICBkZXRhaWxzOiBbCiAgICB7IGxhYmVsOiAnTW9udG8gbcOtbmltbycsIHZhbHVlOiAnJDIwJyB9LCB7IGxhYmVsOiAnQ29taXNpw7NuJywgdmFsdWU6ICcxMiUnIH0sCiAgICB7IGxhYmVsOiAnUmV0aXJvcyBwb3Igc2VtYW5hJywgdmFsdWU6ICdNw6F4LiAyJyB9LCB7IGxhYmVsOiAnVGllbXBvIGFwcm94aW1hZG8nLCB2YWx1ZTogJzI0IGhvcmFzJyB9LAogICAgeyBsYWJlbDogJ0VzdGFkbyBpbmljaWFsJywgdmFsdWU6ICdFbiBwcm9jZXNhbWllbnRvJyB9LAogIF0sCiAgZXhhbXBsZTogeyB0ZXh0OiAnUmV0aXJhcyAkNTAg4oiSICQ2IGRlIGNvbWlzacOzbicsIHJlc3VsdDogJ1JlY2liZXMgJDQ0IFVTRFQnIH0sCn07Cg==
+/* Textos de negocio — Gold Mining 2.0 */
+export interface Plan {
+  id: string; name: string; tag: string;
+  machinePrice: number; capitalMin: number; capitalMax: number | null;
+  capitalLabel: string; dailyPct: number;
+  exampleCapital: number; exampleDaily: number; image: string;
+}
+export const plans: Plan[] = [
+  { id: 'mini-perforadora', name: 'Mini Perforadora', tag: 'PLAN.01', machinePrice: 25, capitalMin: 50, capitalMax: 249, capitalLabel: '50 – 249 USDT', dailyPct: 2.5, exampleCapital: 50, exampleDaily: 1.25, image: '/images/machine-mini-perforadora.jpg' },
+  { id: 'excavadora', name: 'Excavadora con Oruga', tag: 'PLAN.02', machinePrice: 75, capitalMin: 250, capitalMax: 749, capitalLabel: '250 – 749 USDT', dailyPct: 3.5, exampleCapital: 250, exampleDaily: 8.75, image: '/images/machine-excavadora.jpg' },
+  { id: 'planta-minera', name: 'Planta Minera', tag: 'PLAN.03', machinePrice: 200, capitalMin: 750, capitalMax: 1999, capitalLabel: '750 – 1,999 USDT', dailyPct: 4.5, exampleCapital: 750, exampleDaily: 33.75, image: '/images/machine-planta-minera.jpg' },
+  { id: 'planta-avanzada', name: 'Planta Minera Avanzada', tag: 'PLAN.04', machinePrice: 500, capitalMin: 2000, capitalMax: null, capitalLabel: '2,000 o más USDT', dailyPct: 5.5, exampleCapital: 2000, exampleDaily: 110, image: '/images/machine-planta-minera.jpg' },
+];
+export const hero = {
+  badge: 'SISTEMA ACTIVO', titleLine1: 'GOLD', titleLine2: 'MINING',
+  subtitle: 'El oro del futuro, hoy',
+  description: 'Invierte en minería de oro y haz crecer tu capital',
+  ctaPrimary: 'Registrarme ahora', ctaSecondary: 'Iniciar sesión', ctaTertiary: 'Conocer más',
+};
+export const howItWorks = {
+  title: 'CÓMO FUNCIONA',
+  steps: [
+    { n: 1, title: 'Compra tu máquina', desc: 'Elige entre 4 planes' },
+    { n: 2, title: 'Conecta tu wallet', desc: 'Tu capital se queda en tus manos' },
+    { n: 3, title: 'Activa cada 24 horas', desc: 'Un toque y genera oro' },
+    { n: 4, title: 'Genera todos los días', desc: 'Porcentaje diario sobre tu capital' },
+    { n: 7, title: 'Mantenimiento cada 7 días', desc: 'Pausa breve y continúa' },
+  ],
+  example: { title: 'Ejemplo: Mini Perforadora', machine: '25 USD', capital: '100 USDT', daily: '2.50 USD / día' },
+};
+export const foundry = {
+  title: 'FUNDIDORA',
+  intro: 'Minas oro todos los días con tu máquina, pero ese oro necesita fundirse para convertirse en USD y llegar a tu billetera.',
+  warning: 'Sin fundir, no puedes retirar.',
+  flow: ['Minar', 'Fundir', 'USD', 'Retirar'],
+  unlockTitle: 'Desbloqueo permanente',
+  unlockSteps: [
+    { text: 'Invita a', highlight: '2 directos', suffix: 'que activen su máquina' },
+    { text: 'Cada directo invita a', highlight: '1 persona', suffix: '' },
+    { text: 'Esos 2 de segundo nivel', highlight: 'activan su máquina', suffix: '' },
+  ],
+  energyCosts: [
+    { material: 'Carbón', cost: 120 }, { material: 'Hierro', cost: 80 },
+    { material: 'Oro', cost: 45 }, { material: 'Diamante', cost: 15 },
+  ],
+  energyNote: 'para fundir $50',
+  energyBonus: [
+    { amount: 50, desc: 'por cada directo desde el tercero' },
+    { amount: 15, desc: 'por segundo nivel que active máquina' },
+  ],
+};
+export const referrals = {
+  title: 'REFERIDOS',
+  intro: 'Ganas una comisión por cada máquina que compren las personas que invitas, en 2 niveles.',
+  levels: [
+    { n: 1, pct: 30, desc: 'del plan que compre tu directo' },
+    { n: 2, pct: 10, desc: 'del plan que compre su invitado' },
+  ],
+  examples: [
+    { text: 'Tu directo compra Planta Minera ($200) → ganas', amount: '$60' },
+    { text: 'Su invitado compra Excavadora ($75) → ganas', amount: '$7.50' },
+  ],
+};
+export const roulette = {
+  title: 'RULETA',
+  intro: 'Cada día tienes 3 tiradas gratuitas para ganar premios.',
+  spinsLabel: 'Tiradas disponibles:', cta: 'Girar',
+};
+export const withdrawals = {
+  title: 'RETIROS',
+  intro: 'Luego de fundir tu oro, tus USD pasan a la billetera interna de la plataforma. Desde allí solicitas tu retiro y lo recibes en USDT (red TRC-20) en tu wallet conectada.',
+  flow: ['Fundir', 'Billetera interna', 'Solicitar retiro', 'USDT en tu wallet'],
+  details: [
+    { label: 'Monto mínimo', value: '$20' }, { label: 'Comisión', value: '12%' },
+    { label: 'Retiros por semana', value: 'Máx. 2' }, { label: 'Tiempo aproximado', value: '24 horas' },
+    { label: 'Estado inicial', value: 'En procesamiento' },
+  ],
+  example: { text: 'Retiras $50 − $6 de comisión', result: 'Recibes $44 USDT' },
+};
