@@ -1,1 +1,27 @@
-LS0tCmltcG9ydCBMYW5kaW5nTGF5b3V0IGZyb20gJy4uL2xheW91dHMvTGFuZGluZ0xheW91dC5hc3Rybyc7CmltcG9ydCBIZXJvIGZyb20gJy4uL2NvbXBvbmVudHMvbGFuZGluZy9IZXJvLmFzdHJvJzsKaW1wb3J0IEhvd0l0V29ya3MgZnJvbSAnLi4vY29tcG9uZW50cy9sYW5kaW5nL0hvd0l0V29ya3MuYXN0cm8nOwppbXBvcnQgUGxhbnMgZnJvbSAnLi4vY29tcG9uZW50cy9sYW5kaW5nL1BsYW5zLmFzdHJvJzsKaW1wb3J0IEZvdW5kcnkgZnJvbSAnLi4vY29tcG9uZW50cy9sYW5kaW5nL0ZvdW5kcnkuYXN0cm8nOwppbXBvcnQgUmVmZXJyYWxzIGZyb20gJy4uL2NvbXBvbmVudHMvbGFuZGluZy9SZWZlcnJhbHMuYXN0cm8nOwppbXBvcnQgUm91bGV0dGUgZnJvbSAnLi4vY29tcG9uZW50cy9sYW5kaW5nL1JvdWxldHRlLmFzdHJvJzsKaW1wb3J0IFdpdGhkcmF3YWxzIGZyb20gJy4uL2NvbXBvbmVudHMvbGFuZGluZy9XaXRoZHJhd2Fscy5hc3Rybyc7Ci0tLQo8TGFuZGluZ0xheW91dD4KICA8SGVybyAvPgogIDxIb3dJdFdvcmtzIC8+CiAgPFBsYW5zIC8+CiAgPEZvdW5kcnkgLz4KICA8UmVmZXJyYWxzIC8+CiAgPFJvdWxldHRlIC8+CiAgPFdpdGhkcmF3YWxzIC8+CiAgPGZvb3RlciBjbGFzcz0iZm9vdGVyIj4KICAgIDxkaXYgY2xhc3M9InNlY3Rpb24taW5uZXIgdGV4dC1jZW50ZXIiPgogICAgICA8cCBjbGFzcz0iY2FwdGlvbiI+R09MRCBNSU5JTkcg4oCUIEluZnJhZXN0cnVjdHVyYSBkaWdpdGFsIGRlIG1pbmVyw61hPC9wPgogICAgPC9kaXY+CiAgPC9mb290ZXI+CjwvTGFuZGluZ0xheW91dD4KPHN0eWxlPgogIC5mb290ZXIgeyBwYWRkaW5nOiB2YXIoLS1zcGFjZS0yeGwpIHZhcigtLXNwYWNlLW1kKTsgYm9yZGVyLXRvcDogMXB4IHNvbGlkIHZhcigtLWdvbGQtbGluZSk7IHBvc2l0aW9uOiByZWxhdGl2ZTsgei1pbmRleDogdmFyKC0tei1jb250ZW50KTsgfQo8L3N0eWxlPgo=
+---
+import LandingLayout from '../layouts/LandingLayout.astro';
+import Hero from '../components/landing/Hero.astro';
+import HowItWorks from '../components/landing/HowItWorks.astro';
+import Plans from '../components/landing/Plans.astro';
+import Foundry from '../components/landing/Foundry.astro';
+import Referrals from '../components/landing/Referrals.astro';
+import Roulette from '../components/landing/Roulette.astro';
+import Withdrawals from '../components/landing/Withdrawals.astro';
+---
+<LandingLayout>
+  <Hero />
+  <HowItWorks />
+  <Plans />
+  <Foundry />
+  <Referrals />
+  <Roulette />
+  <Withdrawals />
+  <footer class="footer">
+    <div class="section-inner text-center">
+      <p class="caption">GOLD MINING — Infraestructura digital de minería</p>
+    </div>
+  </footer>
+</LandingLayout>
+<style>
+  .footer { padding: var(--space-2xl) var(--space-md); border-top: 1px solid var(--gold-line); position: relative; z-index: var(--z-content); }
+</style>
