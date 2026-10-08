@@ -1,1 +1,13 @@
-LyogRm9ybWF0byBkZSBuw7ptZXJvcyDigJQgR29sZCBNaW5pbmcgMi4wICovCmV4cG9ydCBmdW5jdGlvbiBmb3JtYXRVU0RUKGFtb3VudDogbnVtYmVyKTogc3RyaW5nIHsKICByZXR1cm4gYW1vdW50LnRvTG9jYWxlU3RyaW5nKCdlbi1VUycsIHsgbWluaW11bUZyYWN0aW9uRGlnaXRzOiAyLCBtYXhpbXVtRnJhY3Rpb25EaWdpdHM6IDIgfSk7Cn0KZXhwb3J0IGZ1bmN0aW9uIGZvcm1hdFVTRChhbW91bnQ6IG51bWJlcik6IHN0cmluZyB7CiAgcmV0dXJuIGAkJHthbW91bnQudG9Mb2NhbGVTdHJpbmcoJ2VuLVVTJyl9YDsKfQpleHBvcnQgZnVuY3Rpb24gZm9ybWF0UGN0KHBjdDogbnVtYmVyKTogc3RyaW5nIHsKICByZXR1cm4gYCR7cGN0LnRvRml4ZWQoMSl9JWA7Cn0KZXhwb3J0IGZ1bmN0aW9uIGZvcm1hdEVuZXJneShhbW91bnQ6IG51bWJlcik6IHN0cmluZyB7CiAgcmV0dXJuIGAke01hdGgucm91bmQoYW1vdW50KX0g4pqhYDsKfQo=
+/* Formato de números — Gold Mining 2.0 */
+export function formatUSDT(amount: number): string {
+  return amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+export function formatUSD(amount: number): string {
+  return `$${amount.toLocaleString('en-US')}`;
+}
+export function formatPct(pct: number): string {
+  return `${pct.toFixed(1)}%`;
+}
+export function formatEnergy(amount: number): string {
+  return `${Math.round(amount)} ⚡`;
+}
