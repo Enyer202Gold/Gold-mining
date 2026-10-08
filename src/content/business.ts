@@ -1,4 +1,5 @@
 /* Textos de negocio — Gold Mining 2.0 */
+const B = import.meta.env.BASE_URL;
 export interface Plan {
   id: string; name: string; tag: string;
   machinePrice: number; capitalMin: number; capitalMax: number | null;
@@ -6,10 +7,10 @@ export interface Plan {
   exampleCapital: number; exampleDaily: number; image: string;
 }
 export const plans: Plan[] = [
-  { id: 'mini-perforadora', name: 'Mini Perforadora', tag: 'PLAN.01', machinePrice: 25, capitalMin: 50, capitalMax: 249, capitalLabel: '50 – 249 USDT', dailyPct: 2.5, exampleCapital: 50, exampleDaily: 1.25, image: '/images/machine-mini-perforadora.jpg' },
-  { id: 'excavadora', name: 'Excavadora con Oruga', tag: 'PLAN.02', machinePrice: 75, capitalMin: 250, capitalMax: 749, capitalLabel: '250 – 749 USDT', dailyPct: 3.5, exampleCapital: 250, exampleDaily: 8.75, image: '/images/machine-excavadora.jpg' },
-  { id: 'planta-minera', name: 'Planta Minera', tag: 'PLAN.03', machinePrice: 200, capitalMin: 750, capitalMax: 1999, capitalLabel: '750 – 1,999 USDT', dailyPct: 4.5, exampleCapital: 750, exampleDaily: 33.75, image: '/images/machine-planta-minera.jpg' },
-  { id: 'planta-avanzada', name: 'Planta Minera Avanzada', tag: 'PLAN.04', machinePrice: 500, capitalMin: 2000, capitalMax: null, capitalLabel: '2,000 o más USDT', dailyPct: 5.5, exampleCapital: 2000, exampleDaily: 110, image: '/images/machine-planta-minera.jpg' },
+  { id: 'mini-perforadora', name: 'Mini Perforadora', tag: 'PLAN.01', machinePrice: 25, capitalMin: 50, capitalMax: 249, capitalLabel: '50 – 249 USDT', dailyPct: 2.5, exampleCapital: 50, exampleDaily: 1.25, image: `${B}images/machine-mini-perforadora.jpg` },
+  { id: 'excavadora', name: 'Excavadora con Oruga', tag: 'PLAN.02', machinePrice: 75, capitalMin: 250, capitalMax: 749, capitalLabel: '250 – 749 USDT', dailyPct: 3.5, exampleCapital: 250, exampleDaily: 8.75, image: `${B}images/machine-excavadora.jpg` },
+  { id: 'planta-minera', name: 'Planta Minera', tag: 'PLAN.03', machinePrice: 200, capitalMin: 750, capitalMax: 1999, capitalLabel: '750 – 1,999 USDT', dailyPct: 4.5, exampleCapital: 750, exampleDaily: 33.75, image: `${B}images/machine-planta-minera.jpg` },
+  { id: 'planta-avanzada', name: 'Planta Minera Avanzada', tag: 'PLAN.04', machinePrice: 500, capitalMin: 2000, capitalMax: null, capitalLabel: '2,000 o más USDT', dailyPct: 5.5, exampleCapital: 2000, exampleDaily: 110, image: `${B}images/machine-planta-minera.jpg` },
 ];
 export const hero = {
   badge: 'SISTEMA ACTIVO', titleLine1: 'GOLD', titleLine2: 'MINING',
@@ -24,7 +25,7 @@ export const howItWorks = {
     { n: 2, title: 'Conecta tu wallet', desc: 'Tu capital se queda en tus manos' },
     { n: 3, title: 'Activa cada 24 horas', desc: 'Un toque y genera oro' },
     { n: 4, title: 'Genera todos los días', desc: 'Porcentaje diario sobre tu capital' },
-    { n: 7, title: 'Mantenimiento cada 7 días', desc: 'Pausa breve y continúa' },
+    { n: 5, title: 'Mantenimiento cada 7 días', desc: 'Pausa breve y continúa' },
   ],
   example: { title: 'Ejemplo: Mini Perforadora', machine: '25 USD', capital: '100 USDT', daily: '2.50 USD / día' },
 };
