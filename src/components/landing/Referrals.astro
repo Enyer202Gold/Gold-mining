@@ -1,1 +1,35 @@
-LS0tCmltcG9ydCBDYXJkIGZyb20gJy4uL3VpL0NhcmQuYXN0cm8nOwppbXBvcnQgeyByZWZlcnJhbHMgfSBmcm9tICcuLi8uLi9jb250ZW50L2J1c2luZXNzJzsKLS0tCjxzZWN0aW9uIGNsYXNzPSJzZWN0aW9uIiBpZD0icmVmZXJpZG9zIiBhcmlhLWxhYmVsPSJSZWZlcmlkb3MiPgogIDxkaXYgY2xhc3M9InNlY3Rpb24taW5uZXIiPgogICAgPGgyIGNsYXNzPSJzZWN0aW9uLXRpdGxlIHRleHQtY2VudGVyIiBkYXRhLXJldmVhbD57cmVmZXJyYWxzLnRpdGxlfTwvaDI+CiAgICA8ZGl2IGNsYXNzPSJzZWN0aW9uLWRpdmlkZXIiIGRhdGEtZGl2aWRlcj48L2Rpdj4KICAgIDxwIGNsYXNzPSJ0ZXh0LWNlbnRlciB0ZXh0LWRpbSIgZGF0YS1yZXZlYWwgc3R5bGU9Im1hcmdpbi1ib3R0b206IDI0cHg7Ij57cmVmZXJyYWxzLmludHJvfTwvcD4KICAgIDxkaXYgY2xhc3M9ImxldmVscyI+CiAgICAgIHtyZWZlcnJhbHMubGV2ZWxzLm1hcCgobGV2ZWwpID0+ICgKICAgICAgICA8ZGl2IGRhdGEtcmV2ZWFsPgogICAgICAgICAgPENhcmQgdGFnPXtgTklWRUwgJHtsZXZlbC5ufWB9IGZsb2F0PgogICAgICAgICAgICA8cCBjbGFzcz0ibGV2ZWwtcGN0IG51bSB0ZXh0LWdvbGQiPntsZXZlbC5wY3R9JTwvcD4KICAgICAgICAgICAgPHAgY2xhc3M9InRleHQtZGltIj57bGV2ZWwuZGVzY308L3A+CiAgICAgICAgICA8L0NhcmQ+CiAgICAgICAgPC9kaXY+CiAgICAgICkpfQogICAgPC9kaXY+CiAgICA8ZGl2IGRhdGEtcmV2ZWFsPgogICAgICA8Q2FyZCB0YWc9IkVKRU1QTE9TIj4KICAgICAgICB7cmVmZXJyYWxzLmV4YW1wbGVzLm1hcCgoZXgpID0+ICgKICAgICAgICAgIDxwIGNsYXNzPSJleGFtcGxlLXJvdyI+PHNwYW4gY2xhc3M9InRleHQtZGltIj57ZXgudGV4dH08L3NwYW4+PHNwYW4gY2xhc3M9Im51bSB0ZXh0LWdvbGQgZXhhbXBsZS1hbW91bnQiPntleC5hbW91bnR9PC9zcGFuPjwvcD4KICAgICAgICApKX0KICAgICAgPC9DYXJkPgogICAgPC9kaXY+CiAgPC9kaXY+Cjwvc2VjdGlvbj4KPHN0eWxlPgogIC5sZXZlbHMgeyBkaXNwbGF5OiBncmlkOyBncmlkLXRlbXBsYXRlLWNvbHVtbnM6IDFmciAxZnI7IGdhcDogdmFyKC0tc3BhY2UtbWQpOyBtYXJnaW4tYm90dG9tOiB2YXIoLS1zcGFjZS1sZyk7IH0KICAubGV2ZWwtcGN0IHsgZm9udC1zaXplOiA0MHB4OyBmb250LXdlaWdodDogNjAwOyBtYXJnaW4tYm90dG9tOiA0cHg7IH0KICAuZXhhbXBsZS1yb3cgeyBkaXNwbGF5OiBmbGV4OyBmbGV4LWRpcmVjdGlvbjogY29sdW1uOyBnYXA6IDRweDsgcGFkZGluZzogdmFyKC0tc3BhY2Utc20pIDA7IGZvbnQtc2l6ZTogMTRweDsgfQogIC5leGFtcGxlLXJvdyArIC5leGFtcGxlLXJvdyB7IGJvcmRlci10b3A6IDFweCBzb2xpZCB2YXIoLS1nb2xkLWxpbmUpOyB9CiAgLmV4YW1wbGUtYW1vdW50IHsgZm9udC1zaXplOiAyMHB4OyBmb250LXdlaWdodDogNjAwOyB9Cjwvc3R5bGU+Cg==
+---
+import Card from '../ui/Card.astro';
+import { referrals } from '../../content/business';
+---
+<section class="section" id="referidos" aria-label="Referidos">
+  <div class="section-inner">
+    <h2 class="section-title text-center" data-reveal>{referrals.title}</h2>
+    <div class="section-divider" data-divider></div>
+    <p class="text-center text-dim" data-reveal style="margin-bottom: 24px;">{referrals.intro}</p>
+    <div class="levels">
+      {referrals.levels.map((level) => (
+        <div data-reveal>
+          <Card tag={`NIVEL ${level.n}`} float>
+            <p class="level-pct num text-gold">{level.pct}%</p>
+            <p class="text-dim">{level.desc}</p>
+          </Card>
+        </div>
+      ))}
+    </div>
+    <div data-reveal>
+      <Card tag="EJEMPLOS">
+        {referrals.examples.map((ex) => (
+          <p class="example-row"><span class="text-dim">{ex.text}</span><span class="num text-gold example-amount">{ex.amount}</span></p>
+        ))}
+      </Card>
+    </div>
+  </div>
+</section>
+<style>
+  .levels { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-bottom: var(--space-lg); }
+  .level-pct { font-size: 40px; font-weight: 600; margin-bottom: 4px; }
+  .example-row { display: flex; flex-direction: column; gap: 4px; padding: var(--space-sm) 0; font-size: 14px; }
+  .example-row + .example-row { border-top: 1px solid var(--gold-line); }
+  .example-amount { font-size: 20px; font-weight: 600; }
+</style>
