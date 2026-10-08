@@ -7,6 +7,7 @@ const {
   title = 'Gold Mining — Infraestructura digital de minería del futuro',
   description = 'Invierte en minería de oro y haz crecer tu capital. Planes desde $25.',
 } = Astro.props;
+const base = import.meta.env.BASE_URL;
 ---
 <!DOCTYPE html>
 <html lang="es">
@@ -19,7 +20,10 @@ const {
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+  <style define:vars={{ tunnelBg: `url(${base}images/tunnel-bg.jpg)` }}>
+    .tunnel-bg { --tunnel-bg: var(--tunnelBg); }
+  </style>
 </head>
 <body>
   <div class="tunnel-bg" aria-hidden="true"></div>
