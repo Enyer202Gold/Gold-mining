@@ -740,6 +740,39 @@
       .level-card { opacity: 1; transform: none; transition: none; }
     }
 
+  
+    /* ===== RULETA — instrumento industrial ===== */
+    .roulette { position: relative; padding: clamp(70px, 10vh, 120px) 0; background: linear-gradient(180deg, #090704 0%, #0a0805 100%); overflow: clip; }
+    .roulette-inner { width: min(100%, 1080px); margin-inline: auto; padding-inline: 20px; text-align: center; }
+    .roulette-head { max-width: 640px; margin: 0 auto clamp(30px, 5vh, 50px); }
+    .roulette-head h2 { margin: 14px 0 0; font-family: var(--brand); font-size: clamp(26px, 6.4vw, 40px); font-weight: 500; line-height: 1.15; letter-spacing: -.02em; }
+    .roulette-head .eyebrow { justify-content: center; }
+    .roulette-head .eyebrow::before { display: none; }
+    .drum-stage { position: relative; display: grid; place-items: center; margin-bottom: 26px; }
+    .drum { width: min(76vw, 320px); height: auto; opacity: 0; transform: scale(.94); transition: opacity .8s ease, transform .8s cubic-bezier(.22,.8,.3,1); }
+    .drum.in { opacity: 1; transform: none; }
+    .drum-rotor { transform-box: fill-box; transform-origin: center; transition: transform 3.2s cubic-bezier(.15,.85,.25,1); }
+    .drum-pointer { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 11px solid transparent; border-right: 11px solid transparent; border-top: 18px solid var(--gold-bright); filter: drop-shadow(0 2px 4px rgba(0,0,0,.5)); }
+    .spins-info { display: flex; justify-content: center; gap: 10px; align-items: center; margin-bottom: 20px; font-size: 13px; color: var(--text-dim); letter-spacing: .06em; }
+    .spins-info strong { color: var(--gold-bright); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 20px; font-variant-numeric: tabular-nums; }
+    .spin-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 22px; }
+    .spin-dots i { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--line-strong); background: transparent; }
+    .spin-dots i.full { background: var(--gold); border-color: var(--gold); }
+    .activate-btn {
+      padding: 15px 54px; border-radius: 10px; border: 1px solid var(--line-strong);
+      background: rgba(212,160,23,.1); color: var(--gold-bright);
+      font-size: 14px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; cursor: pointer;
+      transition: background .2s ease, transform .1s ease;
+    }
+    .activate-btn:hover { background: rgba(212,160,23,.18); }
+    .activate-btn:active { transform: scale(.97); }
+    .activate-btn:disabled { opacity: .45; cursor: default; }
+    .roulette-note { margin: 18px auto 0; max-width: 460px; color: var(--text-dim); font-size: 12.5px; line-height: 1.6; }
+    @media (prefers-reduced-motion: reduce) {
+      .drum { opacity: 1; transform: none; transition: none; }
+      .drum-rotor { transition: none; }
+    }
+
   </style>
 </head>
 <body>
@@ -1064,6 +1097,39 @@
     </div>
   </section>
 
+
+  <!-- ===== RULETA — INSTRUMENTO INDUSTRIAL ===== -->
+  <section class="roulette" id="ruleta" aria-labelledby="roulette-title">
+    <div class="roulette-inner">
+      <div class="roulette-head">
+        <p class="eyebrow">Ruleta</p>
+        <h2 id="roulette-title">Instrumento de precisión.</h2>
+        <p class="referrals-lead">Tres tiradas gratuitas cada día, operadas como un mecanismo industrial.</p>
+      </div>
+      <div class="drum-stage">
+        <div class="drum-pointer" aria-hidden="true"></div>
+        
+        <svg class="drum" viewBox="0 0 320 320" role="img" aria-label="Tambor mecánico de la ruleta">
+          <circle cx="160" cy="160" r="152" fill="#14100b" stroke="#3a2f1e" stroke-width="2"/>
+          <circle cx="306.0" cy="160.0" r="4" fill="#0e0b08" stroke="#8a6410" stroke-width="1.2"/><circle cx="286.4" cy="233.0" r="4" fill="#0e0b08" stroke="#8a6410" stroke-width="1.2"/><circle cx="233.0" cy="286.4" r="4" fill="#0e0b08" stroke="#8a6410" stroke-width="1.2"/><circle cx="160.0" cy="306.0" r="4" fill="#0e0b08" stroke="#8a6410" stroke-width="1.2"/><circle cx="87.0" cy="286.4" r="4" fill="#0e0b08" stroke="#8a6410" stroke-width="1.2"/><circle cx="33.6" cy="233.0" r="4" fill="#0e0b08" stroke="#8a6410" stroke-width="1.2"/><circle cx="14.0" cy="160.0" r="4" fill="#0e0b08" stroke="#8a6410" stroke-width="1.2"/><circle cx="33.6" cy="87.0" r="4" fill="#0e0b08" stroke="#8a6410" stroke-width="1.2"/><circle cx="87.0" cy="33.6" r="4" fill="#0e0b08" stroke="#8a6410" stroke-width="1.2"/><circle cx="160.0" cy="14.0" r="4" fill="#0e0b08" stroke="#8a6410" stroke-width="1.2"/><circle cx="233.0" cy="33.6" r="4" fill="#0e0b08" stroke="#8a6410" stroke-width="1.2"/><circle cx="286.4" cy="87.0" r="4" fill="#0e0b08" stroke="#8a6410" stroke-width="1.2"/>
+          <g class="drum-rotor" id="drumRotor">
+            <path d="M160 160 L288.0 160.0 A128 128 0 0 1 250.5 250.5 Z" fill="#241d12" stroke="#8a6410" stroke-width="1"/><path d="M160 160 L250.5 250.5 A128 128 0 0 1 160.0 288.0 Z" fill="#1b150e" stroke="#8a6410" stroke-width="1"/><path d="M160 160 L160.0 288.0 A128 128 0 0 1 69.5 250.5 Z" fill="#241d12" stroke="#8a6410" stroke-width="1"/><path d="M160 160 L69.5 250.5 A128 128 0 0 1 32.0 160.0 Z" fill="#1b150e" stroke="#8a6410" stroke-width="1"/><path d="M160 160 L32.0 160.0 A128 128 0 0 1 69.5 69.5 Z" fill="#241d12" stroke="#8a6410" stroke-width="1"/><path d="M160 160 L69.5 69.5 A128 128 0 0 1 160.0 32.0 Z" fill="#1b150e" stroke="#8a6410" stroke-width="1"/><path d="M160 160 L160.0 32.0 A128 128 0 0 1 250.5 69.5 Z" fill="#241d12" stroke="#8a6410" stroke-width="1"/><path d="M160 160 L250.5 69.5 A128 128 0 0 1 288.0 160.0 Z" fill="#1b150e" stroke="#8a6410" stroke-width="1"/>
+            <line x1="257.9" y1="200.6" x2="269.0" y2="205.2" stroke="#d4a017" stroke-width="1.4" opacity=".5"/><line x1="200.6" y1="257.9" x2="205.2" y2="269.0" stroke="#d4a017" stroke-width="1.4" opacity=".5"/><line x1="119.4" y1="257.9" x2="114.8" y2="269.0" stroke="#d4a017" stroke-width="1.4" opacity=".5"/><line x1="62.1" y1="200.6" x2="51.0" y2="205.2" stroke="#d4a017" stroke-width="1.4" opacity=".5"/><line x1="62.1" y1="119.4" x2="51.0" y2="114.8" stroke="#d4a017" stroke-width="1.4" opacity=".5"/><line x1="119.4" y1="62.1" x2="114.8" y2="51.0" stroke="#d4a017" stroke-width="1.4" opacity=".5"/><line x1="200.6" y1="62.1" x2="205.2" y2="51.0" stroke="#d4a017" stroke-width="1.4" opacity=".5"/><line x1="257.9" y1="119.4" x2="269.0" y2="114.8" stroke="#d4a017" stroke-width="1.4" opacity=".5"/>
+            <circle cx="160" cy="160" r="118" fill="none" stroke="#8a6410" stroke-width="1" opacity=".4"/>
+            <circle cx="160" cy="160" r="46" fill="#14100b" stroke="#d4a017" stroke-width="2"/>
+            <path d="M160 138 L172 160 L160 182 L148 160 Z" fill="none" stroke="#d4a017" stroke-width="1.6"/>
+            <circle cx="160" cy="160" r="7" fill="#d4a017"/>
+          </g>
+          <circle cx="160" cy="160" r="152" fill="none" stroke="#d4a017" stroke-width="1" opacity=".25"/>
+        </svg>
+      </div>
+      <div class="spins-info">TIRADAS DISPONIBLES <strong>3</strong> / 3</div>
+      <div class="spin-dots" aria-hidden="true"><i class="full"></i><i class="full"></i><i class="full"></i></div>
+      <button class="activate-btn" type="button" id="spinBtn">Activar</button>
+      <p class="roulette-note">Las tiradas se acreditan diariamente en tu cuenta operativa. Este mecanismo es una representación visual del instrumento.</p>
+    </div>
+  </section>
+
   <div id="sheetBackdrop" class="sheet-backdrop" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" aria-hidden="true">
     <section class="sheet" tabindex="-1">
       <div class="sheet-head">
@@ -1332,6 +1398,24 @@
       document.querySelectorAll('.unit').forEach(function (u) { reveal.observe(u); });
       document.querySelectorAll('.flow-node').forEach(function (n) { reveal.observe(n); });
       document.querySelectorAll('.level-card').forEach(function (c) { reveal.observe(c); });
+      var drum = document.querySelector('.drum');
+      if (drum) {
+        new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) { if (e.isIntersecting) { drum.classList.add('in'); obs.disconnect(); } });
+        }, { threshold: 0.35 }).observe(drum);
+      }
+      var spinBtn = document.getElementById('spinBtn');
+      var rotor = document.getElementById('drumRotor');
+      var deg = 0;
+      if (spinBtn && rotor) {
+        spinBtn.addEventListener('click', function () {
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          spinBtn.disabled = true;
+          deg += 720 + Math.floor(Math.random() * 360);
+          rotor.style.transform = 'rotate(' + deg + 'deg)';
+          setTimeout(function () { spinBtn.disabled = false; }, 3300);
+        });
+      }
       var netSvg = document.querySelector('.net-svg');
       if (netSvg) {
         new IntersectionObserver(function (entries, obs) {
