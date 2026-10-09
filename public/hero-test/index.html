@@ -437,6 +437,99 @@
       *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
       /* El video permanece visible. La reproducción se ofrece como acción explícita en JS. */
     }
+  
+    /* ===== CÓMO FUNCIONA — secuencia del descenso ===== */
+    .how {
+      position: relative;
+      background: linear-gradient(180deg, rgba(5,4,3,0) 0%, #070503 90px, #060402 100%);
+      padding: clamp(70px, 10vh, 120px) 0 clamp(60px, 8vh, 100px);
+      overflow: clip;
+    }
+    .beam {
+      position: absolute;
+      top: 0; left: 50%;
+      width: min(72%, 560px); height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-bright), transparent);
+      opacity: .55;
+      transform: translateX(-50%) scaleX(0);
+      transform-origin: center;
+      transition: transform 1s cubic-bezier(.22,.8,.3,1);
+    }
+    .beam.in { transform: translateX(-50%) scaleX(1); }
+    .how-inner {
+      width: min(100%, 1080px);
+      margin-inline: auto;
+      padding-inline: max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-left));
+      padding-inline: 20px;
+    }
+    .how-head { max-width: 640px; margin-bottom: clamp(36px, 6vh, 64px); }
+    .how-head h2 {
+      margin: 14px 0 0;
+      font-family: var(--brand);
+      font-size: clamp(26px, 6.4vw, 40px);
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+    }
+    .how-lead { margin: 14px 0 0; color: var(--text-dim); font-size: clamp(14px, 3.8vw, 17px); line-height: 1.6; }
+    .stations { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+    .station {
+      position: relative;
+      display: grid;
+      grid-template-columns: 64px 44px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 26px 18px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity .7s ease, transform .7s cubic-bezier(.22,.8,.3,1), border-color .5s ease, background .5s ease;
+    }
+    .station.in { opacity: 1; transform: none; }
+    .station.active {
+      border-color: var(--line);
+      background: linear-gradient(135deg, rgba(20,14,6,.55), rgba(10,8,5,.15));
+    }
+    .station-num {
+      font-family: var(--brand);
+      font-size: clamp(30px, 7vw, 42px);
+      font-weight: 600;
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(212,160,23,.5);
+      user-select: none;
+    }
+    .station.active .station-num { -webkit-text-stroke: 1px var(--gold-bright); }
+    .station-icon {
+      width: 44px; height: 44px;
+      display: grid; place-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 10px;
+      background: rgba(212,160,23,.07);
+      color: var(--gold-bright);
+    }
+    .station-icon svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .station h3 { margin: 2px 0 8px; font-size: clamp(16px, 4.2vw, 20px); font-weight: 600; letter-spacing: -.01em; }
+    .station p { margin: 0; color: var(--text-dim); font-size: clamp(13.5px, 3.6vw, 15.5px); line-height: 1.6; max-width: 52ch; }
+    .station-rail {
+      position: absolute; left: 49px; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, var(--line-strong) 18%, var(--line-strong) 82%, transparent);
+      opacity: .5;
+      pointer-events: none;
+    }
+    @media (max-width: 560px) {
+      .station { grid-template-columns: 52px 40px 1fr; gap: 10px; padding: 20px 12px; }
+      .station-num { font-size: 28px; }
+      .station-icon { width: 40px; height: 40px; }
+      .station-rail { left: 37px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .station { opacity: 1; transform: none; transition: none; }
+      .beam { transform: translateX(-50%) scaleX(1); transition: none; }
+    }
+
   </style>
 </head>
 <body>
@@ -513,6 +606,50 @@
       Activar video de fondo
     </button>
   </main>
+  <!-- ===== CÓMO FUNCIONA ===== -->
+  <section class="how" id="como-funciona" aria-labelledby="how-title">
+    <div class="beam" aria-hidden="true"></div>
+    <div class="how-inner">
+      <div class="how-head">
+        <p class="eyebrow">Cómo funciona</p>
+        <h2 id="how-title">El descenso, paso a paso.</h2>
+        <p class="how-lead">Cinco estaciones. Un solo ciclo operativo que se repite todos los días.</p>
+      </div>
+      <ol class="stations">
+        <li class="station">
+          <span class="station-rail" aria-hidden="true"></span>
+          <span class="station-num" aria-hidden="true">01</span>
+          <span class="station-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 17h16M6 17V9l6-4 6 4v8M10 17v-4h4v4M12 5V3"/></svg></span>
+          <div><h3>Compra tu máquina</h3><p>Elige entre cuatro planes según tu capital. La máquina es tuya y queda registrada en tu cuenta.</p></div>
+        </li>
+        <li class="station">
+          <span class="station-rail" aria-hidden="true"></span>
+          <span class="station-num" aria-hidden="true">02</span>
+          <span class="station-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M3 10h18M16 15h2"/></svg></span>
+          <div><h3>Respalda con capital</h3><p>Mantén en tu wallet el capital mínimo que exige tu plan. Tu capital siempre permanece en tus manos.</p></div>
+        </li>
+        <li class="station">
+          <span class="station-rail" aria-hidden="true"></span>
+          <span class="station-num" aria-hidden="true">03</span>
+          <span class="station-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v9M6.3 6.5a8 8 0 1 0 11.4 0"/></svg></span>
+          <div><h3>Activa cada 24 horas</h3><p>Un toque diario pone tu máquina a generar. Sin activación, no hay generación ese día.</p></div>
+        </li>
+        <li class="station">
+          <span class="station-rail" aria-hidden="true"></span>
+          <span class="station-num" aria-hidden="true">04</span>
+          <span class="station-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg></span>
+          <div><h3>Genera todos los días</h3><p>Tu máquina produce un rendimiento diario según tu plan, acreditado en tu cuenta.</p></div>
+        </li>
+        <li class="station">
+          <span class="station-rail" aria-hidden="true"></span>
+          <span class="station-num" aria-hidden="true">05</span>
+          <span class="station-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14.5 6.5a4 4 0 0 0-5.6 5.6L4 17l3 3 4.9-4.9a4 4 0 0 0 5.6-5.6L14 13l-3-3 3.5-3.5z"/></svg></span>
+          <div><h3>Mantenimiento cada 7 días</h3><p>Una pausa breve de mantenimiento y tu operación continúa sin interrupciones.</p></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
 
   <div id="sheetBackdrop" class="sheet-backdrop" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" aria-hidden="true">
     <section class="sheet" tabindex="-1">
@@ -758,5 +895,38 @@
       document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && backdrop.classList.contains('open')) closeSheet(); });
     }());
   </script>
+
+  <script>
+    (function () {
+      var stations = document.querySelectorAll('.station');
+      var beam = document.querySelector('.beam');
+      if (!('IntersectionObserver' in window) || !stations.length) {
+        stations.forEach(function (s) { s.classList.add('in'); });
+        if (beam) beam.classList.add('in');
+        return;
+      }
+      var reveal = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); reveal.unobserve(e.target); }
+        });
+      }, { threshold: 0.18 });
+      stations.forEach(function (s) { reveal.observe(s); });
+      if (beam) {
+        new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) { if (e.isIntersecting) { beam.classList.add('in'); obs.disconnect(); } });
+        }, { threshold: 0.4 }).observe(beam);
+      }
+      var active = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            stations.forEach(function (s) { s.classList.remove('active'); });
+            e.target.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-42% 0px -42% 0px' });
+      stations.forEach(function (s) { active.observe(s); });
+    }());
+  </script>
+
 </body>
 </html>
