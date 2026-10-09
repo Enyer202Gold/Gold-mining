@@ -530,6 +530,183 @@
       .beam { transform: translateX(-50%) scaleX(1); transition: none; }
     }
 
+  
+    /* ===== PLANES — la flota operativa ===== */
+    .fleet { position: relative; padding: clamp(70px, 10vh, 120px) 0; background: linear-gradient(180deg, #060402 0%, #080604 100%); overflow: clip; }
+    .fleet-inner { width: min(100%, 1080px); margin-inline: auto; padding-inline: 20px; }
+    .fleet-head { max-width: 680px; margin-bottom: 12px; }
+    .fleet-head h2 { margin: 14px 0 0; font-family: var(--brand); font-size: clamp(26px, 6.4vw, 40px); font-weight: 500; line-height: 1.15; letter-spacing: -.02em; }
+    .fleet-note {
+      margin: 18px 0 clamp(30px, 5vh, 48px); padding: 14px 16px;
+      border: 1px solid var(--line-strong); border-radius: 10px;
+      background: rgba(212,160,23,.06); color: var(--text);
+      font-size: clamp(13px, 3.6vw, 14.5px); line-height: 1.6;
+    }
+    .fleet-note strong { color: var(--gold-bright); }
+    .units { display: grid; gap: 22px; }
+    .unit {
+      border: 1px solid var(--line); border-radius: 14px; overflow: clip;
+      background: linear-gradient(160deg, rgba(14,10,6,.85), rgba(7,5,3,.6));
+      opacity: 0; transform: translateY(32px);
+      transition: opacity .7s ease, transform .7s cubic-bezier(.22,.8,.3,1);
+    }
+    .unit.in { opacity: 1; transform: none; }
+    .unit.elite { border-color: var(--line-strong); box-shadow: 0 0 0 1px rgba(212,160,23,.12), 0 18px 50px -20px rgba(212,160,23,.25); }
+    .unit-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px; border-bottom: 1px solid var(--line); }
+    .unit-id { font-family: var(--brand); font-size: 15px; font-weight: 600; letter-spacing: .06em; }
+    .unit-id span { color: var(--gold-bright); }
+    .op { display: flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 600; letter-spacing: .14em; color: #7ee2a0; }
+    .op i { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; animation: oppulse 2.5s ease-in-out infinite; }
+    @keyframes oppulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.25); opacity: .65; } }
+    .cam {
+      position: relative; aspect-ratio: 16/8.2; margin: 14px 14px 0; border-radius: 10px; overflow: clip;
+      border: 1px solid var(--line); background: #0a0806;
+      display: grid; place-items: center;
+    }
+    .cam::after {
+      content: ""; position: absolute; left: 0; right: 0; top: -30%; height: 30%;
+      background: linear-gradient(180deg, transparent, rgba(239,199,90,.07), transparent);
+      animation: scan 4.5s linear infinite;
+    }
+    @keyframes scan { to { top: 130%; } }
+    .cam-label { display: inline-block; font-size: 10px; letter-spacing: .18em; color: var(--text-dim); font-weight: 600; border: 1px solid var(--line); padding: 6px 12px; border-radius: 6px; background: rgba(10,8,5,.5); }
+    .unit-body { padding: 16px 18px 18px; }
+    .tele { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+    .tele div { border-left: 1px solid var(--line); padding-left: 10px; }
+    .tele small { display: block; color: var(--text-dim); font-size: 9.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 4px; }
+    .tele strong { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-weight: 500; font-size: clamp(15px, 4vw, 19px); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+    .tele strong em { font-style: normal; color: var(--gold-bright); }
+    .meter { height: 6px; border-radius: 3px; background: rgba(245,240,230,.08); overflow: clip; margin-bottom: 12px; }
+    .meter i { display: block; height: 100%; width: 0; border-radius: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-bright)); transition: width .8s cubic-bezier(.22,.8,.3,1); }
+    .example { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px; font-size: 13px; color: var(--text-dim); }
+    .example strong { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: clamp(17px, 4.6vw, 22px); font-weight: 500; color: var(--text); font-variant-numeric: tabular-nums; }
+    .assign {
+      width: 100%; padding: 15px; border-radius: 10px; border: 1px solid var(--line-strong);
+      background: rgba(212,160,23,.1); color: var(--gold-bright);
+      font-size: 14px; font-weight: 600; letter-spacing: .02em; cursor: pointer;
+      transition: background .2s ease, transform .1s ease;
+    }
+    .assign:hover { background: rgba(212,160,23,.18); }
+    .assign:active { transform: scale(.98); }
+    .unit.elite .assign { background: var(--gold); color: #120d03; border-color: var(--gold); }
+    @media (min-width: 760px) { .units { grid-template-columns: 1fr 1fr; } }
+    @media (prefers-reduced-motion: reduce) {
+      .unit { opacity: 1; transform: none; transition: none; }
+      .cam::after, .op i, .cam-label i { animation: none; }
+      .meter i { transition: none; }
+    }
+
+  
+    /* ===== FUNDIDORA — el corazón de la operación ===== */
+    .foundry { position: relative; padding: clamp(80px, 11vh, 130px) 0; background: #070503; overflow: clip; }
+    .foundry-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(58% 42% at 50% 30%, rgba(212,130,20,.10), transparent 70%);
+      animation: glowbreathe 4s ease-in-out infinite;
+    }
+    @keyframes glowbreathe { 0%,100% { opacity: .7; } 50% { opacity: 1; } }
+    .foundry-inner { position: relative; width: min(100%, 1080px); margin-inline: auto; padding-inline: 20px; }
+    .foundry-head { max-width: 680px; margin-bottom: clamp(34px, 5vh, 56px); }
+    .foundry-head h2 { margin: 14px 0 0; font-family: var(--brand); font-size: clamp(26px, 6.4vw, 40px); font-weight: 500; line-height: 1.15; letter-spacing: -.02em; }
+    .foundry-lead { margin: 14px 0 0; color: var(--text-dim); font-size: clamp(14px, 3.8vw, 17px); line-height: 1.6; }
+
+    /* Crisol */
+    .crucible-stage { display: grid; place-items: center; padding: 10px 0 26px; perspective: 600px; }
+    .crucible { position: relative; width: min(78vw, 300px); opacity: 0; transform: scale(.95); transition: opacity .8s ease, transform .8s cubic-bezier(.22,.8,.3,1); animation: rock 2s ease-in-out infinite; }
+    .crucible.in { opacity: 1; transform: scale(1); }
+    @keyframes rock { 0%,100% { rotate: -1.6deg; } 50% { rotate: 1.6deg; } }
+    .crucible-vessel {
+      position: relative; height: 190px;
+      clip-path: polygon(6% 0, 94% 0, 82% 100%, 18% 100%);
+      background: linear-gradient(180deg, #2b241c 0%, #1a1510 55%, #0e0b08 100%);
+      border-top: 3px solid var(--gold);
+    }
+    .crucible-vessel::before {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent 8%, rgba(239,199,90,.10) 30%, transparent 55%, rgba(0,0,0,.35) 85%);
+    }
+    .molten {
+      position: absolute; top: -13px; left: 4%; right: 4%; height: 30px;
+      border-radius: 50%;
+      background: radial-gradient(50% 60% at 50% 45%, #ffe9a8 0%, #f5b93c 38%, #c67f12 68%, #7a4a08 100%);
+      animation: moltenbreathe 4s ease-in-out infinite;
+      box-shadow: 0 0 34px 6px rgba(230,150,30,.35);
+    }
+    @keyframes moltenbreathe { 0%,100% { transform: scaleY(1); filter: brightness(1); } 50% { transform: scaleY(1.14); filter: brightness(1.12); } }
+    .molten::after {
+      content: ""; position: absolute; inset: 18% 12%; border-radius: 50%;
+      background: linear-gradient(100deg, transparent 20%, rgba(255,255,255,.5) 45%, transparent 65%);
+      background-size: 220% 100%; animation: shimmer 4s linear infinite;
+    }
+    @keyframes shimmer { to { background-position: -220% 0; } }
+    .crucible-base { height: 14px; margin-top: 8px; background: linear-gradient(180deg, #171310, #0a0806); clip-path: polygon(18% 0, 82% 0, 74% 100%, 26% 100%); }
+    .crucible-caption { margin-top: 16px; text-align: center; color: var(--text-dim); font-size: 11px; letter-spacing: .2em; font-weight: 600; }
+
+    /* Conducto vertical de flujo */
+    .conduit { position: relative; margin: 8px 0 0; padding-left: 34px; }
+    .conduit::before {
+      content: ""; position: absolute; left: 11px; top: 8px; bottom: 8px; width: 3px; border-radius: 2px;
+      background: linear-gradient(180deg, #3a2f1e, #6b5326 50%, #3a2f1e);
+    }
+    .conduit::after {
+      content: ""; position: absolute; left: 11px; top: 8px; width: 3px; height: 26px; border-radius: 2px;
+      background: linear-gradient(180deg, transparent, var(--gold-bright), transparent);
+      animation: flowpulse 3s linear infinite; filter: blur(.4px);
+    }
+    @keyframes flowpulse { from { top: 0; opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } to { top: calc(100% - 34px); opacity: 0; } }
+    .flow-node { position: relative; padding: 13px 0; opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s cubic-bezier(.22,.8,.3,1); }
+    .flow-node.in { opacity: 1; transform: none; }
+    .flow-node::before {
+      content: ""; position: absolute; left: -29px; top: 20px; width: 11px; height: 11px; border-radius: 50%;
+      background: #0e0b08; border: 2px solid var(--gold);
+    }
+    .flow-node h3 { margin: 0 0 4px; font-size: clamp(15px, 4vw, 18px); font-weight: 600; }
+    .flow-node h3 span { color: var(--gold-bright); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: .82em; font-weight: 500; letter-spacing: .06em; margin-right: 8px; }
+    .flow-node p { margin: 0; color: var(--text-dim); font-size: clamp(13px, 3.5vw, 14.5px); line-height: 1.55; max-width: 56ch; }
+
+    /* Tanques de energía */
+    .tanks { margin-top: clamp(36px, 6vh, 60px); border: 1px solid var(--line); border-radius: 14px; padding: clamp(18px, 4vw, 28px); background: linear-gradient(160deg, rgba(16,12,7,.7), rgba(8,6,4,.4)); }
+    .tanks h3 { margin: 0 0 4px; font-size: clamp(15px, 4vw, 18px); font-weight: 600; }
+    .tanks > p { margin: 0 0 18px; color: var(--text-dim); font-size: 13px; }
+    .tank { margin-bottom: 14px; }
+    .tank:last-child { margin-bottom: 0; }
+    .tank-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 7px; font-size: 13px; }
+    .tank-row strong { font-weight: 600; letter-spacing: .04em; }
+    .tank-row span { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+    .tank-bar { height: 10px; border-radius: 5px; background: rgba(245,240,230,.07); overflow: clip; border: 1px solid rgba(245,240,230,.06); }
+    .tank-bar i { display: block; height: 100%; width: 0; border-radius: 5px; transition: width 1s cubic-bezier(.22,.8,.3,1); }
+    .tank-carbon i { background: linear-gradient(90deg, #2e2e2e, #565656); }
+    .tank-iron i { background: linear-gradient(90deg, #5c636e, #9aa2ad); }
+    .tank-gold i { background: linear-gradient(90deg, #8a6410, var(--gold-bright)); }
+    .tank-diamond i { background: linear-gradient(90deg, #6f87a0, #d9ecff); }
+
+    /* Desbloqueo + ejemplo */
+    .foundry-grid { display: grid; gap: 18px; margin-top: 18px; }
+    @media (min-width: 720px) { .foundry-grid { grid-template-columns: 1fr 1fr; } }
+    .fpanel { border: 1px solid var(--line); border-radius: 14px; padding: clamp(18px, 4vw, 26px); background: linear-gradient(160deg, rgba(16,12,7,.7), rgba(8,6,4,.4)); }
+    .fpanel h3 { margin: 0 0 12px; font-size: clamp(15px, 4vw, 18px); font-weight: 600; }
+    .unlock-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+    .unlock-row:last-child { border-bottom: 0; }
+    .unlock-key { width: 34px; height: 34px; flex: none; display: grid; place-items: center; border: 1px solid var(--line-strong); border-radius: 50%; color: var(--gold-bright); font-weight: 600; font-size: 13px; }
+    .unlock-row p { margin: 0; color: var(--text-dim); line-height: 1.5; }
+    .unlock-row p strong { color: var(--text); }
+    .fpanel-sub { margin: 0 0 6px; color: var(--text-dim); font-size: 13.5px; line-height: 1.6; }
+    .fpanel-foot { margin: 12px 0 0; padding-top: 12px; border-top: 1px solid var(--line); color: var(--gold-bright); font-size: 12.5px; font-weight: 600; letter-spacing: .02em; }
+    .smelt-stage { padding: 12px 0; }
+    .smelt-tag { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-bright); border: 1px solid var(--line-strong); border-radius: 20px; padding: 4px 12px; margin-bottom: 10px; }
+    .smelt-vals { display: flex; align-items: center; gap: 12px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    .smelt-vals strong { font-size: clamp(22px, 6vw, 30px); font-weight: 500; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+    .smelt-vals strong.hl { color: var(--gold-bright); }
+    .smelt-vals strong em { font-style: normal; font-size: .55em; color: var(--text-dim); letter-spacing: .06em; }
+    .smelt-arrow { color: var(--gold-bright); font-size: 22px; }
+    .smelt-stage p { margin: 8px 0 0; color: var(--text-dim); font-size: 13px; line-height: 1.55; }
+    .smelt-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--line-strong), transparent); margin: 4px 0; }
+    @media (prefers-reduced-motion: reduce) {
+      .foundry-glow, .crucible, .molten, .molten::after, .conduit::after { animation: none; }
+      .crucible, .flow-node { opacity: 1; transform: none; transition: none; }
+      .tank-bar i { transition: none; }
+    }
+
   </style>
 </head>
 <body>
@@ -650,6 +827,153 @@
     </div>
   </section>
 
+
+
+  <!-- ===== PLANES — LA FLOTA OPERATIVA ===== -->
+  <section class="fleet" id="planes" aria-labelledby="fleet-title">
+    <div class="fleet-inner">
+      <div class="fleet-head">
+        <p class="eyebrow">Planes</p>
+        <h2 id="fleet-title">La flota operativa.</h2>
+      </div>
+      <p class="fleet-note"><strong>Aclaración inmediata:</strong> cada plan incluye la máquina y exige mantener el capital mínimo indicado en tu wallet. Sin el capital correspondiente, la unidad no opera.</p>
+      <div class="units">
+
+      <article class="unit">
+        <div class="unit-top">
+          <div class="unit-id"><span>UNIDAD 01</span> — MINI PERFORADORA</div>
+          <div class="op"><i></i>OPERATIVA</div>
+        </div>
+        <div class="cam" aria-label="Vista técnica de la Mini Perforadora"><span class="cam-label">VISTA TÉCNICA</span></div>
+        <div class="unit-body">
+          <div class="tele">
+            <div><small>Máquina</small><strong>$25</strong></div>
+            <div><small>Capital</small><strong>$50–249 <em>USDT</em></strong></div>
+            <div><small>Diaria</small><strong><em>2.5%</em></strong></div>
+          </div>
+          <div class="meter" aria-hidden="true"><i data-w="2.5"></i></div>
+          <div class="example"><span>Con $100 USDT</span><strong>≈ $2.50 / día</strong></div>
+          <button class="assign" type="button">Asignar a mi flota</button>
+        </div>
+      </article>
+      <article class="unit">
+        <div class="unit-top">
+          <div class="unit-id"><span>UNIDAD 02</span> — EXCAVADORA CON ORUGA</div>
+          <div class="op"><i></i>OPERATIVA</div>
+        </div>
+        <div class="cam" aria-label="Vista técnica de la Excavadora con Oruga"><span class="cam-label">VISTA TÉCNICA</span></div>
+        <div class="unit-body">
+          <div class="tele">
+            <div><small>Máquina</small><strong>$75</strong></div>
+            <div><small>Capital</small><strong>$250–749 <em>USDT</em></strong></div>
+            <div><small>Diaria</small><strong><em>3.5%</em></strong></div>
+          </div>
+          <div class="meter" aria-hidden="true"><i data-w="3.5"></i></div>
+          <div class="example"><span>Con $500 USDT</span><strong>≈ $17.50 / día</strong></div>
+          <button class="assign" type="button">Asignar a mi flota</button>
+        </div>
+      </article>
+      <article class="unit">
+        <div class="unit-top">
+          <div class="unit-id"><span>UNIDAD 03</span> — PLANTA MINERA</div>
+          <div class="op"><i></i>OPERATIVA</div>
+        </div>
+        <div class="cam" aria-label="Vista técnica de la Planta Minera"><span class="cam-label">VISTA TÉCNICA</span></div>
+        <div class="unit-body">
+          <div class="tele">
+            <div><small>Máquina</small><strong>$200</strong></div>
+            <div><small>Capital</small><strong>$750–1,999 <em>USDT</em></strong></div>
+            <div><small>Diaria</small><strong><em>4.5%</em></strong></div>
+          </div>
+          <div class="meter" aria-hidden="true"><i data-w="4.5"></i></div>
+          <div class="example"><span>Con $1,000 USDT</span><strong>≈ $45.00 / día</strong></div>
+          <button class="assign" type="button">Asignar a mi flota</button>
+        </div>
+      </article>
+      <article class="unit elite">
+        <div class="unit-top">
+          <div class="unit-id"><span>UNIDAD 04</span> — PLANTA MINERA AVANZADA</div>
+          <div class="op"><i></i>OPERATIVA</div>
+        </div>
+        <div class="cam" aria-label="Vista técnica de la Planta Minera Avanzada"><span class="cam-label">VISTA TÉCNICA</span></div>
+        <div class="unit-body">
+          <div class="tele">
+            <div><small>Máquina</small><strong>$500</strong></div>
+            <div><small>Capital</small><strong>$2,000+ <em>USDT</em></strong></div>
+            <div><small>Diaria</small><strong><em>5.5%</em></strong></div>
+          </div>
+          <div class="meter" aria-hidden="true"><i data-w="5.5"></i></div>
+          <div class="example"><span>Con $2,500 USDT</span><strong>≈ $137.50 / día</strong></div>
+          <button class="assign" type="button">Asignar a mi flota</button>
+        </div>
+      </article>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===== FUNDIDORA — EL CORAZÓN DE LA OPERACIÓN ===== -->
+  <section class="foundry" id="fundidora" aria-labelledby="foundry-title">
+    <div class="foundry-glow" aria-hidden="true"></div>
+    <div class="foundry-inner">
+      <div class="foundry-head">
+        <p class="eyebrow">Fundidora</p>
+        <h2 id="foundry-title">El corazón de la operación.</h2>
+        <p class="foundry-lead">Lo que tus máquinas extraen se convierte aquí en valor real. Sin fundir, no hay retiro.</p>
+      </div>
+
+      <div class="crucible-stage">
+        <div>
+          <div class="crucible" role="img" aria-label="Crisol con metal fundido">
+            <div class="crucible-vessel"><div class="molten"></div></div>
+            <div class="crucible-base"></div>
+          </div>
+          <p class="crucible-caption">CRISOL PRINCIPAL · 1,064 °C</p>
+        </div>
+      </div>
+
+      <div class="conduit" aria-label="Flujo del proceso">
+        <div class="flow-node"><h3><span>01</span>Minar</h3><p>Tus máquinas generan oro diariamente tras cada activación.</p></div>
+        <div class="flow-node"><h3><span>02</span>Fundir</h3><p>El oro minado se funde y se convierte a USD a la tasa interna.</p></div>
+        <div class="flow-node"><h3><span>03</span>Billetera interna</h3><p>El valor fundido queda disponible en tu billetera de la plataforma.</p></div>
+        <div class="flow-node"><h3><span>04</span>Solicitar retiro</h3><p>Solicitas tu retiro en USDT por la red TRC-20, mínimo $20.</p></div>
+        <div class="flow-node"><h3><span>05</span>Recibir USDT</h3><p>Recibes tus USDT en aproximadamente 24 horas.</p></div>
+      </div>
+
+      <div class="tanks" aria-label="Consumo energético">
+        <h3>Consumo energético</h3>
+        <p>Por cada $50 fundidos, el crisol consume:</p>
+        <div class="tank tank-carbon"><div class="tank-row"><strong>Carbón</strong><span>120 ⚡</span></div><div class="tank-bar"><i data-w="100"></i></div></div>
+        <div class="tank tank-iron"><div class="tank-row"><strong>Hierro</strong><span>80 ⚡</span></div><div class="tank-bar"><i data-w="66.7"></i></div></div>
+        <div class="tank tank-gold"><div class="tank-row"><strong>Oro</strong><span>45 ⚡</span></div><div class="tank-bar"><i data-w="37.5"></i></div></div>
+        <div class="tank tank-diamond"><div class="tank-row"><strong>Diamante</strong><span>15 ⚡</span></div><div class="tank-bar"><i data-w="12.5"></i></div></div>
+      </div>
+
+      <div class="foundry-grid">
+        <div class="fpanel">
+          <h3>Desbloqueo de la fundidora</h3>
+          <p class="fpanel-sub">Para retirar necesitas la fundidora desbloqueada. Se desbloquea una sola vez y queda permanente:</p>
+          <div class="unlock-row"><span class="unlock-key">2</span><p><strong>Directos activos</strong> con máquina operativa</p></div>
+          <div class="unlock-row"><span class="unlock-key">2</span><p><strong>Referidos de segundo nivel activos</strong> con máquina operativa</p></div>
+          <p class="fpanel-foot">Sin fundidora desbloqueada no hay retiro. Sin fundir no hay USD.</p>
+        </div>
+        <div class="fpanel">
+          <h3>Del crisol a tu wallet</h3>
+          <div class="smelt-stage">
+            <span class="smelt-tag">Fundición · sin tarifa</span>
+            <div class="smelt-vals"><strong>$50</strong><span class="smelt-arrow" aria-hidden="true">→</span><strong class="hl">$50.00 <em>USD</em></strong></div>
+            <p>Al fundir recibes la misma cantidad en USD.</p>
+          </div>
+          <div class="smelt-divider" aria-hidden="true"></div>
+          <div class="smelt-stage">
+            <span class="smelt-tag">Retiro · tarifa 12%</span>
+            <div class="smelt-vals"><strong>$50</strong><span class="smelt-arrow" aria-hidden="true">−</span><strong class="hl">$44.00 <em>USDT</em></strong></div>
+            <p>La tarifa se aplica solo al solicitar el retiro. Ejemplo: $50 − $6.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <div id="sheetBackdrop" class="sheet-backdrop" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" aria-hidden="true">
     <section class="sheet" tabindex="-1">
@@ -916,6 +1240,29 @@
           entries.forEach(function (e) { if (e.isIntersecting) { beam.classList.add('in'); obs.disconnect(); } });
         }, { threshold: 0.4 }).observe(beam);
       }
+      document.querySelectorAll('.unit').forEach(function (u) { reveal.observe(u); });
+      document.querySelectorAll('.flow-node').forEach(function (n) { reveal.observe(n); });
+      var crucible = document.querySelector('.crucible');
+      if (crucible) {
+        new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) { if (e.isIntersecting) { crucible.classList.add('in'); obs.disconnect(); } });
+        }, { threshold: 0.35 }).observe(crucible);
+      }
+      document.querySelectorAll('.tank-bar i').forEach(function (bar) {
+        new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { bar.style.width = bar.getAttribute('data-w') + '%'; obs.disconnect(); }
+          });
+        }, { threshold: 0.4 }).observe(bar);
+      });
+
+      document.querySelectorAll('.meter i').forEach(function (bar) {
+        new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { bar.style.width = (parseFloat(bar.getAttribute('data-w')) / 5.5 * 100).toFixed(1) + '%'; obs.disconnect(); }
+          });
+        }, { threshold: 0.4 }).observe(bar);
+      });
       var active = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
           if (e.isIntersecting) {
