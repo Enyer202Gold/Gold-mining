@@ -707,6 +707,39 @@
       .tank-bar i { transition: none; }
     }
 
+  
+    /* ===== REFERIDOS — red de dos niveles ===== */
+    .referrals { position: relative; padding: clamp(70px, 10vh, 120px) 0; background: linear-gradient(180deg, #070503 0%, #090704 100%); overflow: clip; }
+    .referrals-inner { width: min(100%, 1080px); margin-inline: auto; padding-inline: 20px; }
+    .referrals-head { max-width: 680px; margin-bottom: clamp(30px, 5vh, 50px); }
+    .referrals-head h2 { margin: 14px 0 0; font-family: var(--brand); font-size: clamp(26px, 6.4vw, 40px); font-weight: 500; line-height: 1.15; letter-spacing: -.02em; }
+    .referrals-lead { margin: 14px 0 0; color: var(--text-dim); font-size: clamp(14px, 3.8vw, 17px); line-height: 1.6; }
+    .net-wrap { border: 1px solid var(--line); border-radius: 14px; background: radial-gradient(60% 90% at 50% 40%, rgba(212,160,23,.05), transparent 70%), linear-gradient(160deg, rgba(14,10,6,.7), rgba(8,6,4,.4)); padding: clamp(16px, 4vw, 30px); margin-bottom: 20px; }
+    .net-svg { display: block; width: 100%; height: auto; }
+    .net-svg .link { stroke: var(--gold); stroke-width: 1.4; opacity: .55; fill: none; stroke-dasharray: 400; stroke-dashoffset: 400; transition: stroke-dashoffset 1.1s ease; }
+    .net-svg.drawn .link { stroke-dashoffset: 0; }
+    .net-svg .node { fill: #12100b; stroke: var(--gold); stroke-width: 1.6; }
+    .net-svg .node-you { fill: var(--gold); }
+    .net-svg text { fill: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-anchor: middle; }
+    .net-svg .lbl-dim { fill: var(--text-dim); font-size: 9px; font-weight: 500; letter-spacing: .14em; }
+    .levels { display: grid; gap: 16px; margin-bottom: 20px; }
+    @media (min-width: 680px) { .levels { grid-template-columns: 1fr 1fr; } }
+    .level-card { border: 1px solid var(--line); border-radius: 14px; padding: clamp(18px, 4vw, 26px); background: linear-gradient(160deg, rgba(16,12,7,.75), rgba(8,6,4,.45)); opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s cubic-bezier(.22,.8,.3,1); }
+    .level-card.in { opacity: 1; transform: none; }
+    .level-tag { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .16em; color: var(--gold-bright); border: 1px solid var(--line-strong); border-radius: 20px; padding: 4px 12px; margin-bottom: 12px; }
+    .level-pct { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: clamp(38px, 10vw, 54px); font-weight: 500; color: var(--text); letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+    .level-pct em { font-style: normal; color: var(--gold-bright); font-size: .6em; }
+    .level-card p { margin: 12px 0 0; color: var(--text-dim); font-size: 14px; line-height: 1.6; }
+    .level-card p strong { color: var(--text); }
+    .ref-clarify { border: 1px solid var(--line-strong); border-radius: 12px; padding: 16px 18px; background: rgba(212,160,23,.06); display: flex; gap: 12px; align-items: flex-start; }
+    .ref-clarify svg { flex: none; width: 20px; height: 20px; stroke: var(--gold-bright); fill: none; stroke-width: 1.8; stroke-linecap: round; margin-top: 2px; }
+    .ref-clarify p { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--text); }
+    .ref-clarify p strong { color: var(--gold-bright); }
+    @media (prefers-reduced-motion: reduce) {
+      .net-svg .link { stroke-dashoffset: 0; transition: none; }
+      .level-card { opacity: 1; transform: none; transition: none; }
+    }
+
   </style>
 </head>
 <body>
@@ -971,6 +1004,62 @@
             <p>La tarifa se aplica solo al solicitar el retiro. Ejemplo: $50 − $6.</p>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===== REFERIDOS ===== -->
+  <section class="referrals" id="referidos" aria-labelledby="ref-title">
+    <div class="referrals-inner">
+      <div class="referrals-head">
+        <p class="eyebrow">Referidos</p>
+        <h2 id="ref-title">Tu red también produce.</h2>
+        <p class="referrals-lead">Dos niveles de comisión sobre cada plan que compren tus referidos.</p>
+      </div>
+
+      <div class="net-wrap">
+        <svg class="net-svg" viewBox="0 0 560 340" role="img" aria-label="Diagrama de red: tú al centro, dos niveles de referidos">
+          <!-- conexiones nivel 1 -->
+          <path class="link" d="M280 170 L140 90"/>
+          <path class="link" d="M280 170 L280 70"/>
+          <path class="link" d="M280 170 L420 90"/>
+          <!-- conexiones nivel 2 -->
+          <path class="link" d="M140 90 L70 40"/>
+          <path class="link" d="M140 90 L200 36"/>
+          <path class="link" d="M280 70 L280 22"/>
+          <path class="link" d="M420 90 L360 36"/>
+          <path class="link" d="M420 90 L490 40"/>
+          <!-- nodos nivel 2 -->
+          <circle class="node" cx="70" cy="40" r="16"/><circle class="node" cx="200" cy="36" r="16"/>
+          <circle class="node" cx="280" cy="22" r="16"/>
+          <circle class="node" cx="360" cy="36" r="16"/><circle class="node" cx="490" cy="40" r="16"/>
+          <!-- nodos nivel 1 -->
+          <circle class="node" cx="140" cy="90" r="22"/><circle class="node" cx="280" cy="70" r="22"/><circle class="node" cx="420" cy="90" r="22"/>
+          <!-- tú -->
+          <circle class="node-you" cx="280" cy="170" r="30"/>
+          <text x="280" y="175" style="fill:#120d03">TÚ</text>
+          <text class="lbl-dim" x="140" y="130">NIVEL 1</text>
+          <text class="lbl-dim" x="280" y="285">NIVEL 2</text>
+        </svg>
+      </div>
+
+      <div class="levels">
+        <div class="level-card">
+          <span class="level-tag">Nivel 1 · Directos</span>
+          <div class="level-pct"><em>30%</em></div>
+          <p>Del <strong>plan comprado</strong> por cada referido directo que active su máquina.</p>
+        </div>
+        <div class="level-card">
+          <span class="level-tag">Nivel 2 · Segundo nivel</span>
+          <div class="level-pct"><em>10%</em></div>
+          <p>Del <strong>plan comprado</strong> por cada referido de segundo nivel que active su máquina.</p>
+        </div>
+      </div>
+
+      <div class="ref-clarify">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+        <p>Las comisiones se calculan <strong>sobre el plan comprado</strong>, nunca sobre la generación diaria.</p>
       </div>
     </div>
   </section>
@@ -1242,6 +1331,13 @@
       }
       document.querySelectorAll('.unit').forEach(function (u) { reveal.observe(u); });
       document.querySelectorAll('.flow-node').forEach(function (n) { reveal.observe(n); });
+      document.querySelectorAll('.level-card').forEach(function (c) { reveal.observe(c); });
+      var netSvg = document.querySelector('.net-svg');
+      if (netSvg) {
+        new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) { if (e.isIntersecting) { netSvg.classList.add('drawn'); obs.disconnect(); } });
+        }, { threshold: 0.35 }).observe(netSvg);
+      }
       var crucible = document.querySelector('.crucible');
       if (crucible) {
         new IntersectionObserver(function (entries, obs) {
