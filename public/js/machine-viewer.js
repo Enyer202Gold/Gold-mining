@@ -19,11 +19,11 @@ const ELEV = 21 * DEG;          // elevación de cámara (ángulo hero)
    P1 barrena en azimut 88.1° -> -48.7° | P2 barrenas en -92° -> +131.4° |
    P3/P4 ángulo hero del póster -> -50° */
 const PLANS = {
-  1: { baseRot: -48.7 * DEG, augers: [['tripo_part_13', 'tripo_part_7']], augerSpeed: 0.9 },
-  2: { baseRot: 131.4 * DEG, augers: [['tripo_part_4'], ['tripo_part_6'], ['tripo_part_7'], ['tripo_part_9']], augerSpeed: 0.9 },
-  3: { baseRot: -50 * DEG, belts: ['tripo_part_7', 'tripo_part_30'], beltSpeed: 0.04,
+  1: { baseRot: -48.7 * DEG, frame: 0.90, augers: [['tripo_part_13', 'tripo_part_7']], augerSpeed: 0.9 },
+  2: { baseRot: 131.4 * DEG, frame: 0.90, augers: [['tripo_part_4'], ['tripo_part_6'], ['tripo_part_7'], ['tripo_part_9']], augerSpeed: 0.9 },
+  3: { baseRot: -50 * DEG, frame: 0.80, belts: ['tripo_part_7', 'tripo_part_30'], beltSpeed: 0.04,
        shakers: ['tripo_part_0', 'tripo_part_8'], shakeAmp: 0.0012 },
-  4: { baseRot: -50 * DEG, drum: 'tripo_part_8', drumAxis: [0.08, -0.47, 0.88], drumSpeed: 0.45,
+  4: { baseRot: -50 * DEG, frame: 0.90, drum: 'tripo_part_8', drumAxis: [0.08, -0.47, 0.88], drumSpeed: 0.45,
        auger: ['tripo_part_17'], augerSpeed: 0.9,
        rollers: ['tripo_part_58', 'tripo_part_54', 'tripo_part_60', 'tripo_part_40'], rollerSpeed: 0.9 },
 };
@@ -225,7 +225,7 @@ async function initViewer(el) {
   /* Encuadre: esfera envolvente (invariante a la rotación del vaivén). */
   const sphere = bbox.getBoundingSphere(new THREE.Sphere());
   sphere.center.y += root.position.y;
-  const dist = (sphere.radius / Math.sin(THREE.MathUtils.degToRad(20))) * 1.12;
+  const dist = (sphere.radius / Math.sin(THREE.MathUtils.degToRad(20))) * (cfg.frame || 1.12);
   camera.position.set(0, sphere.center.y + dist * Math.sin(ELEV), dist * Math.cos(ELEV));
   camera.lookAt(0, sphere.center.y, 0);
 
