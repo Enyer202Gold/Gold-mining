@@ -27,5 +27,10 @@ import { hero } from '../../content/business';
   .hero-subtitle { font-size: 20px; font-weight: 500; color: var(--text); }
   .hero-desc { font-size: 16px; max-width: 320px; }
   .hero-ctas { display: flex; flex-direction: column; gap: var(--space-sm); width: 100%; max-width: 320px; margin-top: var(--space-md); }
+  .hero-ctas :global(.btn-secondary) {
+    background: rgba(10, 8, 5, 0.65); /* pastilla oscura: contraste sobre el túnel brillante */
+    border-color: var(--gold);
+    color: var(--gold-light);
+  }
   .hero-more { margin-top: var(--space-lg); font-size: 14px; }
 </style>
