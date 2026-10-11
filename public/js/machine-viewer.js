@@ -5,7 +5,7 @@
    Lazy init por tarjeta, pausa fuera de pantalla, respeta prefers-reduced-motion. */
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { MeshoptDecoder } from 'three/addons/loaders/MeshoptDecoder.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const DEG = Math.PI / 180;
