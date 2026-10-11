@@ -61,7 +61,10 @@ function initDescent(): void {
 }
 
 function initReveals(): void {
-  const reveals = document.querySelectorAll('[data-reveal]');
+  // El hero tiene su propia intro dedicada (initHero); se excluye del sistema
+  // genérico para que dos animaciones no peleen por los mismos elementos
+  // (eso los dejaba atorados en opacity: 0).
+  const reveals = [...document.querySelectorAll('[data-reveal]')].filter((el) => !el.closest('#hero'));
   if (REDUCED) { reveals.forEach((el) => el.classList.add('visible')); return; }
   reveals.forEach((el) => {
     gsap.fromTo(el, { opacity: 0, y: 24 }, {
