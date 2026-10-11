@@ -2,6 +2,7 @@
 import Card from '../ui/Card.astro';
 import Button from '../ui/Button.astro';
 import Meter from '../ui/Meter.astro';
+import MachineViewer from './MachineViewer.astro';
 import { plans } from '../../content/business';
 import { formatUSD, formatPct, formatUSDT } from '../../lib/format';
 ---
@@ -13,9 +14,7 @@ import { formatUSD, formatPct, formatUSDT } from '../../lib/format';
       {plans.map((plan) => (
         <div data-reveal>
           <Card tag={plan.tag}>
-            <div class="plan-img-wrap">
-              <img src={plan.image} alt={`Máquina ${plan.name}`} loading="lazy" width="400" height="300" />
-            </div>
+            <MachineViewer plan={plan} />
             <h3 class="plan-name">{plan.name}</h3>
             <dl class="plan-details">
               <div class="plan-row"><dt>Compras la máquina</dt><dd class="num">{formatUSD(plan.machinePrice)} USD</dd></div>

@@ -1,0 +1,42 @@
+---
+/* Visor 3D de máquina para la tarjeta de plan. El 3D lo inicializa
+   /js/machine-viewer.js cuando la tarjeta entra en pantalla;
+   mientras tanto (o sin WebGL / reduced-motion) se ve el póster. */
+import type { Plan } from '../../content/business';
+interface Props { plan: Plan; }
+const { plan } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+<div
+  class="plan-img-wrap machine-viewer"
+  data-machine-viewer
+  data-plan={plan.viewerPlan}
+  data-model={`${base}${plan.model}`}
+  role="img"
+  aria-label={`Máquina ${plan.name} en 3D`}
+>
+  <img
+    class="mv-poster"
+    src={`${base}${plan.poster}`}
+    alt={`Máquina ${plan.name}`}
+    loading="lazy"
+    width="1080"
+    height="1080"
+  />
+  <canvas class="mv-canvas" aria-hidden="true"></canvas>
+</div>
+<style>
+  .machine-viewer { position: relative; background: #0A0805; }
+  .machine-viewer .mv-canvas {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; display: block;
+    touch-action: pan-y; /* el scroll vertical nunca se pelea con el visor */
+  }
+  .machine-viewer .mv-poster {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: contain; background: #0A0805;
+    transition: opacity 0.8s ease;
+  }
+  .machine-viewer.mv-ready .mv-poster { opacity: 0; pointer-events: none; }
+</style>
