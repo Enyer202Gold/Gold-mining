@@ -353,15 +353,15 @@
       .smelt-heading .view-title{ margin:0 0 2px; }
       .smelt-heading .view-sub{ margin:0; }
       .how-btn{ flex:none; border:1px solid var(--line); border-radius:999px; color:var(--gold-3); background:rgba(212,160,23,.08); min-height:32px; padding:5px 10px; font-size:11.5px; font-weight:700; }
-      .smelt-machine{ position:relative; aspect-ratio:1/1; border:1px solid var(--line); border-radius:18px; overflow:hidden; background:#070604; box-shadow:inset 0 0 40px rgba(0,0,0,.5); }
-      .smelt-machine-bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center center; }
-      .smelt-machine-video{ position:absolute; inset:0; z-index:1; width:100%; height:100%; object-fit:cover; object-position:center center; background:#070604; }
+      .smelt-machine{ position:relative; aspect-ratio:1/1; border:1px solid var(--line); border-radius:18px; overflow:visible; background:#070604; box-shadow:inset 0 0 40px rgba(0,0,0,.5); }
+      .smelt-machine-bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center center; border-radius:17px; }
+      .smelt-machine-video{ position:absolute; inset:0; z-index:1; width:100%; height:100%; object-fit:cover; object-position:center center; background:#070604; border-radius:17px; }
       .video-play-btn{ position:absolute; z-index:3; left:50%; top:54%; transform:translate(-50%,-50%); display:inline-flex; align-items:center; gap:8px; border:1px solid var(--gold); border-radius:999px; background:rgba(8,6,3,.92); color:var(--gold-2); padding:11px 17px; font:700 13.5px "Barlow"; letter-spacing:.01em; box-shadow:0 10px 26px rgba(0,0,0,.65), 0 0 18px rgba(212,160,23,.28); cursor:pointer; white-space:nowrap; }
       .video-play-btn[hidden]{ display:none; }
       .video-play-btn svg{ flex:none; }
       .smelt-machine.locked .smelt-machine-bg{ filter:brightness(.68) saturate(.75); }
       .smelt-machine.locked .level-token{ filter:grayscale(.8) brightness(.55) drop-shadow(0 4px 12px rgba(0,0,0,.75)); }
-      .lock-overlay{ position:absolute; inset:0; z-index:2; display:none; pointer-events:none; }
+      .lock-overlay{ position:absolute; inset:0; z-index:2; display:none; pointer-events:none; border-radius:17px; overflow:hidden; }
       .smelt-machine.locked .lock-overlay{ display:block; }
       .chain-bar{ position:absolute; left:-14%; width:128%; height:27px; top:41%; transform:rotate(-17deg); border-radius:7px; border-top:2px solid #101013; border-bottom:2px solid #101013; background:repeating-linear-gradient(90deg,#83838a 0 9px,#26262b 9px 14px,#b9b9c0 14px 23px,#333338 23px 28px); box-shadow:0 7px 16px rgba(0,0,0,.65), inset 0 2px 3px rgba(255,255,255,.4), inset 0 -4px 6px rgba(0,0,0,.75); }
       .chain-bar.b2{ top:52%; transform:rotate(16deg); }
@@ -395,9 +395,11 @@
       .level-option.locked .lo-bg{ filter:grayscale(.55) brightness(.55); }
       .level-option.locked .lo-head img{ filter:grayscale(.75) brightness(.6); }
       .lo-locked{ color:#ffb02e!important; }
-      .smelt-machine::after{ content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(180deg,rgba(0,0,0,.5),transparent 31%,transparent 58%,rgba(4,3,2,.98) 87%); }
-      .smelt-machine-head{ position:relative; z-index:2; display:flex; align-items:center; gap:9px; padding:10px; }
+      .smelt-machine::after{ content:""; position:absolute; inset:0; pointer-events:none; border-radius:17px; background:linear-gradient(180deg,rgba(0,0,0,.5),transparent 31%,transparent 58%,rgba(4,3,2,.98) 87%); }
+      .smelt-machine-head{ position:absolute; z-index:3; top:-10px; left:-8px; right:10px; display:flex; align-items:center; gap:10px; }
       .level-token{ width:58px; height:58px; border-radius:50%; object-fit:cover; flex:none; filter:drop-shadow(0 4px 12px rgba(0,0,0,.75)); }
+      .smelt-machine-head .level-token{ width:88px; height:88px; }
+      .level-chip{ background:rgba(8,6,3,.78); border:1px solid rgba(212,160,23,.38); border-radius:12px; padding:6px 11px 7px; box-shadow:0 6px 16px rgba(0,0,0,.45); backdrop-filter:blur(4px); }
       .level-kicker{ display:block; color:#ddc681; font-family:"Barlow Condensed"; font-size:11px; font-weight:700; letter-spacing:.12em; }
       .level-name{ font-family:"Barlow Condensed"; font-size:25px; line-height:1; font-weight:800; color:var(--gold-3); text-transform:uppercase; }
       .op-state{ margin-left:auto; align-self:flex-start; display:inline-flex; align-items:center; gap:5px; border:1px solid rgba(61,220,132,.4); color:#83efb2; background:rgba(13,76,42,.76); padding:5px 9px; border-radius:999px; font-size:11px; font-weight:700; }
@@ -427,7 +429,9 @@
       .amount-box input:focus{ border-color:var(--gold-2); box-shadow:0 0 0 2px rgba(212,160,23,.12); }
       .amount-box span{ position:absolute; right:11px; top:12px; color:var(--muted); font-size:13px; }
       .max-btn{ border:1px solid var(--line); border-radius:10px; background:#19130a; color:var(--gold-2); font-size:13px; font-weight:800; }
-      .receive-box{ margin-top:7px; border:1px solid var(--line-soft); border-radius:11px; padding:8px 10px; background:rgba(6,5,3,.6); }
+      .receive-box{ margin-top:7px; border:1px solid var(--line-soft); border-radius:11px; padding:8px 10px; background:rgba(6,5,3,.6); display:flex; align-items:center; gap:10px; }
+      .receive-text{ flex:1; min-width:0; }
+      .receive-thumb{ width:84px; height:84px; flex:none; object-fit:cover; border-radius:10px; border:1px solid rgba(212,160,23,.35); }
       .receive-box small{ display:block; color:var(--muted); font-size:10.5px; }
       .receive-box b{ display:block; color:var(--gold-2); font-size:24px; line-height:1.1; font-variant-numeric:tabular-nums; }
       .receive-box span{ color:#c8bda7; font-size:10.5px; }
@@ -479,7 +483,13 @@
       .run-note{ margin-top:8px; color:#c8bca5; font-size:10.5px; text-align:center; }
       .run-meta{ display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:7px; }
       /* El estado «Fundiendo» usa video en bucle: sin capas CSS de chispas/flujo encima. */
-      @media (max-width:350px){ .level-token{width:50px;height:50px}.level-name{font-size:22px}.level-selector{grid-template-columns:1fr}.level-option{min-height:135px} }
+      @media (max-width:350px){ .smelt-machine-head .level-token{width:76px;height:76px}.level-name{font-size:22px}.level-selector{grid-template-columns:1fr}.level-option{min-height:135px} }
+      @media (max-width:340px){
+        .smelt-heading{ gap:8px; }
+        .smelt-heading .view-title{ font-size:21px; }
+        .smelt-heading .view-sub{ font-size:13px; }
+        .how-btn{ font-size:10.5px; padding:4px 8px; min-height:28px; }
+      }
       /* ---------- Fundidora encadenada (sin desbloquear) ---------- */
       .chained-machine{ aspect-ratio:4/3.1; }
       .chained-machine .smelt-machine-bg{ filter:brightness(.62) saturate(.72); }
@@ -844,7 +854,7 @@
               </div>
               <div class="smelt-machine-head">
                 <img class="level-token" id="previewCoin" src="assets/fun-token-hierro.webp" alt="Moneda oficial del nivel Hierro" />
-                <div><span class="level-kicker" id="previewKicker">Nivel 2</span><span class="level-name" id="previewName">Hierro</span></div>
+                <div class="level-chip"><span class="level-kicker" id="previewKicker">Nivel 2</span><span class="level-name" id="previewName">Hierro</span></div>
                 <span class="preview-tag" id="previewTag" hidden>Vista previa</span>
               </div>
               <div class="energy-reg" id="energyReg" aria-label="Regulador de energía">
@@ -864,8 +874,8 @@
                 <div><b id="lockTitle">Nivel bloqueado</b><p id="lockText">Te faltan 80 ⚡ para desbloquear este nivel.</p></div>
               </div>
               <div class="lock-ways" id="lockWays">
-                <button class="energy-link" type="button" id="lockInvite"><span class="fact-icon">♟</span><span><b>Invitar amigos</b><small>Gana energía con referidos</small></span><span class="chev">›</span></button>
-                <button class="energy-link" type="button" id="lockShop"><span class="fact-icon">▣</span><span><b>Tienda de energía</b><small>Comprar energía</small></span><span class="chev">›</span></button>
+                <button class="energy-link" type="button" id="lockInvite"><span class="fact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span><b>Invitar amigos</b><small>Gana energía con referidos</small></span><span class="chev">›</span></button>
+                <button class="energy-link" type="button" id="lockShop"><span class="fact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1.4"/><circle cx="19" cy="21" r="1.4"/><path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 2-1.6l1.7-8.4H6"/></svg></span><span><b>Tienda de energía</b><small>Comprar energía</small></span><span class="chev">›</span></button>
               </div>
               <button class="btn btn-dark lock-back" type="button" id="lockBack">Volver a mi nivel</button>
             </div>
@@ -882,10 +892,10 @@
                   <div class="amount-box"><input id="smeltAmount" type="number" inputmode="decimal" min="0" step="0.01" value="50" aria-describedby="smeltValidation" /><span>g</span></div>
                   <button class="max-btn" type="button" id="smeltMax">Máximo</button>
                 </div>
-                <div class="receive-box"><small>Recibirás al finalizar</small><b id="smeltReceive">US$50.00</b><span>Equivalencia interna: 1 g = US$1 · Fundir no cobra tarifa</span></div>
+                <div class="receive-box"><div class="receive-text"><small>Recibirás al finalizar</small><b id="smeltReceive">US$50.00</b><span>Equivalencia interna: 1 g = US$1 · Fundir no cobra tarifa</span></div><img class="receive-thumb" src="assets/lingotes.webp" alt="Lingotes de oro" /></div>
                 <div class="smelt-facts">
-                  <div class="smelt-fact"><span class="fact-icon">⚡</span><span><small>Energía necesaria</small><b id="smeltCost">80 unidades</b></span></div>
-                  <div class="smelt-fact"><span class="fact-icon">◷</span><span><small>Tiempo estimado</small><b id="smeltDuration">12 horas</b></span></div>
+                  <div class="smelt-fact"><span class="fact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4.5 13.5H11L9.8 22 19 10h-6.5L13 2Z"/></svg></span><span><small>Energía necesaria</small><b id="smeltCost">80 unidades</b></span></div>
+                  <div class="smelt-fact"><span class="fact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span><span><small>Tiempo estimado</small><b id="smeltDuration">12 horas</b></span></div>
                 </div>
                 <div class="validation-msg" id="smeltValidation" role="alert"></div>
                 <p class="confirm-line" id="smeltConfirmLine"><i aria-hidden="true"></i><span id="smeltConfirmText"></span></p>
@@ -901,7 +911,7 @@
               <button class="video-play-btn" id="videoPlayBtn" type="button" hidden><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.8v14.4c0 .9 1 1.5 1.8 1L20 13a1.2 1.2 0 0 0 0-2L8.8 3.9C8 3.4 7 4 7 4.8Z"/></svg><span>Tocar para ver la fundición</span></button>
               <div class="smelt-machine-head">
                 <img class="level-token" id="runCoin" src="assets/fun-token-hierro.webp" alt="Moneda oficial del nivel activo" />
-                <div><span class="level-kicker" id="runKicker">Nivel 2</span><span class="level-name" id="runName">Hierro</span></div>
+                <div class="level-chip"><span class="level-kicker" id="runKicker">Nivel 2</span><span class="level-name" id="runName">Hierro</span></div>
                 <span class="op-state"><i></i><span id="runState">Fundiendo</span></span>
               </div>
             </div>
@@ -911,19 +921,19 @@
               <div class="run-pct" id="runPct">0%</div>
               <div class="timer-box"><small>⏱ TIEMPO RESTANTE</small><div class="timer" id="runTimer">12:00:00</div><div class="finish-at" id="runFinish">Finaliza a las --:--</div></div>
               <div class="run-meta">
-                <div class="smelt-fact"><span class="fact-icon">⚡</span><span><small>Energía consumida</small><b id="runEnergy">80 unidades</b></span></div>
-                <div class="smelt-fact"><span class="fact-icon">▰</span><span><small>Procesando</small><b id="runProcessing">50 g</b></span></div>
+                <div class="smelt-fact"><span class="fact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4.5 13.5H11L9.8 22 19 10h-6.5L13 2Z"/></svg></span><span><small>Energía consumida</small><b id="runEnergy">80 unidades</b></span></div>
+                <div class="smelt-fact"><span class="fact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.3 4h5.4l1.8 4.5H7.5L9.3 4Z"/><path d="M5.8 12h12.4l2 6.5H3.8l2-6.5Z"/></svg></span><span><small>Procesando</small><b id="runProcessing">50 g</b></span></div>
               </div>
               <p class="run-note" id="runNote">La máquina continúa funcionando aunque salgas de la app.</p>
             </div>
           </div>
 
           <button class="wallet-row" type="button" id="walletPanel" aria-label="Billetera de plataforma">
-            <span class="fact-icon">▣</span><span><small>Billetera de plataforma</small><b id="walletBalance">US$125.50</b><small>Saldo disponible</small></span><span class="chev">›</span>
+            <span class="fact-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></span><span><small>Billetera de plataforma</small><b id="walletBalance">US$125.50</b><small>Saldo disponible</small></span><span class="chev">›</span>
           </button>
           <div class="energy-actions">
-            <button class="energy-link" type="button" id="inviteAction"><span class="fact-icon">♟</span><span><b>Invitar amigos</b><small>Energía ganada</small><em id="referralEnergy">320 unidades</em></span><span class="chev">›</span></button>
-            <button class="energy-link" type="button" id="shopAction"><span class="fact-icon">▣</span><span><b>Tienda de energía</b><small>Comprar energía</small><em>Explorar</em></span><span class="chev">›</span></button>
+            <button class="energy-link" type="button" id="inviteAction"><span class="fact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span><b>Invitar amigos</b><small>Energía ganada</small><em id="referralEnergy">320 unidades</em></span><span class="chev">›</span></button>
+            <button class="energy-link" type="button" id="shopAction"><span class="fact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1.4"/><circle cx="19" cy="21" r="1.4"/><path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 2-1.6l1.7-8.4H6"/></svg></span><span><b>Tienda de energía</b><small>Comprar energía</small><em>Explorar</em></span><span class="chev">›</span></button>
           </div>
 
           <h3 class="level-selector-title">Niveles de la fundidora</h3>
