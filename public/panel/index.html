@@ -734,6 +734,55 @@
       .celeb-actions{ width:100%; display:grid; gap:9px; }
       .celeb-actions .btn{ width:100%; min-height:52px; }
 
+      /* ---------- Flujo de conexión de billetera ---------- */
+      .connect-sheet{
+        position:fixed; left:50%; top:0; bottom:0; z-index:82;
+        width:min(430px,100%); height:100dvh;
+        transform:translate(-50%,100%); visibility:hidden; pointer-events:none;
+        transition:transform .3s cubic-bezier(.32,.9,.35,1), visibility 0s .3s;
+        background:linear-gradient(180deg,#0b0906 0%, var(--app) 260px);
+        box-shadow:0 0 0 1px rgba(212,160,23,.14), 0 0 90px rgba(0,0,0,.9);
+        display:flex; flex-direction:column; overflow:hidden;
+      }
+      .connect-sheet.open{ transform:translate(-50%,0); visibility:visible; pointer-events:auto; transition:transform .3s cubic-bezier(.32,.9,.35,1); }
+      .connect-sheet .ps-head{ position:relative; flex:none; }
+      .conn-machine{
+        display:flex; align-items:center; gap:12px;
+        border:1px solid var(--line-soft); border-radius:16px;
+        background:linear-gradient(180deg,var(--panel-2),var(--panel));
+        padding:10px 12px; margin-bottom:14px;
+      }
+      .conn-machine img{ width:76px; height:54px; object-fit:cover; border-radius:10px; flex:none; border:1px solid rgba(212,160,23,.3); }
+      .conn-machine .cm-name{ font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:20px; text-transform:uppercase; line-height:1.05; color:#fdfaf2; margin-top:5px; }
+      .conn-machine small{ display:block; color:var(--muted); font-size:12px; margin-top:2px; }
+      .conn-reqs{ display:grid; gap:9px; margin-bottom:16px; }
+      .conn-req{ display:flex; gap:11px; border:1px solid var(--line-soft); border-radius:14px; background:#0d0a06; padding:12px 13px; }
+      .conn-req-ic{
+        flex:none; width:40px; height:40px; border-radius:50%;
+        border:1px solid var(--line-soft); background:rgba(212,160,23,.08);
+        display:grid; place-items:center; color:var(--gold-2);
+      }
+      .conn-req-ic svg{ width:20px; height:20px; }
+      .conn-req b{ display:block; font-size:15px; line-height:1.25; }
+      .conn-req p{ margin:3px 0 0; color:var(--muted); font-size:13px; line-height:1.5; }
+      .coin-card{
+        display:flex; align-items:center; gap:12px; width:100%; text-align:left;
+        border:1px solid var(--line); border-radius:16px;
+        background:linear-gradient(180deg,var(--panel-2),var(--panel));
+        padding:14px; color:var(--text); transition:transform .12s ease;
+      }
+      .coin-card:active{ transform:scale(.99); }
+      .coin-card .tether-ic{ flex:none; width:44px; height:44px; }
+      .coin-card .tether-ic svg{ width:44px; height:44px; }
+      .coin-card b{ display:block; font-size:18px; font-weight:800; letter-spacing:.02em; line-height:1.1; }
+      .coin-card small{ display:block; color:var(--muted); font-size:12.5px; margin-top:2px; }
+      .coin-card .coin-chev{ margin-left:auto; flex:none; color:var(--gold-2); display:grid; place-items:center; }
+      .coin-card .coin-chev svg{ width:22px; height:22px; }
+      .coin-card.disabled{ opacity:.55; }
+      .gas-note{ border:1px solid rgba(255,176,46,.5); border-radius:12px; background:rgba(255,176,46,.06); padding:10px 11px; margin-bottom:12px; }
+      .gas-note .box-head{ color:#ffd485; margin-bottom:4px; font-size:13.5px; }
+      .gas-note p{ margin:0; color:#e7ddc7; font-size:13px; line-height:1.5; }
+
       /* ---------- Modo de prueba: planes y billetera ---------- */
       .pw-block{ border:1px solid var(--line-soft); border-radius:14px; background:var(--panel); padding:12px; margin-bottom:10px; }
       .pw-head{ display:flex; align-items:baseline; justify-content:space-between; gap:8px; margin-bottom:9px; }
@@ -1519,6 +1568,11 @@
 
     <!-- Celebración de pago confirmado (contenido renderizado por JS al mostrarse, una sola vez) -->
     <div class="celeb-sheet" id="celebSheet" role="dialog" aria-modal="true" aria-label="Felicidades"></div>
+
+    <!-- Flujo de conexión de billetera: hoja propia a pantalla completa -->
+    <div class="connect-sheet" id="connectSheet" role="dialog" aria-modal="true" aria-label="Conectar billetera">
+      <div id="connectSheetBody" style="display:contents"></div>
+    </div>
 
     <!-- Hoja inferior reutilizable -->
     <div class="sheet-veil" id="sheetVeil"></div>
@@ -2365,7 +2419,7 @@
           var u = order.unitId ? findUnit(order.unitId) : null;
           archiveAndClose();
           closePlanSheet();
-          if (u) openMachineSheet(u);
+          if (u) openConnectFlow(u);
         });
         buyScrollTop();
       }
@@ -2375,6 +2429,8 @@
         if (!u.connected) {
           return '<div class="wallet-box">' +
             '<p style="margin:0 0 10px">Esta máquina aún no tiene una billetera conectada. Conecta su billetera TRON para que el sistema verifique el saldo.</p>' +
+            '<div class="gas-note"><div class="box-head">' + BUY_ICONS.info + 'Necesitas TRX para el gas</div>' +
+            '<p>Mantén unos <b>US$5–8 en TRX</b> en esta billetera. Es el combustible de la red TRON para operar; la plataforma no lo cobra ni lo descuenta: queda en tu billetera.</p></div>' +
             '<button class="btn btn-gold" type="button" id="unitConnectBtn" style="width:100%">Conectar billetera</button>' +
           '</div>';
         }
@@ -2392,27 +2448,122 @@
         '</div>';
       }
 
+      /* ============ Flujo de conexión de billetera ============ */
+      var connectSheetEl = document.getElementById("connectSheet");
+      var connectState = { unitId: null, step: "info" };
+      var CONNECT_ICONS = {
+        gas: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a7 7 0 0 1-7-7c0-2.4 1.2-4.3 2.7-6C9.2 7.1 10.6 5.3 10.8 2.2c0-.9 1.2-1.2 1.7-.5 2 2.4 2.6 5.6 2.1 8.2.6-.5 1-1.2 1.3-2 .3-.7 1.4-.7 1.7 0 .7 1.5 1.4 3 1.4 4.6a7 7 0 0 1-7 7Z"/></svg>',
+        shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 2.8V11c0 4.6-2.9 8.3-7 10-4.1-1.7-7-5.4-7-10V5.8Z"/><path d="m9.2 11.6 2 2 3.8-4"/></svg>',
+        coins: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="M14.5 5.6a6 6 0 1 1-8.9 8.9"/><path d="M9 6.2v5.6M7.2 8h3.6"/></svg>',
+        chev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>',
+        tether: '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#26A17B"/><path fill="#fff" d="M14.5 13h19v5.2h-7v16.3h-5V18.2h-7z"/><ellipse cx="24" cy="21.6" rx="13.2" ry="4.3" fill="none" stroke="#fff" stroke-width="2.1"/></svg>'
+      };
+      function connectHeadHTML() {
+        return '<header class="ps-head">' +
+          '<button class="ps-nav-btn" type="button" id="connBackBtn" aria-label="Volver">' + PS_ICONS.back + '</button>' +
+          '<div class="ps-brand"><div class="ps-brand-row">' + PS_ICONS.logo + '<span>Gold Mining 2.0</span></div><small>Conectar billetera</small></div>' +
+          '<span style="width:38px;flex:none" aria-hidden="true"></span>' +
+        '</header>';
+      }
+      function bindConnectHead(backFn) {
+        document.getElementById("connBackBtn").addEventListener("click", backFn);
+      }
+      function connectScrollTop() { var s = connectSheetEl.querySelector(".buy-scroll"); if (s) s.scrollTop = 0; }
+      function openConnectFlow(u) {
+        if (!u) return;
+        connectState.unitId = u.id;
+        connectState.step = "info";
+        renderConnectSheet();
+        connectSheetEl.classList.add("open");
+      }
+      function closeConnectFlow() { connectSheetEl.classList.remove("open"); }
+      function renderConnectSheet() {
+        if (connectState.step === "coin") { renderConnectCoin(); return; }
+        renderConnectInfo();
+      }
+      function renderConnectInfo() {
+        var u = findUnit(connectState.unitId);
+        if (!u) { closeConnectFlow(); return; }
+        var p = PLANS[u.plan], m = MACHINES[u.plan];
+        var total = fleetCount(u.plan), n = unitNumber(u);
+        var html = connectHeadHTML();
+        html += '<div class="buy-scroll"><div class="buy-body">';
+        html += '<h3 class="buy-h" style="text-align:left;margin:2px 2px 12px">Conectar billetera</h3>';
+        html += '<div class="conn-machine"><img src="' + p.img + '" alt="' + m.name + '" /><div>' +
+          '<span class="plan-pill">' + p.plan + '</span>' +
+          '<div class="cm-name">' + m.name + '</div>' +
+          (total > 1 ? '<small>Unidad ' + n + ' de ' + total + '</small>' : '<small>Tu máquina adquirida</small>') +
+        '</div></div>';
+        html += '<p class="buy-explain" style="margin-bottom:12px">Antes de conectar, comprueba que tu billetera cumple estos requisitos:</p>';
+        html += '<div class="conn-reqs">' +
+          '<div class="conn-req"><span class="conn-req-ic">' + CONNECT_ICONS.coins + '</span><div><b>Capital en USDT</b><p>Mantén entre ' + p.capital + ' en tu billetera TRON: es el capital que el sistema verificará.</p></div></div>' +
+          '<div class="conn-req"><span class="conn-req-ic">' + CONNECT_ICONS.gas + '</span><div><b>TRX para el gas</b><p>Ten unos US$5–8 en TRX. La plataforma no lo cobra ni lo descuenta.</p></div></div>' +
+          '<div class="conn-req"><span class="conn-req-ic">' + CONNECT_ICONS.shield + '</span><div><b>Seguridad</b><p>Nunca te pediremos tu frase semilla ni tu clave privada.</p></div></div>' +
+        '</div>';
+        html += '<button class="btn btn-gold" type="button" id="connGoCoinBtn" style="width:100%;min-height:52px">Conectar billetera</button>';
+        html += '</div></div>';
+        document.getElementById("connectSheetBody").innerHTML = html;
+        bindConnectHead(function () { closeConnectFlow(); });
+        document.getElementById("connGoCoinBtn").addEventListener("click", function () {
+          connectState.step = "coin";
+          renderConnectSheet();
+        });
+        connectScrollTop();
+      }
+      function renderConnectCoin() {
+        var u = findUnit(connectState.unitId);
+        if (!u) { closeConnectFlow(); return; }
+        var link = String(connectLink || "").trim();
+        var html = connectHeadHTML();
+        html += '<div class="buy-scroll"><div class="buy-body">';
+        html += '<h3 class="buy-h" style="margin-top:2px">Seleccionar moneda</h3>';
+        html += '<p class="buy-lead">Para continuar, selecciona la moneda</p>';
+        html += '<button class="coin-card' + (link ? '' : ' disabled') + '" type="button" id="connCoinBtn" aria-label="USDT, red TRON (TRC-20)">' +
+          '<span class="tether-ic">' + CONNECT_ICONS.tether + '</span>' +
+          '<span><b>USDT</b><small>' + (link ? 'Red TRON (TRC-20)' : 'Enlace aún no configurado') + '</small></span>' +
+          '<span class="coin-chev">' + CONNECT_ICONS.chev + '</span>' +
+        '</button>';
+        if (!link) {
+          html += '<div class="warn-box"><div class="box-head">' + BUY_ICONS.info + 'Enlace aún no configurado</div>' +
+            '<p style="margin:0;color:#e7ddc7;font-size:13.5px;line-height:1.5">Todavía no hay un enlace de conexión activo. En cuanto esté configurado, podrás continuar desde aquí tocando la moneda.</p></div>';
+        } else {
+          html += '<p class="buy-sub" style="margin-top:14px">Al tocar la moneda se abrirá la página de conexión en una pestaña nueva.</p>';
+        }
+        html += '</div></div>';
+        document.getElementById("connectSheetBody").innerHTML = html;
+        bindConnectHead(function () { connectState.step = "info"; renderConnectSheet(); });
+        document.getElementById("connCoinBtn").addEventListener("click", function () {
+          var l = String(connectLink || "").trim();
+          if (!l) { showToast("Enlace aún no configurado"); return; }
+          window.open(l, "_blank", "noopener");
+        });
+        connectScrollTop();
+      }
+
       /* ============ Detalle de una máquina de la flota ============ */
       function openMachineSheet(u) {
         var p = PLANS[u.plan], m = MACHINES[u.plan];
         var total = fleetCount(u.plan), n = unitNumber(u);
-        var s = unitStats(u);
         var title = total > 1 ? m.name + " · Unidad " + n : m.name;
-        var html = '<p><b>' + p.plan + '</b> · Estado: <b>Activa</b></p>' +
-          '<ul><li>Oro recolectado: <b>' + s.oro + '</b></li>' +
-          '<li>Rentabilidad diaria: <b>' + m.pct + '</b></li>' +
-          '<li>Progreso de extracción: <b>' + s.prog + '%</b></li></ul>' +
-          '<h4 class="sheet-h">Billetera de esta máquina</h4>' +
-          walletBoxHTML(p, u) +
-          '<p>Mantenimiento y producción se registran en tu historial.</p>';
+        var html;
+        if (u.connected) {
+          var s = unitStats(u);
+          html = '<p><b>' + p.plan + '</b> · Estado: <b>Activa</b></p>' +
+            '<ul><li>Oro recolectado: <b>' + s.oro + '</b></li>' +
+            '<li>Rentabilidad diaria: <b>' + m.pct + '</b></li>' +
+            '<li>Progreso de extracción: <b>' + s.prog + '%</b></li></ul>' +
+            '<h4 class="sheet-h">Billetera de esta máquina</h4>' +
+            walletBoxHTML(p, u) +
+            '<p>Mantenimiento y producción se registran en tu historial.</p>';
+        } else {
+          html = '<p><b>' + p.plan + '</b> · Estado: <b>Adquirida · Pendiente de conectar billetera</b></p>' +
+            '<p>Esta máquina aún no produce. Primero conecta su billetera.</p>' +
+            '<h4 class="sheet-h">Billetera de esta máquina</h4>' +
+            walletBoxHTML(p, u);
+        }
         openSheet(title, html);
         var cb = document.getElementById("unitConnectBtn");
-        if (cb) cb.addEventListener("click", function () {
-          u.connected = true;
-          onFleetTouched();
-          openMachineSheet(u);
-          showToast("Billetera conectada: " + shortenAddr(u.address));
-        });
+        if (cb) cb.addEventListener("click", function () { openConnectFlow(u); });
       }
       function onFleetTouched() {
         cancelRunningSmelt();
@@ -2477,6 +2628,11 @@
         buySheetEl.classList.add("open");
       }
       function persistOrder() { lsSet("gm_order", order); lsSet("gm_order_seq", orderSeq); }
+      /* Enlace externo de conexión de billetera: ajuste persistido del panel,
+         editable desde el Modo de prueba. Vacío = la tarjeta USDT no redirige. */
+      var connectLink = lsGet("gm_connect_link", "https://conectar.ejemplo.invalid/");
+      if (typeof connectLink !== "string") connectLink = "https://conectar.ejemplo.invalid/";
+      function persistConnectLink() { lsSet("gm_connect_link", connectLink); }
       function priceNum(p) { return parseInt(String(p.price).replace(/[^0-9]/g, ""), 10) || 0; }
       function ensureOrder(idx) {
         if (orderActive()) return order.planId === idx ? order : null;
@@ -3002,6 +3158,15 @@
           '</select>' +
           '<button class="dep-sim-btn" type="button" id="depSimBtn">Simular depósito entrante</button>' +
         '</div>';
+        var connectBlock = '<div class="pw-block">' +
+          '<div class="pw-head"><b>Conexión de billetera</b><span>Enlace externo</span></div>' +
+          '<p class="fu-empty" style="margin:0 0 9px">Es el enlace al que llega el cliente al tocar la moneda USDT en «Seleccionar moneda», dentro del flujo de conectar billetera. El valor precargado es un marcador provisional: cámbialo por el enlace real cuando esté creado. Si lo dejas vacío, la tarjeta USDT mostrará «Enlace aún no configurado» y no redirigirá.</p>' +
+          '<span class="buy-label">Enlace de conectar billetera</span>' +
+          '<input class="pw-addr-input" type="url" id="connLinkInput" value="' + escHTML(connectLink) + '" placeholder="https://…" aria-label="Enlace de conectar billetera" spellcheck="false" />' +
+          '<div class="order-test-btns">' +
+            '<button class="ot-btn go" type="button" id="connLinkSave">Guardar enlace</button>' +
+            '<button class="ot-btn" type="button" id="connLinkTest">Probar enlace</button>' +
+          '</div></div>';
         var html =
           '<p>Elige un escenario para ver el panel tal como lo vive ese usuario. Cambiar de escenario reinicia cualquier fundición en curso.</p>' +
           '<div class="scenario-list">' + cards + '</div>' +
@@ -3024,6 +3189,8 @@
           '<p class="adj-note" style="margin:0 0 10px">La orden se crea desde el flujo de compra de cualquier plan. Desde aquí avanzas su estado tal como lo haría la red: la Etapa 3 solo aparece cuando la orden llega a «Confirmada», y al confirmarse se crea la unidad en la flota una sola vez.</p>' +
           orderBlock +
           depositBlock +
+          '<h4 class="editor-h">Conexión de billetera (prueba)</h4>' +
+          connectBlock +
           '<h4 class="editor-h">Mis máquinas (prueba)</h4>' +
           '<p class="adj-note" style="margin:0 0 10px">Cada compra crea una unidad independiente en la flota. Agrega máquinas con el atajo de prueba o quítalas, y ajusta la billetera y el saldo de cada unidad: el catálogo, la ficha, el Inicio y el detalle leen siempre de esta flota. Tocar estos controles reinicia cualquier fundición en curso.</p>' +
           '<div>' + fleetBlocks + '</div>' +
@@ -3183,6 +3350,20 @@
           var sel = document.getElementById("depPlanSel");
           simulateIncomingDeposit(sel ? Number(sel.value) : 0);
         });
+        var connLinkSave = document.getElementById("connLinkSave");
+        if (connLinkSave) connLinkSave.addEventListener("click", function () {
+          var inp = document.getElementById("connLinkInput");
+          connectLink = inp ? inp.value.trim() : "";
+          persistConnectLink();
+          showToast(connectLink ? "Enlace de conexión guardado" : "Enlace vacío: la tarjeta USDT quedará sin configurar");
+        });
+        var connLinkTest = document.getElementById("connLinkTest");
+        if (connLinkTest) connLinkTest.addEventListener("click", function () {
+          var inp = document.getElementById("connLinkInput");
+          var v = inp ? inp.value.trim() : "";
+          if (!v) { showToast("Primero escribe un enlace para probarlo"); return; }
+          window.open(v, "_blank", "noopener");
+        });
         document.getElementById("adjReset").addEventListener("click", function () {
           applyScenario(DEFAULT_SCENARIO);
           showToast("Todo restablecido · Nivel Hierro");
@@ -3217,6 +3398,7 @@
         closePlanSheet();
         closeBuyFlow();
         closeCeleb();
+        closeConnectFlow();
       }
       function route() {
         var h = (location.hash || "#/inicio").replace("#/", "");
@@ -3244,7 +3426,8 @@
       document.getElementById("sheetClose").addEventListener("click", closeSheet);
       document.addEventListener("keydown", function (e) {
         if (e.key !== "Escape") return;
-        if (sheet.classList.contains("open")) closeSheet();
+        if (connectSheetEl.classList.contains("open")) closeConnectFlow();
+        else if (sheet.classList.contains("open")) closeSheet();
         else if (buySheetEl.classList.contains("open")) closeBuyFlow();
         else closePlanSheet();
       });
