@@ -566,6 +566,121 @@
         .ps-acquire{ font-size:17px; }
       }
 
+      /* ---------- Flujo de compra en 3 etapas ---------- */
+      .buy-sheet{
+        position:fixed; left:50%; top:0; bottom:0; z-index:75;
+        width:min(430px,100%); height:100dvh;
+        transform:translate(-50%,100%); visibility:hidden; pointer-events:none;
+        transition:transform .3s cubic-bezier(.32,.9,.35,1), visibility 0s .3s;
+        background:linear-gradient(180deg,#0b0906 0%, var(--app) 260px);
+        box-shadow:0 0 0 1px rgba(212,160,23,.14), 0 0 90px rgba(0,0,0,.9);
+        display:flex; flex-direction:column; overflow:hidden;
+      }
+      .buy-sheet.open{ transform:translate(-50%,0); visibility:visible; pointer-events:auto; transition:transform .3s cubic-bezier(.32,.9,.35,1); }
+      .buy-sheet .ps-head{ position:relative; flex:none; }
+      .buy-scroll{ flex:1; min-height:0; overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; scrollbar-width:thin; scrollbar-color:rgba(212,160,23,.4) transparent; }
+      .buy-body{ padding:14px 16px 22px; }
+      .buy-foot{ flex:none; padding:12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); border-top:1px solid var(--line-soft); background:rgba(8,6,4,.98); }
+      .buy-foot .btn{ width:100%; min-height:53px; font-size:18px; }
+      .buy-progress{ display:flex; align-items:flex-start; margin:0 4px 16px; }
+      .bp-step{ flex:none; width:70px; display:flex; flex-direction:column; align-items:center; gap:5px; }
+      .bp-dot{ width:30px; height:30px; border-radius:50%; border:1.5px solid rgba(246,240,226,.25); background:#0d0a06; display:grid; place-items:center; font-size:13px; font-weight:800; color:var(--muted); }
+      .bp-dot svg{ width:14px; height:14px; }
+      .bp-step span{ font-size:10px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted-2); text-align:center; line-height:1.15; }
+      .bp-step.current .bp-dot{ border-color:#ffedb5; background:linear-gradient(180deg,#ffe9a8, var(--gold-2) 55%, var(--gold)); color:#241a02; box-shadow:0 6px 16px rgba(212,160,23,.35); }
+      .bp-step.current span{ color:var(--gold-3); }
+      .bp-step.done .bp-dot{ border-color:var(--gold); background:rgba(212,160,23,.16); color:var(--gold-2); }
+      .bp-step.done span{ color:var(--muted); }
+      .bp-step.green .bp-dot{ border-color:rgba(61,220,132,.7); background:rgba(61,220,132,.13); color:#7bf0ae; }
+      .bp-step.green.current .bp-dot{ border-color:#b9ffd6; background:linear-gradient(180deg,#8df5bb,#3ddc84); color:#06230f; box-shadow:0 6px 16px rgba(61,220,132,.3); }
+      .bp-step.green span{ color:#7bf0ae; }
+      .bp-line{ flex:1; height:1.5px; background:rgba(246,240,226,.16); margin-top:15px; }
+      .bp-line.fill{ background:var(--gold); }
+      .bp-line.fill.green{ background:var(--green); }
+      .buy-hero{ position:relative; border-radius:16px; overflow:hidden; border:1px solid var(--line-soft); margin-bottom:12px; }
+      .buy-hero img{ width:100%; height:168px; object-fit:cover; }
+      .buy-hero .plan-pill{ position:absolute; top:10px; left:10px; }
+      .buy-name{ margin:0 2px 10px; font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:27px; text-transform:uppercase; line-height:1; color:#fdfaf2; }
+      .buy-card{ border:1px solid var(--line-soft); border-radius:16px; background:linear-gradient(180deg,var(--panel-2),var(--panel)); padding:3px 14px; margin-bottom:12px; }
+      .buy-card.plain{ background:#0d0a06; }
+      .buy-row{ display:flex; justify-content:space-between; align-items:center; gap:12px; padding:10px 0; }
+      .buy-row + .buy-row{ border-top:1px solid rgba(212,160,23,.08); }
+      .buy-row > span{ color:var(--muted); font-size:13.5px; line-height:1.3; }
+      .buy-row > span small{ display:block; font-size:11px; color:var(--muted-2); margin-top:1px; }
+      .buy-row b{ font-size:15.5px; font-weight:800; color:#f5ead3; text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+      .buy-row b.gold{ color:var(--gold-2); }
+      .buy-row b.green{ color:#7bf0ae; }
+      .buy-row .kv-addr{ display:flex; align-items:center; gap:8px; }
+      .buy-row .kv-addr b{ white-space:normal; letter-spacing:.03em; }
+      .buy-explain{ color:var(--muted); font-size:14px; line-height:1.55; margin:0 2px 4px; }
+      .buy-total{ text-align:center; margin:4px 0 12px; }
+      .buy-total small{ display:block; color:var(--muted); font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; }
+      .buy-total b{ display:block; font-size:42px; font-weight:800; color:var(--gold-2); line-height:1.08; font-variant-numeric:tabular-nums; }
+      .tron-line{ display:flex; align-items:center; justify-content:center; gap:9px; font-size:15.5px; font-weight:700; }
+      .tron-badge{ width:29px; height:29px; border-radius:50%; background:#eb0029; display:grid; place-items:center; color:#fff; flex:none; }
+      .tron-badge svg{ width:15px; height:15px; }
+      .tron-badge.sm{ width:21px; height:21px; }
+      .tron-badge.sm svg{ width:11px; height:11px; }
+      .buy-sub{ text-align:center; color:var(--muted); font-size:13.5px; line-height:1.45; margin:7px 10px 16px; }
+      .buy-label{ display:block; color:var(--muted); font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin:0 2px 6px; }
+      .addr-box{ display:flex; align-items:center; gap:10px; border:1px solid var(--line); border-radius:14px; background:#0d0a06; padding:11px 12px; margin-bottom:14px; }
+      .addr-box b{ flex:1; min-width:0; font-size:14.5px; letter-spacing:.02em; line-height:1.35; word-break:break-all; font-variant-numeric:tabular-nums; }
+      .copy-btn.copied{ background:var(--green); border-color:var(--green); color:#06230f; }
+      .qr-center{ display:flex; flex-direction:column; align-items:center; gap:9px; margin:2px 0 16px; }
+      .qr-center .qr-frame{ width:118px; height:118px; }
+      .qr-center p{ margin:0; color:var(--muted); font-size:12.5px; text-align:center; line-height:1.4; }
+      .warn-box{ border:1px solid rgba(255,176,46,.5); border-radius:14px; background:rgba(255,176,46,.06); padding:12px 13px; margin-top:14px; }
+      .box-head{ display:flex; align-items:center; gap:8px; margin-bottom:8px; font-size:14.5px; font-weight:800; }
+      .box-head svg{ width:18px; height:18px; flex:none; }
+      .warn-box .box-head{ color:#ffd485; }
+      .warn-box ul{ margin:0; padding-left:18px; color:#e7ddc7; font-size:13.5px; line-height:1.55; }
+      .info-box{ border:1px solid var(--line-soft); border-radius:14px; background:var(--panel); padding:12px 13px; margin-top:12px; }
+      .info-box .box-head{ color:var(--gold-3); margin-bottom:4px; }
+      .info-box p{ margin:0; color:var(--muted); font-size:13px; line-height:1.5; }
+      .green-box{ display:flex; gap:10px; border:1px solid rgba(61,220,132,.55); border-radius:14px; background:rgba(61,220,132,.07); padding:12px 13px; margin-bottom:12px; }
+      .green-box .gb-ic{ flex:none; width:30px; height:30px; border-radius:50%; border:1px solid rgba(61,220,132,.6); display:grid; place-items:center; color:#7bf0ae; }
+      .green-box .gb-ic svg{ width:16px; height:16px; }
+      .green-box b{ display:block; color:#a9f2c6; font-size:14.5px; }
+      .green-box p{ margin:2px 0 0; color:#c9e8d2; font-size:13px; line-height:1.5; }
+      .err-box{ border:1px solid rgba(255,93,93,.55); border-radius:14px; background:rgba(255,93,93,.07); padding:12px 13px; margin-bottom:12px; }
+      .err-box b{ display:block; color:#ff9c9c; font-size:14.5px; margin-bottom:3px; }
+      .err-box p{ margin:0; color:#f0c9c9; font-size:13.5px; line-height:1.5; }
+      .big-circle{ width:86px; height:86px; border-radius:50%; margin:6px auto 14px; display:grid; place-items:center; border:1.5px solid var(--gold); background:rgba(212,160,23,.08); color:var(--gold-2); box-shadow:0 0 34px rgba(212,160,23,.22); }
+      .big-circle svg{ width:42px; height:42px; }
+      .big-circle.green{ border-color:rgba(61,220,132,.7); background:rgba(61,220,132,.08); color:#7bf0ae; box-shadow:0 0 34px rgba(61,220,132,.2); }
+      .buy-h{ text-align:center; margin:0 4px 8px; font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:26px; line-height:1.12; color:#fdfaf2; }
+      .buy-lead{ text-align:center; color:var(--muted); font-size:14px; line-height:1.55; margin:0 8px 16px; }
+      .buy-h4{ margin:16px 2px 8px; font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:19px; letter-spacing:.03em; text-transform:uppercase; color:#fdfaf2; }
+      .conf-head{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:7px; }
+      .conf-head span{ color:var(--muted); font-size:13px; }
+      .conf-head b{ font-size:15px; font-variant-numeric:tabular-nums; }
+      .conf-track{ height:8px; border-radius:99px; background:rgba(255,255,255,.13); overflow:hidden; }
+      .conf-track i{ display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--gold-deep),var(--gold) 55%,var(--gold-2)); box-shadow:0 0 10px rgba(212,160,23,.45); transition:width .4s ease; }
+      .conf-note{ margin:8px 0 0; color:var(--muted); font-size:12.5px; line-height:1.5; }
+      .pending-box{ display:flex; gap:10px; align-items:flex-start; border:1px solid rgba(255,176,46,.5); border-radius:14px; background:rgba(255,176,46,.06); padding:12px 13px; margin-bottom:12px; }
+      .pending-box svg{ flex:none; color:#ffb02e; margin-top:1px; }
+      .pending-box b{ display:block; font-size:14.5px; color:#ffd485; }
+      .pending-box p{ margin:2px 0 8px; color:#e7ddc7; font-size:13px; line-height:1.45; }
+      .pending-box .btn{ min-height:38px; font-size:14px; padding:6px 14px; }
+      .order-banner{
+        width:100%; display:flex; align-items:center; gap:11px; text-align:left;
+        border:1px solid rgba(255,176,46,.55); border-radius:16px;
+        background:linear-gradient(180deg,#1c1508,#12100c);
+        padding:12px 13px; margin-bottom:16px; color:var(--text);
+      }
+      .order-banner .ob-ic{ flex:none; width:36px; height:36px; border-radius:50%; border:1px solid rgba(255,176,46,.5); background:rgba(255,176,46,.08); display:grid; place-items:center; color:#ffb02e; }
+      .order-banner .ob-ic svg{ width:19px; height:19px; }
+      .order-banner b{ display:block; font-size:15px; line-height:1.2; }
+      .order-banner small{ display:block; color:var(--muted); font-size:12.5px; margin-top:1px; }
+      .order-banner .ob-go{ margin-left:auto; flex:none; color:var(--gold-2); font-weight:800; font-size:13.5px; white-space:nowrap; }
+      .order-test-btns{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+      .ot-btn{ border:1px solid var(--line-soft); border-radius:11px; background:#0d0a06; color:var(--text); padding:9px 8px; font-size:13px; font-weight:700; min-height:44px; line-height:1.25; }
+      .ot-btn:disabled{ opacity:.35; cursor:not-allowed; }
+      .ot-btn.danger{ border-color:rgba(255,93,93,.5); color:#ff9c9c; }
+      .ot-btn.go{ border-color:rgba(61,220,132,.5); color:#7bf0ae; }
+      .buy-actions-col{ display:grid; gap:9px; margin-top:14px; }
+      .buy-actions-col .btn{ width:100%; }
+
       /* ---------- Modo de prueba: planes y billetera ---------- */
       .pw-block{ border:1px solid var(--line-soft); border-radius:14px; background:var(--panel); padding:12px; margin-bottom:10px; }
       .pw-head{ display:flex; align-items:baseline; justify-content:space-between; gap:8px; margin-bottom:9px; }
@@ -1344,6 +1459,11 @@
       <div id="planSheetBody"></div>
     </div>
 
+    <!-- Flujo de compra en 3 etapas: hoja propia a pantalla completa -->
+    <div class="buy-sheet" id="buySheet" role="dialog" aria-modal="true" aria-label="Compra de máquina">
+      <div id="buySheetBody" style="display:contents"></div>
+    </div>
+
     <!-- Hoja inferior reutilizable -->
     <div class="sheet-veil" id="sheetVeil"></div>
     <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
@@ -1606,7 +1726,15 @@
 
       /* ============ Render: planes (catálogo) ============ */
       function renderPlans() {
-        document.getElementById("planList").innerHTML = PLANS.map(function (p, idx) {
+        var banner = "";
+        if (typeof order !== "undefined" && orderActive()) {
+          var op = PLANS[order.planId];
+          banner = '<button class="order-banner" type="button" id="orderBanner">' +
+            '<span class="ob-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span>' +
+            '<span><b>Compra en verificación</b><small>' + op.plan + ' · ' + order.amount + ' USDT</small></span>' +
+            '<span class="ob-go">Ver estado →</span></button>';
+        }
+        document.getElementById("planList").innerHTML = banner + PLANS.map(function (p, idx) {
           var owned = fleetCount(idx);
           return '<article class="plan-card">' +
             '<div class="pimg"><img src="' + p.img + '" alt="' + p.name + '" loading="lazy" /><span class="plan-pill">' + p.plan + '</span>' +
@@ -1623,6 +1751,8 @@
         Array.prototype.forEach.call(document.querySelectorAll("[data-plan-open]"), function (b) {
           b.addEventListener("click", function () { openPlanSheet(Number(b.getAttribute("data-plan-open"))); });
         });
+        var ob = document.getElementById("orderBanner");
+        if (ob) ob.addEventListener("click", function () { if (orderActive()) openBuyFlow(order.planId); });
       }
 
       /* ============ Ficha del plan (hoja a pantalla completa) ============ */
@@ -1651,10 +1781,10 @@
           openSheet(SHEETS.planesHow.title, SHEETS.planesHow.body);
         });
       }
-      function openPlanSheet(idx, justBoughtId) {
+      function openPlanSheet(idx) {
         planSheetState.idx = idx;
-        planSheetState.justBoughtId = justBoughtId || null;
-        planSheetState.step = justBoughtId ? "success" : "detail";
+        planSheetState.justBoughtId = null;
+        planSheetState.step = "detail";
         renderPlanSheet();
         planSheetEl.classList.add("open");
         planSheetEl.scrollTop = 0;
@@ -1662,8 +1792,6 @@
       function closePlanSheet() { planSheetEl.classList.remove("open"); }
       function renderPlanSheet() {
         var idx = planSheetState.idx, p = PLANS[idx];
-        if (planSheetState.step === "pay") { renderPlanPay(idx, p); return; }
-        if (planSheetState.step === "success") { renderPlanSuccess(idx, p); return; }
         var owned = fleetCount(idx);
         var html = psHeadHTML("Detalle del plan", "Volver al catálogo");
         html += '<div class="ps-hero"><img src="' + p.img + '" alt="' + p.name + '" />' +
@@ -1697,74 +1825,311 @@
         document.getElementById("planSheetBody").innerHTML = html;
         bindPsHead(function () { closePlanSheet(); });
         document.getElementById("planAcquireBtn").addEventListener("click", function () {
-          planSheetState.step = "pay";
-          renderPlanSheet();
-          planSheetEl.scrollTop = 0;
+          openBuyFlow(idx);
         });
       }
-      function renderPlanPay(idx, p) {
-        var html = psHeadHTML("Pago del plan", "Volver a la ficha del plan");
-        html += '<div class="ps-body">' +
-          '<h4 class="ps-h">Pago del plan</h4>' +
-          '<div class="ps-pay-summary"><span>' + p.name + '</span><b>' + p.price + '</b></div>' +
-          '<div class="pay-box"><div class="pay-flex">' +
-            '<span class="qr-frame">' + qrSVG() + '</span>' +
-            '<div class="pay-info"><small>Dirección de la plataforma · USDT (TRON)</small>' +
-              '<div class="pay-addr"><b>' + shortenAddr(PLATFORM_ADDRESS) + '</b>' +
-              '<button class="copy-btn" type="button" data-copy="' + PLATFORM_ADDRESS + '">Copiar</button></div>' +
-              (planPaid[idx]
-                ? '<span class="state-chip green"><i></i>Pago confirmado</span>'
-                : '<span class="state-chip amber"><i></i>Pago pendiente</span>') +
-            '</div>' +
-          '</div></div>' +
-          '<div class="validation-msg" id="planSheetError" role="alert"></div>' +
-          '<button class="btn btn-gold" type="button" id="planBuyBtn" style="width:100%;margin-top:10px">Comprar esta máquina</button>' +
-          '<button class="btn btn-dark" type="button" id="planPayBackBtn" style="width:100%;margin-top:9px">Volver a la ficha</button>' +
+      /* ============ Flujo de compra en 3 etapas ============ */
+      var buySheetEl = document.getElementById("buySheet");
+      var buyState = { idx: 0, step: "confirm" };
+      var BUY_ICONS = {
+        check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg>',
+        checkBig: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg>',
+        clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
+        clockSm: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
+        warn: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
+        info: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
+        tron: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.4 3.1 11 20.9c-.3.5-1 .4-1.2-.1L7.7 13.5 3.2 10.6c-.5-.3-.4-1 .2-1.2L20.7 2.5c.5-.2 1 .2.7.6Z"/><path d="M20.6 3.6 12.9 12 8.2 10.9l12.4-7.3Z" opacity=".55"/></svg>'
+      };
+      function tronBadge(cls) { return '<span class="tron-badge' + (cls ? ' ' + cls : '') + '">' + BUY_ICONS.tron + '</span>'; }
+      function buyHeadHTML() {
+        return '<header class="ps-head">' +
+          '<button class="ps-nav-btn" type="button" id="buyBackBtn" aria-label="Volver">' + PS_ICONS.back + '</button>' +
+          '<div class="ps-brand"><div class="ps-brand-row">' + PS_ICONS.logo + '<span>Gold Mining 2.0</span></div><small>Compra de máquina</small></div>' +
+          '<button class="ps-nav-btn help" type="button" id="buyHelpBtn" aria-label="¿Cómo funcionan los planes?">' + PS_ICONS.help + '</button>' +
+        '</header>';
+      }
+      function bindBuyHead(backFn) {
+        document.getElementById("buyBackBtn").addEventListener("click", backFn);
+        document.getElementById("buyHelpBtn").addEventListener("click", function () {
+          openSheet(SHEETS.planesHow.title, SHEETS.planesHow.body);
+        });
+      }
+      function buyProgressHTML(cur, finalStage) {
+        var labels = ["Pago", "Verificación", "Activación"];
+        var parts = [];
+        for (var i = 1; i <= 3; i++) {
+          var cls = "bp-step";
+          var inner = String(i);
+          if (finalStage) {
+            cls += " green" + (i === 3 ? " current" : "");
+            if (i < 3) inner = BUY_ICONS.check;
+          } else if (i < cur) { cls += " done"; inner = BUY_ICONS.check; }
+          else if (i === cur) { cls += " current"; }
+          if (i > 1) parts.push('<span class="bp-line' + (i <= cur || finalStage ? ' fill' : '') + (finalStage ? ' green' : '') + '"></span>');
+          parts.push('<span class="' + cls + '"><span class="bp-dot">' + inner + '</span><span>' + labels[i - 1] + '</span></span>');
+        }
+        return '<div class="buy-progress" aria-label="Progreso de la compra: paso ' + cur + ' de 3">' + parts.join("") + '</div>';
+      }
+      function fmtOrderDate(ts) {
+        var d = new Date(ts);
+        return d.toLocaleDateString("es-ES", { day: "2-digit", month: "short", year: "numeric" }) + " · " + pad2(d.getHours()) + ":" + pad2(d.getMinutes());
+      }
+      function copyWithFeedback(btn, text) {
+        function done() {
+          var old = btn.getAttribute("data-label") || btn.textContent;
+          btn.setAttribute("data-label", old);
+          btn.textContent = "¡Copiada!";
+          btn.classList.add("copied");
+          setTimeout(function () { btn.textContent = old; btn.classList.remove("copied"); }, 1800);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done, function () { fallback(); });
+        } else { fallback(); }
+        function fallback() {
+          var ta = document.createElement("textarea");
+          ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand("copy"); } catch (e) {}
+          document.body.removeChild(ta);
+          done();
+        }
+      }
+      function bindCopyBtns(scope) {
+        Array.prototype.forEach.call(scope.querySelectorAll("[data-copy-addr]"), function (b) {
+          b.addEventListener("click", function () { copyWithFeedback(b, PLATFORM_ADDRESS); });
+        });
+      }
+      function closeBuyFlow() { buySheetEl.classList.remove("open"); }
+      function openBuyFlow(idx) {
+        buyState.idx = idx;
+        if (orderActive()) {
+          if (order.planId === idx) {
+            buyState.step = order.status === "pago" ? "pay" : "verify";
+          } else {
+            buyState.step = "confirm";
+          }
+        } else if (order && order.status === "confirmada" && !order.archived && order.planId === idx) {
+          buyState.step = "done";
+        } else {
+          buyState.step = "confirm";
+        }
+        renderBuySheet();
+        buySheetEl.classList.add("open");
+      }
+      function refreshBuySheet() {
+        if (!buySheetEl.classList.contains("open")) return;
+        if (!order) { closeBuyFlow(); return; }
+        if ((buyState.step === "verify" || buyState.step === "pay") && order.status === "confirmada") buyState.step = "done";
+        renderBuySheet();
+      }
+      function renderBuySheet() {
+        if (buyState.step === "pay") { renderBuyPay(); return; }
+        if (buyState.step === "verify") {
+          if (order && order.status === "confirmada") { renderBuyDone(); return; }
+          renderBuyVerify(); return;
+        }
+        if (buyState.step === "done") { renderBuyDone(); return; }
+        renderBuyConfirm();
+      }
+      function buyScrollTop() { var s = buySheetEl.querySelector(".buy-scroll"); if (s) s.scrollTop = 0; }
+
+      /* ----- Etapa 1: confirmar ----- */
+      function renderBuyConfirm() {
+        var idx = buyState.idx, p = PLANS[idx];
+        var otherPending = orderActive() && order.planId !== idx;
+        var html = buyHeadHTML();
+        html += '<div class="buy-scroll"><div class="buy-body">';
+        html += buyProgressHTML(1, false);
+        html += '<div class="buy-hero"><img src="' + p.img + '" alt="' + p.name + '" /><span class="plan-pill">' + p.plan + '</span></div>';
+        html += '<h3 class="buy-name">' + p.name + '</h3>';
+        if (otherPending) {
+          var op = PLANS[order.planId];
+          html += '<div class="pending-box">' + BUY_ICONS.warn + '<div>' +
+            '<b>Tienes una orden en curso del ' + op.plan + '</b>' +
+            '<p>' + op.name + ' · ' + order.amount + ' USDT · Orden ' + order.id + '. Resuélvela antes de crear otra orden.</p>' +
+            '<button class="btn btn-dark" type="button" id="buySeeOrderBtn">Ver orden en curso</button>' +
+          '</div></div>';
+        }
+        html += '<div class="buy-card">' +
+          '<div class="buy-row"><span>Precio de la máquina</span><b class="gold">' + p.price + '</b></div>' +
+          '<div class="buy-row"><span>Capital requerido<small>(en tu billetera al activar)</small></span><b>' + p.capital + '</b></div>' +
+          '<div class="buy-row"><span>Rentabilidad indicada</span><b>' + p.pct + '</b></div>' +
+          '<div class="buy-row"><span>Mantenimiento semanal</span><b>' + p.maint + '</b></div>' +
         '</div>';
-        document.getElementById("planSheetBody").innerHTML = html;
-        bindPsHead(function () { planSheetState.step = "detail"; renderPlanSheet(); planSheetEl.scrollTop = 0; });
-        Array.prototype.forEach.call(planSheetEl.querySelectorAll("[data-copy]"), function (b) {
-          b.addEventListener("click", function () { copyText(b.getAttribute("data-copy")); });
-        });
-        document.getElementById("planPayBackBtn").addEventListener("click", function () {
-          planSheetState.step = "detail"; renderPlanSheet(); planSheetEl.scrollTop = 0;
-        });
-        document.getElementById("planBuyBtn").addEventListener("click", function () {
-          if (!planPaid[idx]) {
-            var err = document.getElementById("planSheetError");
-            err.textContent = "Confirma primero el pago del plan.";
+        html += '<p class="buy-explain">Primero compras tu máquina. Después conectas tu billetera para comprobar el capital necesario y activarla.</p>';
+        html += '<div class="validation-msg" id="buyConfirmError" role="alert"></div>';
+        html += '</div></div>';
+        html += '<div class="buy-foot"><button class="btn btn-gold" type="button" id="buyContinueBtn">Continuar al pago · US$' + priceNum(p) + '</button></div>';
+        document.getElementById("buySheetBody").innerHTML = html;
+        bindBuyHead(function () { closeBuyFlow(); });
+        if (otherPending) {
+          document.getElementById("buySeeOrderBtn").addEventListener("click", function () { openBuyFlow(order.planId); });
+        }
+        document.getElementById("buyContinueBtn").addEventListener("click", function () {
+          var o = ensureOrder(idx);
+          if (!o) {
+            var err = document.getElementById("buyConfirmError");
+            err.textContent = "Tienes una orden en curso de otro plan. Confírmala o descártala antes de crear una nueva.";
             err.classList.add("show");
             return;
           }
-          var u = createUnit(idx);
-          fleet.push(u);
-          planPaid[idx] = false;
-          persistTest();
-          renderMachines(); renderPlans();
-          planSheetState.justBoughtId = u.id;
-          planSheetState.step = "success";
-          renderPlanSheet();
-          planSheetEl.scrollTop = 0;
-          showToast("Máquina agregada a tu flota: " + p.name);
+          buyState.step = o.status === "pago" ? "pay" : "verify";
+          renderBuySheet();
+          buyScrollTop();
         });
+        buyScrollTop();
       }
-      function renderPlanSuccess(idx, p) {
-        var html = psHeadHTML("Detalle del plan", "Volver al catálogo");
-        html += '<div class="ps-body">' +
-          '<div class="buy-success">¡Máquina agregada a tu flota!</div>' +
-          '<div class="buy-actions">' +
-            '<button class="btn btn-gold" type="button" id="buyConnectBtn">Conectar su billetera</button>' +
-            '<button class="btn btn-dark" type="button" id="buyExploreBtn">Seguir explorando</button>' +
-          '</div>' +
+
+      /* ----- Etapa 1 (pantalla 2): pago ----- */
+      function renderBuyPay() {
+        if (!order) { buyState.step = "confirm"; renderBuyConfirm(); return; }
+        var p = PLANS[order.planId];
+        var html = buyHeadHTML();
+        html += '<div class="buy-scroll"><div class="buy-body">';
+        html += buyProgressHTML(1, false);
+        html += '<div class="buy-total"><small>Total a transferir</small><b>' + order.amount + ' USDT</b></div>';
+        html += '<div class="tron-line">' + tronBadge() + '<span>Red: TRON (TRC-20)</span></div>';
+        html += '<p class="buy-sub">Envía exactamente ' + order.amount + ' USDT a la dirección de la plataforma.</p>';
+        html += '<span class="buy-label">Dirección de pago</span>';
+        html += '<div class="addr-box"><b>' + PLATFORM_ADDRESS + '</b>' +
+          '<button class="copy-btn" type="button" data-copy-addr data-label="Copiar">Copiar</button></div>';
+        html += '<div class="qr-center"><span class="qr-frame">' + qrSVG() + '</span>' +
+          '<p>Escanea este código QR o copia la dirección de pago</p></div>';
+        html += '<button class="btn btn-gold" type="button" id="buyCopyMainBtn" data-label="Copiar dirección" style="width:100%;min-height:50px">Copiar dirección</button>';
+        html += '<button class="btn btn-dark" type="button" id="buyTransferredBtn" style="width:100%;min-height:50px;margin-top:9px">Ya transferí · Verificar mi pago</button>';
+        html += '<div class="warn-box"><div class="box-head">' + BUY_ICONS.warn + 'Importante</div><ul>' +
+          '<li>Envía solo ' + order.amount + ' USDT (TRC-20).</li>' +
+          '<li>No uses otras redes.</li>' +
+          '<li>Verifica que la dirección coincida.</li>' +
+          '<li>Una vez enviado, el pago se confirmará automáticamente en la red.</li>' +
+        '</ul></div>';
+        html += '</div></div>';
+        document.getElementById("buySheetBody").innerHTML = html;
+        bindBuyHead(function () { buyState.step = "confirm"; buyState.idx = order.planId; renderBuySheet(); });
+        bindCopyBtns(buySheetEl);
+        document.getElementById("buyCopyMainBtn").addEventListener("click", function () { copyWithFeedback(this, PLATFORM_ADDRESS); });
+        document.getElementById("buyTransferredBtn").addEventListener("click", function () {
+          if (order && (order.status === "pago" || order.status === "error")) {
+            order.errorReason = "";
+            setOrderStatus("esperando");
+          }
+          buyState.step = "verify";
+          renderBuySheet();
+          buyScrollTop();
+        });
+        buyScrollTop();
+      }
+
+      /* ----- Etapa 2: verificación ----- */
+      function orderStatusChip() {
+        if (!order) return "";
+        if (order.status === "esperando") return '<span class="state-chip amber"><i></i>Esperando confirmación</span>';
+        if (order.status === "confirmando") return '<span class="state-chip amber"><i></i>Confirmando</span>';
+        if (order.status === "confirmada") return '<span class="state-chip green"><i></i>Confirmado</span>';
+        if (order.status === "error") return '<span class="state-chip red"><i></i>Error en la verificación</span>';
+        return '<span class="state-chip amber"><i></i>Pago pendiente</span>';
+      }
+      function renderBuyVerify() {
+        if (!order) { buyState.step = "confirm"; renderBuyConfirm(); return; }
+        var p = PLANS[order.planId];
+        var isErr = order.status === "error";
+        var conf = order.status === "confirmando" ? 60 : (order.status === "confirmada" ? 100 : 0);
+        var confTxt = order.status === "confirmada" ? "1 / 1" : "0 / 1";
+        var html = buyHeadHTML();
+        html += '<div class="buy-scroll"><div class="buy-body">';
+        html += buyProgressHTML(2, false);
+        if (isErr) {
+          html += '<div class="err-box"><b>Error en la verificación</b><p>' + (order.errorReason || "No se pudo verificar tu pago en la red. Revisa la transferencia e inténtalo de nuevo.") + '</p></div>';
+        }
+        html += '<div class="big-circle">' + BUY_ICONS.clock + '</div>';
+        html += '<h3 class="buy-h">Estamos verificando tu pago en la red</h3>';
+        html += '<p class="buy-lead">Una vez que tu transferencia sea confirmada en la red TRON, tu máquina será registrada en tu cuenta.</p>';
+        html += '<h4 class="buy-h4">Detalles de la orden</h4>';
+        html += '<div class="buy-card">' +
+          '<div class="buy-row"><span>ID de la orden</span><b>' + order.id + '</b></div>' +
+          '<div class="buy-row"><span>Plan</span><b>' + p.plan + ' — ' + p.name + '</b></div>' +
+          '<div class="buy-row"><span>Monto</span><b class="gold">' + order.amount + ' USDT</b></div>' +
+          '<div class="buy-row"><span>Red</span><span class="kv-addr">' + tronBadge("sm") + '<b>TRON (TRC-20)</b></span></div>' +
+          '<div class="buy-row"><span>Dirección</span><span class="kv-addr"><b>' + shortenAddr(order.address) + '</b><button class="copy-btn" type="button" data-copy-addr data-label="Copiar">Copiar</button></span></div>' +
+          '<div class="buy-row"><span>Estado</span>' + orderStatusChip() + '</div>' +
+          '<div class="buy-row"><span>Fecha de creación</span><b>' + fmtOrderDate(order.createdAt) + '</b></div>' +
         '</div>';
-        document.getElementById("planSheetBody").innerHTML = html;
-        bindPsHead(function () { closePlanSheet(); });
-        document.getElementById("buyConnectBtn").addEventListener("click", function () {
-          var u = findUnit(planSheetState.justBoughtId);
+        html += '<h4 class="buy-h4">Confirmaciones en la red</h4>';
+        html += '<div class="buy-card plain" style="padding:12px 14px">' +
+          '<div class="conf-head"><span>Confirmaciones</span><b>' + confTxt + '</b></div>' +
+          '<div class="conf-track"><i style="width:' + conf + '%"></i></div>' +
+          '<p class="conf-note">Este proceso puede tardar unos minutos. La página se actualizará automáticamente.</p>' +
+        '</div>';
+        html += '<div class="info-box"><div class="box-head">' + BUY_ICONS.info + 'Puedes cerrar esta página</div>' +
+          '<p>Tu pago seguirá siendo verificado en segundo plano. Tu orden quedará guardada y podrás volver a consultarla.</p></div>';
+        html += '<div class="buy-actions-col">';
+        if (isErr) html += '<button class="btn btn-gold" type="button" id="buyRetryBtn">Volver a intentarlo</button>';
+        html += '<button class="btn btn-dark" type="button" id="buyBackToPayBtn">Volver al detalle de la orden</button>';
+        html += '</div>';
+        html += '</div></div>';
+        document.getElementById("buySheetBody").innerHTML = html;
+        bindBuyHead(function () { closeBuyFlow(); });
+        bindCopyBtns(buySheetEl);
+        document.getElementById("buyBackToPayBtn").addEventListener("click", function () {
+          buyState.step = "pay"; renderBuySheet(); buyScrollTop();
+        });
+        if (isErr) {
+          document.getElementById("buyRetryBtn").addEventListener("click", function () {
+            buyState.step = "pay"; renderBuySheet(); buyScrollTop();
+          });
+        }
+        buyScrollTop();
+      }
+
+      /* ----- Etapa 3: compra confirmada ----- */
+      function renderBuyDone() {
+        if (!order) { buyState.step = "confirm"; renderBuyConfirm(); return; }
+        var p = PLANS[order.planId];
+        var archiveAndClose = function () {
+          order.archived = true;
+          persistOrder();
+          closeBuyFlow();
+        };
+        var html = buyHeadHTML();
+        html += '<div class="buy-scroll"><div class="buy-body">';
+        html += buyProgressHTML(3, true);
+        html += '<div class="big-circle green">' + BUY_ICONS.checkBig + '</div>';
+        html += '<h3 class="buy-h">¡Compra confirmada!</h3>';
+        html += '<p class="buy-lead">Tu ' + p.name + ' ya está en tu cuenta.</p>';
+        html += '<h4 class="buy-h4">Detalles de la compra</h4>';
+        html += '<div class="buy-card">' +
+          '<div class="buy-row"><span>Plan</span><b>' + p.plan + ' — ' + p.name + '</b></div>' +
+          '<div class="buy-row"><span>Monto</span><b class="gold">' + order.amount + ' USDT</b></div>' +
+          '<div class="buy-row"><span>Red</span><span class="kv-addr">' + tronBadge("sm") + '<b>TRON (TRC-20)</b></span></div>' +
+          '<div class="buy-row"><span>TxID</span><b>' + (order.txid ? shortenAddr(order.txid) : "—") + '</b></div>' +
+          '<div class="buy-row"><span>Fecha</span><b>' + fmtOrderDate(order.createdAt) + '</b></div>' +
+          '<div class="buy-row"><span>Estado</span><span class="state-chip green"><i></i>Confirmada</span></div>' +
+        '</div>';
+        html += '<div class="green-box"><span class="gb-ic">' + BUY_ICONS.check + '</span><div>' +
+          '<b>Máquina adquirida</b>' +
+          '<p>La máquina está registrada en tu cuenta, pero aún no está activada.</p>' +
+        '</div></div>';
+        html += '<h4 class="buy-h4">Siguiente paso</h4>';
+        html += '<div class="buy-card" style="padding:13px 14px">' +
+          '<b style="display:block;font-size:16px;margin-bottom:4px">Conecta tu billetera para activar</b>' +
+          '<p style="margin:0;color:var(--muted);font-size:13.5px;line-height:1.55">Necesitamos comprobar que tienes el capital requerido en tu billetera TRON (' + p.capital + ') para poder activar tu máquina.</p>' +
+        '</div>';
+        html += '<button class="btn btn-gold" type="button" id="buyDoneConnectBtn" style="width:100%;min-height:52px">Conectar billetera →</button>';
+        html += '<div class="warn-box"><div class="box-head">' + BUY_ICONS.info + 'Recuerda</div><ul>' +
+          '<li>El capital requerido (' + p.capital + ') no es el precio de la máquina.</li>' +
+          '<li>La compra no activa automáticamente la máquina.</li>' +
+          '<li>Después de conectar tu billetera y cumplir las condiciones, podrás activarla.</li>' +
+        '</ul></div>';
+        html += '</div></div>';
+        document.getElementById("buySheetBody").innerHTML = html;
+        bindBuyHead(archiveAndClose);
+        document.getElementById("buyDoneConnectBtn").addEventListener("click", function () {
+          var u = order.unitId ? findUnit(order.unitId) : null;
+          archiveAndClose();
           closePlanSheet();
           if (u) openMachineSheet(u);
         });
-        document.getElementById("buyExploreBtn").addEventListener("click", function () { closePlanSheet(); });
+        buyScrollTop();
       }
 
       /* ============ Billetera de una máquina (bloque del detalle de máquina) ============ */
@@ -1840,6 +2205,54 @@
       if (!Array.isArray(planPaid) || planPaid.length !== PLANS.length || !planPaid.every(function (v) { return typeof v === "boolean"; })) {
         planPaid = [false, false, false, false];
       }
+
+      /* ============ Orden de compra: una sola activa, persistida ============ */
+      var order = lsGet("gm_order", null);
+      if (!order || typeof order !== "object" || typeof order.id !== "string" || !PLANS[order.planId] ||
+          ["pago", "esperando", "confirmando", "confirmada", "error"].indexOf(order.status) === -1) {
+        order = null;
+      }
+      var orderSeq = lsGet("gm_order_seq", 0);
+      if (typeof orderSeq !== "number" || orderSeq < 0 || isNaN(orderSeq)) orderSeq = 0;
+      function orderActive() { return !!(order && order.status !== "confirmada"); }
+      function persistOrder() { lsSet("gm_order", order); lsSet("gm_order_seq", orderSeq); }
+      function priceNum(p) { return parseInt(String(p.price).replace(/[^0-9]/g, ""), 10) || 0; }
+      function ensureOrder(idx) {
+        if (orderActive()) return order.planId === idx ? order : null;
+        orderSeq++;
+        var p = PLANS[idx];
+        order = {
+          id: "GM-" + String(10000 + orderSeq).slice(1),
+          planId: idx,
+          amount: priceNum(p),
+          address: PLATFORM_ADDRESS,
+          status: "pago",
+          createdAt: Date.now(),
+          txid: "",
+          unitCreated: false,
+          unitId: null,
+          errorReason: "",
+          archived: false
+        };
+        persistOrder();
+        renderPlans();
+        return order;
+      }
+      function setOrderStatus(st) {
+        if (!order) return;
+        order.status = st;
+        if (st === "confirmada" && !order.unitCreated) {
+          var u = createUnit(order.planId);
+          fleet.push(u);
+          order.unitCreated = true;
+          order.unitId = u.id;
+          renderMachines();
+          showToast("Máquina agregada a tu flota: " + PLANS[order.planId].name);
+        }
+        persistTest();
+        renderPlans();
+        refreshBuySheet();
+      }
       function levelKeyForEnergy(e) { var cur = LEVELS[0]; LEVELS.forEach(function (l) { if (e >= l.min) cur = l; }); return cur.key; }
       function goldAvailable() { return Math.max(0, smeltState.goldBase - smeltState.goldSpent); }
       function persistTest() {
@@ -1851,6 +2264,8 @@
         lsSet("gm_gold_spent", smeltState.goldSpent);
         lsSet("gm_wallet", smeltState.wallet);
         lsSet("gm_preview", smeltState.previewKey);
+        lsSet("gm_order", order);
+        lsSet("gm_order_seq", orderSeq);
       }
       function levelByKey(k) { for (var i = 0; i < LEVELS.length; i++) if (LEVELS[i].key === k) return LEVELS[i]; return LEVELS[1]; }
       function operativeLevel() { var e = smeltState.energy, cur = LEVELS[0]; LEVELS.forEach(function (l) { if (e >= l.min) cur = l; }); return cur; }
@@ -2171,6 +2586,8 @@
         testState.scenario = sc.key;
         fleet = buildFleet(sc);
         planPaid = [false, false, false, false];
+        order = null;
+        closeBuyFlow();
         smeltState.energy = sc.energy;
         smeltState.goldBase = sc.gold;
         smeltState.goldSpent = 0;
@@ -2239,13 +2656,36 @@
           }).join("");
           return '<div class="pw-block">' +
             '<div class="pw-head"><b>' + p.plan + ' · ' + p.name + '</b><span>Rango ' + p.capital + '</span></div>' +
-            '<div class="fu-controls">' +
-              '<button class="pw-toggle' + (planPaid[idx] ? ' on' : '') + '" type="button" data-fu-paid="' + idx + '" aria-pressed="' + planPaid[idx] + '"><span><small>Pago próxima compra</small><b>' + (planPaid[idx] ? 'Confirmado' : 'Pendiente') + '</b></span><span class="pw-knob" aria-hidden="true"></span></button>' +
-              '<button class="fu-add" type="button" data-fu-add="' + idx + '">+ Agregar máquina</button>' +
-            '</div>' +
+            '<button class="fu-add" type="button" data-fu-add="' + idx + '" style="width:100%;margin-bottom:4px">Atajo de prueba: agrega sin compra</button>' +
             (unitRows || '<p class="fu-empty">Sin máquinas de este plan en tu flota.</p>') +
           '</div>';
         }).join("");
+        var orderStatusLabels = { pago: "Pago pendiente", esperando: "Esperando confirmación", confirmando: "Confirmando en la red", confirmada: "Confirmada", error: "Error en la verificación" };
+        var orderBlock;
+        if (!order) {
+          orderBlock = '<div class="pw-block">' +
+            '<div class="pw-head"><b>Orden de compra</b><span>Sin orden</span></div>' +
+            '<p class="fu-empty" style="margin:0">Sin orden en curso</p>' +
+            '<div class="order-test-btns">' +
+              '<button class="ot-btn" type="button" disabled>Marcar transferido</button>' +
+              '<button class="ot-btn" type="button" disabled>Red confirmando</button>' +
+              '<button class="ot-btn go" type="button" disabled>Confirmar pago en la red</button>' +
+              '<button class="ot-btn" type="button" disabled>Simular error</button>' +
+              '<button class="ot-btn danger" type="button" disabled>Descartar orden</button>' +
+            '</div></div>';
+        } else {
+          var op2 = PLANS[order.planId];
+          orderBlock = '<div class="pw-block">' +
+            '<div class="pw-head"><b>' + order.id + ' · ' + op2.plan + '</b><span>' + orderStatusLabels[order.status] + '</span></div>' +
+            '<p class="fu-empty" style="margin:0">' + op2.name + ' · ' + order.amount + ' USDT · Estado: <b style="color:var(--gold-2)">' + orderStatusLabels[order.status] + '</b>' + (order.unitCreated ? ' · Unidad creada en la flota' : '') + '</p>' +
+            '<div class="order-test-btns">' +
+              '<button class="ot-btn" type="button" data-order-act="transferred"' + (order.status === "pago" ? '' : ' disabled') + '>Marcar transferido</button>' +
+              '<button class="ot-btn" type="button" data-order-act="confirming"' + (order.status === "esperando" ? '' : ' disabled') + '>Red confirmando</button>' +
+              '<button class="ot-btn go" type="button" data-order-act="confirm"' + (order.status === "esperando" || order.status === "confirmando" ? '' : ' disabled') + '>Confirmar pago en la red</button>' +
+              '<button class="ot-btn" type="button" data-order-act="error"' + (order.status !== "confirmada" && order.status !== "error" ? '' : ' disabled') + '>Simular error</button>' +
+              '<button class="ot-btn danger" type="button" data-order-act="discard">Descartar orden</button>' +
+            '</div></div>';
+        }
         var html =
           '<p>Elige un escenario para ver el panel tal como lo vive ese usuario. Cambiar de escenario reinicia cualquier fundición en curso.</p>' +
           '<div class="scenario-list">' + cards + '</div>' +
@@ -2264,8 +2704,11 @@
             '<span style="flex:1;color:var(--muted);font-size:12px">Saldo que la Fundidora muestra y al que se abonan las fundiciones.</span>' +
             '<button class="adj-btn" type="button" data-adj="wallet:50" aria-label="Añadir 50 dólares a la billetera">+</button></div></div>' +
           '<button class="btn btn-gold apply-btn" type="button" id="adjApply">Aplicar</button>' +
+          '<h4 class="editor-h">Orden de compra (prueba)</h4>' +
+          '<p class="adj-note" style="margin:0 0 10px">La orden se crea desde el flujo de compra de cualquier plan. Desde aquí avanzas su estado tal como lo haría la red: la Etapa 3 solo aparece cuando la orden llega a «Confirmada», y al confirmarse se crea la unidad en la flota una sola vez.</p>' +
+          orderBlock +
           '<h4 class="editor-h">Mis máquinas (prueba)</h4>' +
-          '<p class="adj-note" style="margin:0 0 10px">Cada compra crea una unidad independiente en la flota. Confirma el pago de la próxima compra de cada plan, agrega o quita máquinas y ajusta la billetera y el saldo de cada unidad: el catálogo, la ficha, el Inicio y el detalle leen siempre de esta flota. Tocar estos controles reinicia cualquier fundición en curso.</p>' +
+          '<p class="adj-note" style="margin:0 0 10px">Cada compra crea una unidad independiente en la flota. Agrega máquinas con el atajo de prueba o quítalas, y ajusta la billetera y el saldo de cada unidad: el catálogo, la ficha, el Inicio y el detalle leen siempre de esta flota. Tocar estos controles reinicia cualquier fundición en curso.</p>' +
           '<div>' + fleetBlocks + '</div>' +
           '<button class="btn btn-dark reset-btn" type="button" id="adjReset" style="margin-top:6px">Restablecer todo · Nivel Hierro</button>';
         openSheet("Modo de prueba", html);
@@ -2327,11 +2770,31 @@
           inp.addEventListener("change", applyTyped);
           inp.addEventListener("keydown", function (ev) { if (ev.key === "Enter") { ev.preventDefault(); applyTyped(); } });
         });
-        Array.prototype.forEach.call(sheet.querySelectorAll("[data-fu-paid]"), function (b) {
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-order-act]"), function (b) {
           b.addEventListener("click", function () {
-            var idx = Number(b.getAttribute("data-fu-paid"));
-            planPaid[idx] = !planPaid[idx];
-            onFleetTouched();
+            var act = b.getAttribute("data-order-act");
+            if (!order) return;
+            if (act === "discard") {
+              var discardedId = order.id;
+              order = null;
+              persistOrder();
+              renderPlans();
+              refreshBuySheet();
+              showToast("Orden descartada: " + discardedId);
+            } else if (act === "transferred") {
+              order.errorReason = "";
+              setOrderStatus("esperando");
+              showToast("Orden " + order.id + ": esperando confirmación");
+            } else if (act === "confirming") {
+              setOrderStatus("confirmando");
+              showToast("Orden " + order.id + ": la red está confirmando");
+            } else if (act === "confirm") {
+              setOrderStatus("confirmada");
+            } else if (act === "error") {
+              order.errorReason = "No se encontró una transferencia válida asociada a esta orden en la red TRON. Comprueba el importe y la dirección de destino.";
+              setOrderStatus("error");
+              showToast("Orden " + order.id + ": error en la verificación");
+            }
             openTestMode();
           });
         });
@@ -2422,6 +2885,7 @@
         });
         closeSheet();
         closePlanSheet();
+        closeBuyFlow();
       }
       function route() {
         var h = (location.hash || "#/inicio").replace("#/", "");
@@ -2449,7 +2913,9 @@
       document.getElementById("sheetClose").addEventListener("click", closeSheet);
       document.addEventListener("keydown", function (e) {
         if (e.key !== "Escape") return;
-        if (sheet.classList.contains("open")) closeSheet(); else closePlanSheet();
+        if (sheet.classList.contains("open")) closeSheet();
+        else if (buySheetEl.classList.contains("open")) closeBuyFlow();
+        else closePlanSheet();
       });
 
       function bindSheetButtons() {
