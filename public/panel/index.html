@@ -345,56 +345,108 @@
       .plan-rows div b{ font-weight:700; font-variant-numeric:tabular-nums; text-align:right; }
       .plan-body .btn{ width:100%; margin-top:14px; }
 
-      /* ---------- Fundidora ---------- */
-      .smelt-hero{ position:relative; border-radius:20px; overflow:hidden; border:1px solid var(--line-soft); height:150px; margin-bottom:14px; }
-      .smelt-hero img{ width:100%; height:100%; object-fit:cover; }
-      .smelt-hero::after{ content:""; position:absolute; inset:0; background:linear-gradient(0deg, rgba(6,5,3,.92), transparent 60%); }
-      .smelt-hero figcaption{
-        position:absolute; left:16px; bottom:12px; z-index:1; right:16px;
-        font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:24px; letter-spacing:.03em; text-transform:uppercase;
-      }
-      .energy-card{
-        border:1px solid var(--line); border-radius:20px; padding:18px;
-        background:linear-gradient(180deg,var(--panel-3),var(--panel));
-        margin-bottom:14px;
-      }
-      .energy-top{ display:flex; align-items:flex-end; justify-content:space-between; gap:10px; }
-      .energy-top small{ display:block; color:var(--muted); font-size:12.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; }
-      .energy-value{ display:flex; align-items:center; gap:7px; font-size:40px; font-weight:800; color:var(--gold-3); line-height:1; font-variant-numeric:tabular-nums; }
-      .energy-value svg{ color:var(--gold-2); }
-      .energy-level{ text-align:right; }
-      .energy-level b{ display:block; font-family:"Barlow Condensed",sans-serif; font-size:23px; font-weight:800; letter-spacing:.05em; color:var(--gold-2); text-transform:uppercase; }
-      .energy-level span{ color:var(--muted); font-size:13px; }
-      .energy-bar{ height:14px; border-radius:99px; background:rgba(255,255,255,.10); margin:14px 0 8px; position:relative; overflow:hidden; }
-      .energy-bar i{ display:block; height:100%; width:80%; border-radius:99px; background:linear-gradient(90deg,var(--gold-deep),var(--gold) 60%,var(--gold-2)); box-shadow:0 0 12px rgba(212,160,23,.5); }
-      .energy-scale{ display:flex; justify-content:space-between; color:var(--muted-2); font-size:11.5px; font-weight:600; font-variant-numeric:tabular-nums; }
-      .level-card{
-        display:flex; gap:14px; align-items:center;
-        border:1px solid var(--line-soft); border-radius:16px; padding:14px 16px;
-        background:var(--panel); margin-bottom:10px;
-      }
-      .level-card.current{ border-color:var(--gold); background:linear-gradient(180deg,rgba(212,160,23,.12),var(--panel)); }
-      .coin{
-        width:48px; height:48px; border-radius:50%; flex:none; display:grid; place-items:center;
-        font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:19px;
-        border:2px solid; background:#0d0a07;
-      }
-      .coin.carbon{ color:#c9c2b4; border-color:#8d8574; }
-      .coin.hierro{ color:#d9dee6; border-color:#9fb2c8; }
-      .coin.oro{ color:var(--gold-3); border-color:var(--gold); }
-      .coin.diamante{ color:#bdefff; border-color:#7fd4f2; }
-      .level-info{ flex:1; min-width:0; }
-      .level-info h4{ margin:0; font-family:"Barlow Condensed",sans-serif; font-size:22px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-      .now-tag{ font-family:"Barlow",sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.08em; background:var(--gold); color:#241a02; border-radius:99px; padding:2px 8px; }
-      .level-info p{ margin:3px 0 0; color:var(--muted); font-size:13.5px; line-height:1.5; }
-      .level-info p b{ color:var(--text); font-weight:700; font-variant-numeric:tabular-nums; }
-      .note-box{
-        border:1px solid var(--line-soft); border-radius:16px; padding:14px 16px;
-        color:var(--muted); font-size:14px; line-height:1.55; background:var(--panel);
-        margin:14px 0;
-      }
+      .note-box{ border:1px solid var(--line-soft); border-radius:16px; padding:14px 16px; color:var(--muted); font-size:14px; line-height:1.55; background:var(--panel); margin:14px 0; }
       .note-box b{ color:var(--gold-2); }
-
+      /* ---------- Fundidora definitiva ---------- */
+      #view-fundir{ padding-bottom:12px; }
+      .smelt-heading{ display:flex; align-items:flex-end; justify-content:space-between; gap:12px; margin:6px 2px 8px; }
+      .smelt-heading .view-title{ margin:0 0 2px; }
+      .smelt-heading .view-sub{ margin:0; }
+      .how-btn{ flex:none; border:1px solid var(--line); border-radius:999px; color:var(--gold-3); background:rgba(212,160,23,.08); min-height:32px; padding:5px 10px; font-size:11.5px; font-weight:700; }
+      .smelt-machine{ position:relative; min-height:310px; border:1px solid var(--line); border-radius:18px; overflow:hidden; background:#070604; box-shadow:inset 0 0 40px rgba(0,0,0,.5); }
+      .smelt-machine-bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 51%; }
+      .smelt-machine::after{ content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(180deg,rgba(0,0,0,.5),transparent 31%,transparent 58%,rgba(4,3,2,.98) 87%); }
+      .smelt-machine-head{ position:relative; z-index:2; display:flex; align-items:center; gap:9px; padding:10px; }
+      .level-token{ width:58px; height:58px; border-radius:50%; object-fit:cover; flex:none; filter:drop-shadow(0 4px 12px rgba(0,0,0,.75)); }
+      .level-kicker{ display:block; color:#ddc681; font-family:"Barlow Condensed"; font-size:11px; font-weight:700; letter-spacing:.12em; }
+      .level-name{ font-family:"Barlow Condensed"; font-size:25px; line-height:1; font-weight:800; color:var(--gold-3); text-transform:uppercase; }
+      .op-state{ margin-left:auto; align-self:flex-start; display:inline-flex; align-items:center; gap:5px; border:1px solid rgba(61,220,132,.4); color:#83efb2; background:rgba(13,76,42,.76); padding:5px 9px; border-radius:999px; font-size:11px; font-weight:700; }
+      .op-state i{ width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 8px var(--green); }
+      .preview-tag{ margin-left:auto; align-self:flex-start; border:1px solid var(--line); color:var(--gold-3); background:rgba(8,6,3,.8); padding:5px 9px; border-radius:999px; font-size:10.5px; font-weight:700; }
+      .energy-reg{ position:absolute; z-index:3; left:9px; right:9px; bottom:9px; border:1px solid rgba(212,160,23,.36); border-radius:13px; padding:9px 10px; background:rgba(8,6,3,.93); backdrop-filter:blur(5px); }
+      .energy-reg-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+      .energy-read small,.level-status small{ display:block; color:var(--muted); font-size:10.5px; }
+      .energy-read b{ font-size:20px; font-weight:800; color:var(--gold-3); font-variant-numeric:tabular-nums; }
+      .level-status{ text-align:right; }
+      .level-status b{ display:inline-flex; align-items:center; gap:5px; color:#7bf0ae; font-size:12px; }
+      .level-status b::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--green); }
+      .energy-track{ height:7px; border-radius:99px; overflow:hidden; margin:6px 0 4px; background:rgba(255,255,255,.12); }
+      .energy-track i{ display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,#8a5f06,#f0c24b); box-shadow:0 0 10px rgba(240,194,75,.5); }
+      .energy-caption{ display:flex; justify-content:space-between; gap:8px; color:#b9ad94; font-size:10px; }
+      .smelt-panel{ margin-top:8px; border:1px solid var(--line-soft); border-radius:15px; background:linear-gradient(180deg,#18140f,#100d09); overflow:hidden; }
+      .gold-available{ display:flex; align-items:center; gap:10px; padding:9px 11px; }
+      .gold-available .level-token{ width:40px; height:40px; }
+      .gold-available small{ display:block; color:var(--muted); font-size:11px; }
+      .gold-available b{ display:block; color:var(--gold-3); font-size:22px; line-height:1; font-variant-numeric:tabular-nums; }
+      .gold-nuggets{ margin-left:auto; color:var(--gold-2); }
+      .smelt-form{ padding:0 10px 10px; }
+      .smelt-label{ display:block; color:#e7ddc7; font-size:12px; font-weight:600; margin:1px 0 5px; }
+      .amount-row{ display:grid; grid-template-columns:1fr 84px; gap:7px; }
+      .amount-box{ position:relative; }
+      .amount-box input{ width:100%; min-width:0; height:41px; border:1px solid rgba(240,194,75,.45); border-radius:10px; padding:0 37px 0 11px; background:#080705; color:#fff; font:700 17px "Barlow"; outline:none; font-variant-numeric:tabular-nums; }
+      .amount-box input:focus{ border-color:var(--gold-2); box-shadow:0 0 0 2px rgba(212,160,23,.12); }
+      .amount-box span{ position:absolute; right:11px; top:12px; color:var(--muted); font-size:13px; }
+      .max-btn{ border:1px solid var(--line); border-radius:10px; background:#19130a; color:var(--gold-2); font-size:13px; font-weight:800; }
+      .receive-box{ margin-top:7px; border:1px solid var(--line-soft); border-radius:11px; padding:8px 10px; background:rgba(6,5,3,.6); }
+      .receive-box small{ display:block; color:var(--muted); font-size:10.5px; }
+      .receive-box b{ display:block; color:var(--gold-2); font-size:24px; line-height:1.1; font-variant-numeric:tabular-nums; }
+      .receive-box span{ color:#c8bda7; font-size:10.5px; }
+      .smelt-facts{ display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:7px; }
+      .smelt-fact{ display:flex; align-items:center; gap:7px; border:1px solid var(--line-soft); border-radius:10px; padding:7px 8px; background:#0d0a06; }
+      .fact-icon{ width:29px; height:29px; border-radius:50%; flex:none; display:grid; place-items:center; background:rgba(212,160,23,.12); color:var(--gold-2); }
+      .smelt-fact small{ display:block; color:var(--muted); font-size:9.5px; }
+      .smelt-fact b{ display:block; font-size:12.5px; color:#f5ead3; }
+      .validation-msg{ display:none; margin-top:7px; padding:7px 9px; border-radius:9px; border:1px solid rgba(255,176,46,.45); background:rgba(255,176,46,.08); color:#ffd485; font-size:11.5px; line-height:1.35; }
+      .validation-msg.show{ display:block; }
+      .smelt-start{ width:100%; margin-top:8px; min-height:43px; }
+      .smelt-start:disabled{ filter:grayscale(.8); opacity:.46; cursor:not-allowed; box-shadow:none; }
+      .wallet-row,.energy-link{ width:100%; color:var(--text); text-align:left; }
+      .wallet-row{ display:flex; align-items:center; gap:10px; margin-top:8px; border:1px solid var(--line-soft); border-radius:13px; background:linear-gradient(180deg,#17130e,#0e0c08); padding:9px 11px; }
+      .wallet-row .fact-icon{ width:38px; height:38px; }
+      .wallet-row small{ display:block; color:var(--muted); font-size:10.5px; }
+      .wallet-row b{ display:block; color:var(--gold-2); font-size:19px; line-height:1; }
+      .wallet-row .chev{ margin-left:auto; color:var(--gold-2); }
+      .energy-actions{ display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:7px; }
+      .energy-link{ display:flex; align-items:center; gap:7px; min-height:55px; border:1px solid var(--line-soft); border-radius:12px; background:#12100c; padding:7px 8px; }
+      .energy-link small{ display:block; font-size:9.5px; color:var(--muted); }
+      .energy-link b{ display:block; font-size:11.5px; line-height:1.15; }
+      .energy-link em{ display:block; color:var(--gold-2); font-size:10.5px; font-style:normal; }
+      .level-selector-title{ margin:13px 2px 6px; font-family:"Barlow Condensed"; font-size:18px; font-weight:800; }
+      .level-selector{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+      .level-option{ position:relative; overflow:hidden; min-height:150px; border:1px solid var(--line-soft); border-radius:13px; background:#090806; padding:8px; color:var(--text); text-align:left; }
+      .level-option.active{ border-color:var(--gold); box-shadow:inset 0 0 18px rgba(212,160,23,.11); }
+      .level-option .lo-bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.57; }
+      .level-option::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(3,2,1,.96)); }
+      .level-option > span{ position:relative; z-index:1; display:block; }
+      .lo-head{ display:flex!important; align-items:center; gap:6px; }
+      .lo-head img{ width:35px; height:35px; border-radius:50%; }
+      .lo-head small{ color:#d9c78e; font-size:9px; }
+      .lo-head b{ display:block; font:800 16px "Barlow Condensed"; text-transform:uppercase; }
+      .lo-data{ position:absolute!important; left:8px; right:8px; bottom:7px; font-size:9.5px; color:#d3c6ae; line-height:1.3; }
+      .lo-data strong{ color:var(--gold-2); }
+      .smelt-progress-card{ margin-top:8px; border:1px solid var(--line); border-radius:15px; padding:11px; background:linear-gradient(180deg,#19140d,#0d0b08); }
+      .smelt-progress-top{ display:flex; align-items:flex-end; justify-content:space-between; gap:10px; }
+      .smelt-progress-top small{ display:block; color:var(--muted); font-size:10px; }
+      .smelt-progress-top b{ font-size:17px; color:var(--gold-3); }
+      .smelt-progress-top .usd{ text-align:right; color:var(--gold-2); font-size:17px; font-weight:800; }
+      .run-progress{ height:9px; border-radius:99px; background:rgba(255,255,255,.12); overflow:hidden; margin:9px 0 3px; }
+      .run-progress i{ display:block; height:100%; width:0; border-radius:inherit; background:linear-gradient(90deg,#8b5700,#ffc23c,#ffe49a); box-shadow:0 0 10px #e6a31b; transition:width .5s linear; }
+      .run-pct{ text-align:right; font-size:11px; color:var(--muted); }
+      .timer-box{ text-align:center; padding:8px 0 4px; }
+      .timer-box small{ color:#d6bd72; font-size:9px; letter-spacing:.1em; }
+      .timer{ color:var(--gold-2); font-size:31px; line-height:1.05; font-weight:800; font-variant-numeric:tabular-nums; }
+      .finish-at{ color:#c7bba3; font-size:10.5px; }
+      .run-note{ margin-top:8px; color:#c8bca5; font-size:10.5px; text-align:center; }
+      .run-meta{ display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:7px; }
+      .machine-live .furnace-glow{ position:absolute; z-index:2; left:50%; bottom:30%; width:76px; height:76px; transform:translateX(-50%); border-radius:50%; background:radial-gradient(circle,#fff3a7 0,#ff9e00 28%,rgba(255,95,0,.28) 58%,transparent 74%); mix-blend-mode:screen; animation:furnacePulse 1.7s ease-in-out infinite; pointer-events:none; }
+      .machine-live .molten-flow{ position:absolute; z-index:3; left:50%; bottom:18%; width:13px; height:74px; transform:translateX(-50%); border-radius:50% 50% 8px 8px; background:linear-gradient(90deg,#d96b00,#fff2a1,#f5a800); box-shadow:0 0 15px #ff8c00; animation:flowLight 1.05s linear infinite; pointer-events:none; }
+      .spark{ position:absolute; z-index:3; left:50%; top:56%; width:3px; height:3px; border-radius:50%; background:#ffe8a1; box-shadow:0 0 7px #ff9900; animation:sparkFly 1.8s ease-out infinite; pointer-events:none; }
+      .spark.s2{ animation-delay:.55s; margin-left:22px; }.spark.s3{ animation-delay:1.05s; margin-left:-19px; }
+      @keyframes furnacePulse{ 50%{ opacity:.62; transform:translateX(-50%) scale(1.16); } }
+      @keyframes flowLight{ 50%{ filter:brightness(1.45); } }
+      @keyframes sparkFly{ 0%{ opacity:0; transform:translate(0,0) scale(.5)} 20%{opacity:1} 100%{opacity:0; transform:translate(28px,-55px) scale(1.2)} }
+      @media (prefers-reduced-motion:reduce){ .furnace-glow,.molten-flow,.spark{ animation:none!important; } }
+      @media (max-width:350px){ .smelt-machine{ min-height:285px; }.level-token{width:50px;height:50px}.level-name{font-size:22px}.level-selector{grid-template-columns:1fr}.level-option{min-height:135px} }
       /* ---------- Historial ---------- */
       .move{
         display:flex; align-items:center; gap:13px;
@@ -635,43 +687,90 @@
 
         <!-- ================= VISTA: FUNDIR ================= -->
         <section class="view" id="view-fundir" aria-label="Fundidora">
-          <h2 class="view-title">Fundidora</h2>
-          <p class="view-sub">Convierte tu oro extraído en saldo de tu billetera interna de retiros. Fundir no cobra tarifa.</p>
+          <div class="smelt-heading">
+            <div>
+              <h2 class="view-title">Fundidora</h2>
+              <p class="view-sub">Convierte tu oro en USD</p>
+            </div>
+            <button class="how-btn" type="button" id="howSmeltBtn">? ¿Cómo funciona?</button>
+          </div>
 
-          <figure class="smelt-hero" style="margin:0 0 14px">
-            <img src="assets/fundicion.webp" alt="Fundición de oro en curso" />
-            <figcaption>Del crisol a tu billetera</figcaption>
-          </figure>
-
-          <div class="energy-card">
-            <div class="energy-top">
-              <div>
-                <small>Energía acumulada</small>
-                <div class="energy-value">
-                  <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4.5 13.5H11L9.8 22 19 10h-6.5L13 2Z"/></svg>
-                  320
-                </div>
+          <div id="smeltPrep">
+            <div class="smelt-machine" id="machineCard">
+              <img class="smelt-machine-bg" id="previewMachine" src="assets/maquina-hierro.webp" alt="Máquina fundidora de Hierro" />
+              <div class="smelt-machine-head">
+                <img class="level-token" id="previewCoin" src="assets/fun-token-hierro.webp" alt="Moneda oficial del nivel Hierro" />
+                <div><span class="level-kicker" id="previewKicker">Nivel 2</span><span class="level-name" id="previewName">Hierro</span></div>
+                <span class="preview-tag" id="previewTag" hidden>Vista previa</span>
               </div>
-              <div class="energy-level">
-                <small>Nivel actual</small>
-                <b>Hierro</b>
-                <span>Faltan 80 para Oro</span>
+              <div class="energy-reg" aria-label="Regulador de energía">
+                <div class="energy-reg-top">
+                  <div class="energy-read"><small>Energía disponible</small><b id="energyNow">320 ⚡</b></div>
+                  <div class="level-status"><small>Estado</small><b id="energyState">Estable</b></div>
+                </div>
+                <div class="energy-track" aria-hidden="true"><i id="energyFill" style="width:80%"></i></div>
+                <div class="energy-caption"><span id="energyProgressLabel">320 / 400 hacia Oro</span><span>Sin máximo</span></div>
+                <div class="energy-caption" style="margin-top:3px"><span>ⓘ Mantén la energía por encima del umbral para conservar tu nivel.</span></div>
               </div>
             </div>
-            <div class="energy-bar" role="img" aria-label="Energía 320 de 400 para el nivel Oro"><i></i></div>
-            <div class="energy-scale"><span>Carbón · 0</span><span>Hierro · 150</span><span>Oro · 400</span><span>Diamante · 1,000</span></div>
+
+            <div class="smelt-panel">
+              <div class="gold-available">
+                <img class="level-token" src="assets/fun-token-oro.webp" alt="Moneda de oro" />
+                <div><small>Tu oro disponible</small><b id="goldNow">125.50 g</b></div>
+                <span class="gold-nuggets" aria-hidden="true">◆◆◆</span>
+              </div>
+              <div class="smelt-form">
+                <label class="smelt-label" for="smeltAmount">¿Cuánto oro deseas fundir?</label>
+                <div class="amount-row">
+                  <div class="amount-box"><input id="smeltAmount" type="number" inputmode="decimal" min="0" step="0.01" value="50" aria-describedby="smeltValidation" /><span>g</span></div>
+                  <button class="max-btn" type="button" id="smeltMax">Máximo</button>
+                </div>
+                <div class="receive-box"><small>Recibirás al finalizar</small><b id="smeltReceive">US$50.00</b><span>Equivalencia interna: 1 g = US$1 · Fundir no cobra tarifa</span></div>
+                <div class="smelt-facts">
+                  <div class="smelt-fact"><span class="fact-icon">⚡</span><span><small>Energía necesaria</small><b id="smeltCost">80 unidades</b></span></div>
+                  <div class="smelt-fact"><span class="fact-icon">◷</span><span><small>Tiempo estimado</small><b id="smeltDuration">12 horas</b></span></div>
+                </div>
+                <div class="validation-msg" id="smeltValidation" role="alert"></div>
+                <button class="btn btn-gold smelt-start" type="button" id="smeltBtn">♨ Iniciar fundición</button>
+              </div>
+            </div>
           </div>
 
-          <div id="levelList"></div>
-
-          <div class="note-box">
-            La energía sube con tus referidos: <b>+50</b> por cada referido directo a partir del tercero y <b>+15</b> por cada referido de segundo nivel activo. También puedes adquirirla en la tienda. Al fundir gastas energía; si tu acumulado baja del umbral, la fundidora desciende automáticamente al nivel que corresponda.
+          <div id="smeltRunning" hidden>
+            <div class="smelt-machine machine-live" id="runMachineCard">
+              <img class="smelt-machine-bg" id="runMachine" src="assets/maquina-hierro.webp" alt="Máquina fundidora trabajando" />
+              <span class="furnace-glow" aria-hidden="true"></span><span class="molten-flow" aria-hidden="true"></span><span class="spark" aria-hidden="true"></span><span class="spark s2" aria-hidden="true"></span><span class="spark s3" aria-hidden="true"></span>
+              <div class="smelt-machine-head">
+                <img class="level-token" id="runCoin" src="assets/fun-token-hierro.webp" alt="Moneda oficial del nivel activo" />
+                <div><span class="level-kicker" id="runKicker">Nivel 2</span><span class="level-name" id="runName">Hierro</span></div>
+                <span class="op-state"><i></i><span id="runState">Fundiendo</span></span>
+              </div>
+            </div>
+            <div class="smelt-progress-card">
+              <div class="smelt-progress-top"><div><small>Fundición en progreso</small><b id="runGrams">50 g de oro</b></div><div><small>Recibirás</small><span class="usd" id="runUsd">US$50.00</span></div></div>
+              <div class="run-progress" role="progressbar" aria-label="Progreso de la fundición"><i id="runBar"></i></div>
+              <div class="run-pct" id="runPct">0%</div>
+              <div class="timer-box"><small>⏱ TIEMPO RESTANTE</small><div class="timer" id="runTimer">12:00:00</div><div class="finish-at" id="runFinish">Finaliza a las --:--</div></div>
+              <div class="run-meta">
+                <div class="smelt-fact"><span class="fact-icon">⚡</span><span><small>Energía consumida</small><b id="runEnergy">80 unidades</b></span></div>
+                <div class="smelt-fact"><span class="fact-icon">▰</span><span><small>Procesando</small><b id="runProcessing">50 g</b></span></div>
+              </div>
+              <p class="run-note" id="runNote">La máquina continúa funcionando aunque salgas de la app.</p>
+            </div>
           </div>
 
-          <button class="btn btn-gold" type="button" id="smeltBtn" style="width:100%">
-            <svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 22a7 7 0 0 1-7-7c0-2.4 1.2-4.3 2.7-6C9.2 7.1 10.6 5.3 10.8 2.2c0-.9 1.2-1.2 1.7-.5 2 2.4 2.6 5.6 2.1 8.2.6-.5 1-1.2 1.3-2 .3-.7 1.4-.7 1.7 0 .7 1.5 1.4 3 1.4 4.6a7 7 0 0 1-7 7Z"/></svg>
-            Fundir ahora
+          <button class="wallet-row" type="button" id="walletPanel" aria-label="Billetera de plataforma">
+            <span class="fact-icon">▣</span><span><small>Billetera de plataforma</small><b id="walletBalance">US$125.50</b><small>Saldo disponible</small></span><span class="chev">›</span>
           </button>
+          <div class="energy-actions">
+            <button class="energy-link" type="button" id="inviteAction"><span class="fact-icon">♟</span><span><b>Invitar amigos</b><small>Energía ganada</small><em id="referralEnergy">320 unidades</em></span><span class="chev">›</span></button>
+            <button class="energy-link" type="button" id="shopAction"><span class="fact-icon">▣</span><span><b>Tienda de energía</b><small>Comprar energía</small><em>Explorar</em></span><span class="chev">›</span></button>
+          </div>
+
+          <h3 class="level-selector-title">Niveles de la fundidora</h3>
+          <div class="level-selector" id="levelSelector"></div>
+          <div class="note-box">La energía sube con referidos: <b>+50 ⚡</b> por cada directo a partir del tercero y <b>+15 ⚡</b> por cada referido de segundo nivel activo. También puedes adquirirla en la tienda. Al fundir gastas energía fija por operación; si bajas del umbral, desciendes automáticamente al nivel correspondiente.</div>
         </section>
 
         <!-- ================= VISTA: HISTORIAL ================= -->
@@ -777,10 +876,10 @@
       ];
 
       var LEVELS = [
-        { key: "carbon", letter: "C", name: "Carbón", umbral: "0", cost: 120, limit: "$50 USD", cool: "24 h", current: false },
-        { key: "hierro", letter: "H", name: "Hierro", umbral: "150", cost: 80, limit: "$150 USD", cool: "12 h", current: true },
-        { key: "oro", letter: "O", name: "Oro", umbral: "400", cost: 45, limit: "$500 USD", cool: "6 h", current: false },
-        { key: "diamante", letter: "D", name: "Diamante", umbral: "1,000", cost: 15, limit: "Ilimitado", cool: "3 h", current: false }
+        { key: "carbon", num: 1, name: "Carbón", desc: "Estructura básica", machine: "assets/maquina-carbon.webp", coin: "assets/fun-token-carbon.webp", min: 0, max: 149, cost: 120, limit: 50, hours: 24, durationLabel: "24 horas" },
+        { key: "hierro", num: 2, name: "Hierro", desc: "Estructura reforzada", machine: "assets/maquina-hierro.webp", coin: "assets/fun-token-hierro.webp", min: 150, max: 399, cost: 80, limit: 150, hours: 12, durationLabel: "12 horas" },
+        { key: "oro", num: 3, name: "Oro", desc: "Mayor eficiencia", machine: "assets/maquina-oro.webp", coin: "assets/fun-token-oro.webp", min: 400, max: 999, cost: 45, limit: 500, hours: 6, durationLabel: "6 horas" },
+        { key: "diamante", num: 4, name: "Diamante", desc: "Máxima eficiencia", machine: "assets/maquina-diamante.webp", coin: "assets/fun-token-diamante.webp", min: 1000, max: null, cost: 15, limit: null, hours: 3, durationLabel: "3 horas" }
       ];
 
       var MOVES_FULL = [
@@ -866,21 +965,175 @@
         });
       }
 
-      /* ============ Render: niveles de fundidora ============ */
-      function renderLevels() {
-        document.getElementById("levelList").innerHTML = LEVELS.map(function (l) {
-          return '<div class="level-card' + (l.current ? " current" : "") + '">' +
-            '<span class="coin ' + l.key + '">' + l.letter + '</span>' +
-            '<div class="level-info"><h4>' + l.name + (l.current ? '<span class="now-tag">Nivel actual</span>' : "") + '</h4>' +
-            '<p>Desde <b>' + l.umbral + '</b> de energía · Fundir cuesta <b>' + l.cost + '</b> de energía · Límite por operación <b>' + l.limit + '</b> · Enfriamiento <b>' + l.cool + '</b></p></div>' +
-          '</div>';
+      /* ============ Fundidora: estado y niveles ============ */
+      function lsGet(k, d) { try { var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }
+      function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+      var smeltState = {
+        energy: lsGet("gm_energy", 320),
+        goldSpent: lsGet("gm_gold_spent", 0),
+        wallet: lsGet("gm_wallet", 125.50),
+        previewKey: "hierro"
+      };
+      function goldAvailable() { return Math.max(0, 125.50 - smeltState.goldSpent); }
+      function levelByKey(k) { for (var i = 0; i < LEVELS.length; i++) if (LEVELS[i].key === k) return LEVELS[i]; return LEVELS[1]; }
+      function operativeLevel() { var e = smeltState.energy, cur = LEVELS[0]; LEVELS.forEach(function (l) { if (e >= l.min) cur = l; }); return cur; }
+      function levelForEnergy(e) { var cur = LEVELS[0]; LEVELS.forEach(function (l) { if (e >= l.min) cur = l; }); return cur; }
+      function fmt(n, d) { return n.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d }); }
+      function fmtInt(n) { return n.toLocaleString("en-US"); }
+
+      function renderLevelSelector() {
+        var op = operativeLevel();
+        document.getElementById("levelSelector").innerHTML = LEVELS.map(function (l) {
+          return '<button class="level-option' + (l.key === smeltState.previewKey ? ' active' : '') + '" type="button" data-level="' + l.key + '" aria-pressed="' + (l.key === smeltState.previewKey) + '">' +
+            '<img class="lo-bg" src="' + l.machine + '" alt="" loading="lazy" />' +
+            '<span class="lo-head"><img src="' + l.coin + '" alt="Moneda ' + l.name + '" /><span><small>Nivel ' + l.num + (l.key === op.key ? ' · Tu nivel' : '') + '</small><b>' + l.name + '</b></span></span>' +
+            '<span class="lo-data"><strong>' + l.desc + '</strong><br>Costo <strong>' + l.cost + ' ⚡</strong> · Límite <strong>' + (l.limit ? 'US$' + l.limit : 'Ilimitado') + '</strong><br>Duración <strong>' + l.hours + ' h</strong> · Desde <strong>' + fmtInt(l.min) + ' ⚡</strong></span>' +
+          '</button>';
         }).join("");
+        Array.prototype.forEach.call(document.querySelectorAll("[data-level]"), function (b) {
+          b.addEventListener("click", function () { smeltState.previewKey = b.getAttribute("data-level"); renderSmelt(); });
+        });
+      }
+
+      function renderSmelt() {
+        var lv = levelByKey(smeltState.previewKey), op = operativeLevel();
+        var isOp = lv.key === op.key;
+        document.getElementById("previewMachine").src = lv.machine;
+        document.getElementById("previewMachine").alt = "Máquina fundidora de " + lv.name;
+        document.getElementById("previewCoin").src = lv.coin;
+        document.getElementById("previewCoin").alt = "Moneda oficial del nivel " + lv.name;
+        document.getElementById("previewKicker").textContent = "Nivel " + lv.num;
+        document.getElementById("previewName").textContent = lv.name;
+        document.getElementById("previewTag").hidden = isOp;
+        document.getElementById("energyNow").textContent = fmtInt(smeltState.energy) + " ⚡";
+        var next = LEVELS[lv.num] || null;
+        var after = smeltState.energy - lv.cost;
+        var degrades = after < lv.min;
+        var stateEl = document.getElementById("energyState");
+        if (smeltState.energy < lv.cost) { stateEl.textContent = "Insuficiente"; }
+        else if (degrades) { stateEl.textContent = "Riesgo de bajar"; }
+        else { stateEl.textContent = "Estable"; }
+        var pct = next ? Math.min(100, (smeltState.energy / next.min) * 100) : 100;
+        document.getElementById("energyFill").style.width = pct + "%";
+        document.getElementById("energyProgressLabel").textContent = next ? (fmtInt(smeltState.energy) + " / " + fmtInt(next.min) + " hacia " + next.name) : "Nivel máximo alcanzado";
+        document.getElementById("goldNow").textContent = fmt(goldAvailable(), 2) + " g";
+        document.getElementById("walletBalance").textContent = "US$" + fmt(smeltState.wallet, 2);
+        document.getElementById("referralEnergy").textContent = fmtInt(smeltState.energy) + " unidades";
+        document.getElementById("smeltCost").textContent = lv.cost + " unidades";
+        document.getElementById("smeltDuration").textContent = lv.durationLabel;
+        renderLevelSelector();
+        validateSmelt();
+      }
+
+      function validateSmelt() {
+        var lv = levelByKey(smeltState.previewKey);
+        var input = document.getElementById("smeltAmount");
+        var amt = parseFloat(input.value);
+        if (isNaN(amt)) amt = 0;
+        document.getElementById("smeltReceive").textContent = "US$" + fmt(Math.max(0, amt), 2);
+        var msg = document.getElementById("smeltValidation"), btn = document.getElementById("smeltBtn");
+        var text = "", ok = amt > 0;
+        if (amt <= 0) { text = "Escribe la cantidad de oro que deseas fundir."; ok = false; }
+        else if (amt > goldAvailable() + 1e-9) { text = "Oro insuficiente: tienes " + fmt(goldAvailable(), 2) + " g disponibles. Reduce la cantidad o espera a que tus máquinas produzcan más oro."; ok = false; }
+        else if (lv.limit && amt > lv.limit) { text = "Supera el límite del nivel " + lv.name + ": máximo US$" + lv.limit + " por operación. Baja la cantidad o sube de nivel con más energía."; ok = false; }
+        else if (smeltState.energy < lv.cost) { text = "Energía insuficiente: fundir en " + lv.name + " cuesta " + lv.cost + " ⚡ y tienes " + fmtInt(smeltState.energy) + " ⚡. Gana energía invitando amigos o en la tienda de energía."; ok = false; }
+        else if (smeltState.energy - lv.cost < lv.min) {
+          var down = levelForEnergy(smeltState.energy - lv.cost);
+          text = "Advertencia de degradación: al pagar " + lv.cost + " ⚡ te quedarían " + fmtInt(smeltState.energy - lv.cost) + " ⚡ y bajarías de " + lv.name + " a " + down.name + ". Puedes continuar si lo deseas.";
+        }
+        msg.textContent = text;
+        msg.classList.toggle("show", !!text);
+        btn.disabled = !ok;
+        return ok;
+      }
+
+      /* ============ Fundición en curso ============ */
+      var smeltTimer = null;
+      function pad2(n) { return (n < 10 ? "0" : "") + n; }
+      function fmtClock(d) {
+        var h = d.getHours(), ap = h >= 12 ? "PM" : "AM"; h = h % 12; if (h === 0) h = 12;
+        return pad2(h) + ":" + pad2(d.getMinutes()) + " " + ap;
+      }
+      function startSmelt() {
+        var lv = levelByKey(smeltState.previewKey);
+        var amt = parseFloat(document.getElementById("smeltAmount").value) || 0;
+        if (!validateSmelt()) return;
+        var now = Date.now();
+        var op = { id: "op-" + now, start: now, durationMs: lv.hours * 3600 * 1000, grams: amt, usd: amt, levelKey: lv.key, cost: lv.cost, credited: false };
+        lsSet("gm_smelt_op", op);
+        smeltState.energy -= lv.cost; lsSet("gm_energy", smeltState.energy);
+        smeltState.goldSpent += amt; lsSet("gm_gold_spent", smeltState.goldSpent);
+        showRun(op);
+        showToast("Fundición iniciada · Nivel " + lv.name);
+      }
+      function showRun(op) {
+        var lv = levelByKey(op.levelKey);
+        document.getElementById("smeltPrep").hidden = true;
+        document.getElementById("smeltRunning").hidden = false;
+        document.getElementById("runMachine").src = lv.machine;
+        document.getElementById("runCoin").src = lv.coin;
+        document.getElementById("runKicker").textContent = "Nivel " + lv.num;
+        document.getElementById("runName").textContent = lv.name;
+        document.getElementById("runGrams").textContent = fmt(op.grams, 2) + " g de oro";
+        document.getElementById("runUsd").textContent = "US$" + fmt(op.usd, 2);
+        document.getElementById("runEnergy").textContent = op.cost + " unidades";
+        document.getElementById("runProcessing").textContent = fmt(op.grams, 2) + " g";
+        renderSmelt();
+        tickRun();
+        clearInterval(smeltTimer);
+        smeltTimer = setInterval(tickRun, 500);
+      }
+      function tickRun() {
+        var op = lsGet("gm_smelt_op", null);
+        if (!op) { clearInterval(smeltTimer); return; }
+        var end = op.start + op.durationMs, now = Date.now();
+        var remain = Math.max(0, end - now);
+        var pct = Math.min(100, ((now - op.start) / op.durationMs) * 100);
+        if (remain <= 0) { completeSmelt(op); return; }
+        document.getElementById("runState").textContent = "Fundiendo";
+        document.getElementById("runBar").style.width = pct + "%";
+        document.getElementById("runPct").textContent = Math.floor(pct) + "%";
+        var sec = Math.ceil(remain / 1000);
+        document.getElementById("runTimer").textContent = pad2(Math.floor(sec / 3600)) + ":" + pad2(Math.floor(sec / 60) % 60) + ":" + pad2(sec % 60);
+        var endD = new Date(end), today = new Date();
+        var sameDay = endD.toDateString() === today.toDateString();
+        var tomorrow = new Date(today); tomorrow.setDate(today.getDate() + 1);
+        var when = sameDay ? "hoy" : (endD.toDateString() === tomorrow.toDateString() ? "mañana" : "el " + endD.toLocaleDateString("es", { day: "numeric", month: "short" }));
+        document.getElementById("runFinish").textContent = "Finaliza " + when + " a las " + fmtClock(endD);
+      }
+      function completeSmelt(op) {
+        clearInterval(smeltTimer);
+        if (!op.credited) {
+          op.credited = true; lsSet("gm_smelt_op", op);
+          smeltState.wallet += op.usd; lsSet("gm_wallet", smeltState.wallet);
+          lsSet("gm_smelt_move", { icon: "flame", title: "Fundición completada", date: "Nivel " + levelByKey(op.levelKey).name, amt: "+" + fmt(op.usd, 2) + " USD", cls: "pos" });
+          renderMoves();
+        }
+        document.getElementById("runState").textContent = "Fundición completada";
+        document.getElementById("runBar").style.width = "100%";
+        document.getElementById("runPct").textContent = "100%";
+        document.getElementById("runTimer").textContent = "00:00:00";
+        document.getElementById("runFinish").textContent = "El importe ya está en tu billetera de plataforma";
+        document.getElementById("runNote").innerHTML = 'Fundición completada y registrada en tu historial. <button class="max-btn" type="button" id="newSmeltBtn" style="padding:8px 14px;margin-left:6px">Nueva fundición</button>';
+        document.getElementById("walletBalance").textContent = "US$" + fmt(smeltState.wallet, 2);
+        var nb = document.getElementById("newSmeltBtn");
+        if (nb) nb.addEventListener("click", function () {
+          localStorage.removeItem("gm_smelt_op");
+          document.getElementById("smeltRunning").hidden = true;
+          document.getElementById("smeltPrep").hidden = false;
+          renderSmelt();
+        });
+      }
+      function restoreSmelt() {
+        var op = lsGet("gm_smelt_op", null);
+        if (op) showRun(op); else renderSmelt();
       }
 
       /* ============ Render: historial ============ */
       function renderMoves() {
         var wrap = document.getElementById("moveList");
-        var moves = STATES[currentState].moves;
+        var extra = lsGet("gm_smelt_move", null);
+        var moves = (extra && currentState === "completo") ? [extra].concat(STATES[currentState].moves) : STATES[currentState].moves;
         if (!moves.length) {
           wrap.innerHTML =
             '<div class="empty">' +
@@ -990,6 +1243,23 @@
             '<ul><li>Respuesta habitual en <b>menos de 24 horas</b>.</li>' +
             '<li>Ten a mano tu <b>correo de registro</b> y tu código de referido.</li></ul>'
         },
+        fundidora: {
+          title: "¿Cómo funciona la fundidora?",
+          body: '<p>Tu nivel depende de tu <b>energía acumulada</b> (sin límite máximo). Fundir cuesta una cantidad <b>fija de energía por operación</b> y tarda la duración de tu nivel; recibes <b>US$1 por cada gramo</b>, sin tarifa de fundición.</p>' +
+            '<ul><li><b>Carbón</b> · 0–149 ⚡ · Costo 120 ⚡ · Límite $50 · 24 h</li>' +
+            '<li><b>Hierro</b> · 150–399 ⚡ · Costo 80 ⚡ · Límite $150 · 12 h</li>' +
+            '<li><b>Oro</b> · 400–999 ⚡ · Costo 45 ⚡ · Límite $500 · 6 h</li>' +
+            '<li><b>Diamante</b> · 1,000+ ⚡ · Costo 15 ⚡ · Ilimitado · 3 h</li></ul>' +
+            '<p>Si al pagar el costo tu energía baja del umbral, <b>desciendes automáticamente</b> al nivel que corresponda. Una fundición iniciada <b>no se puede cancelar</b> y sigue su curso aunque salgas de la app.</p>'
+        },
+        tienda: {
+          title: "Tienda de energía",
+          body: '<p>Paquetes de energía para tu fundidora. La energía también se gana con referidos: <b>+50 ⚡</b> por directo a partir del tercero y <b>+15 ⚡</b> por referido de segundo nivel activo.</p>' +
+            '<ul><li><b>Arranque</b> · +100 ⚡</li>' +
+            '<li><b>Operativo</b> · +250 ⚡ <b>+ 25 ⚡ de bono</b></li>' +
+            '<li><b>Maestro</b> · +500 ⚡ <b>+ 125 ⚡ de bono</b></li>' +
+            '<li><b>Lord</b> · +1,000 ⚡ <b>+ 500 ⚡ de bono</b></li></ul>'
+        },
         notificaciones: {
           title: "Notificaciones",
           body: '<ul><li><b>Fundición completada</b> — tu oro fundido ya está en tu billetera de retiros.</li>' +
@@ -1056,16 +1326,25 @@
         document.getElementById("eyeOff").style.display = balanceHidden ? "" : "none";
         renderBalance();
       });
-      document.getElementById("smeltBtn").addEventListener("click", function () {
-        showToast("Revisa tu nivel de fundidora y tu energía acumulada");
+      document.getElementById("smeltBtn").addEventListener("click", startSmelt);
+      document.getElementById("smeltAmount").addEventListener("input", validateSmelt);
+      document.getElementById("smeltMax").addEventListener("click", function () {
+        var lv = levelByKey(smeltState.previewKey);
+        var max = lv.limit ? Math.min(goldAvailable(), lv.limit) : goldAvailable();
+        document.getElementById("smeltAmount").value = fmt(max, 2);
+        validateSmelt();
       });
+      document.getElementById("howSmeltBtn").addEventListener("click", function () { openSheet(SHEETS.fundidora.title, SHEETS.fundidora.body); });
+      document.getElementById("shopAction").addEventListener("click", function () { openSheet(SHEETS.tienda.title, SHEETS.tienda.body); });
+      document.getElementById("inviteAction").addEventListener("click", function () { openSheet(SHEETS.referidos.title, SHEETS.referidos.body); });
+      document.getElementById("walletPanel").addEventListener("click", function () { openSheet(SHEETS.retiros.title, SHEETS.retiros.body); });
       document.getElementById("logoutBtn").addEventListener("click", function () {
         showToast("Sesión activa de Carlos Méndez");
       });
 
       /* ============ Arranque ============ */
       renderPlans();
-      renderLevels();
+      restoreSmelt();
       setState("completo");
       bindGoto(document);
       route();
