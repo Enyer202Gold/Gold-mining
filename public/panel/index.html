@@ -678,8 +678,61 @@
       .ot-btn:disabled{ opacity:.35; cursor:not-allowed; }
       .ot-btn.danger{ border-color:rgba(255,93,93,.5); color:#ff9c9c; }
       .ot-btn.go{ border-color:rgba(61,220,132,.5); color:#7bf0ae; }
+      .dep-plan-sel{ width:100%; height:42px; border:1px solid rgba(240,194,75,.35); border-radius:9px; padding:0 10px; background:#080705; color:#f5ead3; font:600 14px "Barlow",sans-serif; outline:none; margin-bottom:9px; }
+      .dep-plan-sel:focus{ border-color:var(--gold-2); box-shadow:0 0 0 2px rgba(212,160,23,.12); }
+      .dep-sim-btn{ width:100%; min-height:48px; border:1px solid var(--gold); border-radius:11px; background:rgba(212,160,23,.16); color:var(--gold-2); font-size:14.5px; font-weight:800; letter-spacing:.02em; }
       .buy-actions-col{ display:grid; gap:9px; margin-top:14px; }
       .buy-actions-col .btn{ width:100%; }
+
+      /* ---------- Confirmación de transferencia (pantalla de pago) ---------- */
+      .confirm-transfer{ border:1px solid var(--line-soft); border-radius:16px; background:linear-gradient(180deg,var(--panel-2),var(--panel)); padding:14px; margin-top:14px; }
+      .txid-input{ width:100%; min-height:48px; border:1px solid rgba(240,194,75,.35); border-radius:11px; padding:10px 12px; background:#080705; color:#f5ead3; font:600 14px "Barlow",sans-serif; letter-spacing:.02em; outline:none; }
+      .txid-input:focus{ border-color:var(--gold-2); box-shadow:0 0 0 2px rgba(212,160,23,.12); }
+      .txid-input::placeholder{ color:var(--muted-2); font-weight:500; letter-spacing:0; }
+      .field-help{ margin:7px 2px 0; color:var(--muted); font-size:12.5px; line-height:1.45; }
+      .field-error{ display:none; margin:7px 2px 0; color:#ff9c9c; font-size:12.5px; line-height:1.45; font-weight:600; }
+      .field-error.show{ display:block; }
+      .receipt-attach{ display:flex; align-items:center; justify-content:center; gap:10px; width:100%; min-height:54px; border:1.5px dashed rgba(212,160,23,.5); border-radius:12px; background:rgba(212,160,23,.05); color:var(--gold-2); font-size:15px; font-weight:700; padding:12px; }
+      .receipt-attach svg{ width:23px; height:23px; flex:none; }
+      .receipt-preview{ display:flex; align-items:center; gap:10px; border:1px solid var(--line-soft); border-radius:12px; background:#0d0a06; padding:9px 10px; }
+      .receipt-preview img{ width:52px; height:52px; object-fit:cover; border-radius:9px; flex:none; border:1px solid rgba(212,160,23,.3); }
+      .rp-thumb-ph{ width:52px; height:52px; flex:none; border-radius:9px; border:1px solid rgba(212,160,23,.3); background:rgba(212,160,23,.08); display:grid; place-items:center; color:var(--gold-2); }
+      .rp-thumb-ph svg{ width:24px; height:24px; }
+      .rp-name{ flex:1; min-width:0; font-size:13px; font-weight:600; color:#f5ead3; word-break:break-all; line-height:1.3; }
+      .rp-btn{ flex:none; border:1px solid var(--line); border-radius:9px; background:#19130a; color:var(--gold-2); padding:7px 10px; font-size:12.5px; font-weight:700; min-height:36px; }
+      .rp-btn.danger{ border-color:rgba(255,93,93,.5); color:#ff9c9c; background:rgba(255,93,93,.06); }
+      .pay-gate{ display:none; margin-top:11px; padding:9px 11px; border-radius:10px; border:1px solid rgba(255,176,46,.45); background:rgba(255,176,46,.08); color:#ffd485; font-size:13px; line-height:1.45; font-weight:600; }
+      .pay-gate.show{ display:block; }
+      #buyTransferredBtn.is-disabled{ opacity:.45; filter:grayscale(.45); box-shadow:none; }
+      .receipt-full{ width:100%; border-radius:12px; border:1px solid var(--line-soft); display:block; }
+      .receipt-test-ph{ display:flex; flex-direction:column; align-items:center; gap:6px; border:1.5px dashed rgba(212,160,23,.5); border-radius:12px; background:rgba(212,160,23,.05); color:var(--gold-2); padding:26px 14px; text-align:center; }
+      .receipt-test-ph svg{ width:40px; height:40px; }
+      .receipt-test-ph b{ font-size:15px; }
+      .receipt-test-ph span{ color:var(--muted); font-size:12.5px; }
+
+      /* ---------- Notificaciones de compra y celebración ---------- */
+      .notif-item{ display:flex; gap:11px; width:100%; text-align:left; border:1px solid var(--line-soft); border-radius:14px; background:var(--panel); padding:12px 13px; margin-bottom:9px; color:var(--text); }
+      .notif-item .n-ic{ flex:none; width:36px; height:36px; border-radius:50%; border:1px solid rgba(61,220,132,.55); background:rgba(61,220,132,.08); display:grid; place-items:center; color:#7bf0ae; }
+      .notif-item .n-ic svg{ width:18px; height:18px; }
+      .notif-item b{ display:block; font-size:15px; }
+      .notif-item p{ margin:2px 0 0; color:var(--muted); font-size:13px; line-height:1.45; }
+      .notif-item .n-dot{ flex:none; width:9px; height:9px; border-radius:50%; background:var(--red); margin-top:5px; }
+      .notif-item.read{ opacity:.6; }
+      .celeb-sheet{
+        position:fixed; left:50%; top:0; bottom:0; z-index:84;
+        width:min(430px,100%); height:100dvh;
+        transform:translate(-50%,100%); visibility:hidden; pointer-events:none;
+        transition:transform .3s cubic-bezier(.32,.9,.35,1), visibility 0s .3s;
+        background:linear-gradient(180deg,#0b0906 0%, var(--app) 260px);
+        box-shadow:0 0 0 1px rgba(212,160,23,.14), 0 0 90px rgba(0,0,0,.9);
+        display:flex; flex-direction:column; overflow:hidden;
+      }
+      .celeb-sheet.open{ transform:translate(-50%,0); visibility:visible; pointer-events:auto; transition:transform .3s cubic-bezier(.32,.9,.35,1); }
+      .celeb-body{ flex:1; overflow-y:auto; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:28px 24px calc(28px + env(safe-area-inset-bottom, 0px)); }
+      .celeb-title{ margin:0 0 8px; font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:38px; letter-spacing:.02em; text-transform:uppercase; line-height:1.05; color:#fdfaf2; }
+      .celeb-text{ margin:0 6px 24px; color:var(--muted); font-size:15.5px; line-height:1.55; }
+      .celeb-actions{ width:100%; display:grid; gap:9px; }
+      .celeb-actions .btn{ width:100%; min-height:52px; }
 
       /* ---------- Modo de prueba: planes y billetera ---------- */
       .pw-block{ border:1px solid var(--line-soft); border-radius:14px; background:var(--panel); padding:12px; margin-bottom:10px; }
@@ -1464,6 +1517,9 @@
       <div id="buySheetBody" style="display:contents"></div>
     </div>
 
+    <!-- Celebración de pago confirmado (contenido renderizado por JS al mostrarse, una sola vez) -->
+    <div class="celeb-sheet" id="celebSheet" role="dialog" aria-modal="true" aria-label="Felicidades"></div>
+
     <!-- Hoja inferior reutilizable -->
     <div class="sheet-veil" id="sheetVeil"></div>
     <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
@@ -1840,6 +1896,7 @@
         info: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
         tron: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.4 3.1 11 20.9c-.3.5-1 .4-1.2-.1L7.7 13.5 3.2 10.6c-.5-.3-.4-1 .2-1.2L20.7 2.5c.5-.2 1 .2.7.6Z"/><path d="M20.6 3.6 12.9 12 8.2 10.9l12.4-7.3Z" opacity=".55"/></svg>'
       };
+      BUY_ICONS.image = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><path d="m21 15.5-4.8-4.8a2 2 0 0 0-2.8 0L6 18"/></svg>';
       function tronBadge(cls) { return '<span class="tron-badge' + (cls ? ' ' + cls : '') + '">' + BUY_ICONS.tron + '</span>'; }
       function buyHeadHTML() {
         return '<header class="ps-head">' +
@@ -1898,6 +1955,64 @@
         Array.prototype.forEach.call(scope.querySelectorAll("[data-copy-addr]"), function (b) {
           b.addEventListener("click", function () { copyWithFeedback(b, PLATFORM_ADDRESS); });
         });
+      }
+      /* ----- Confirmación de transferencia: TxID + comprobante (obligatorios) ----- */
+      function isValidTxid(v) { return /^[0-9a-fA-F]{64}$/.test(String(v || "").trim()); }
+      function orderHasReceipt() { return !!(order && (order.receiptThumb || order.receiptTest)); }
+      function orderTransferReady() { return !!(order && isValidTxid(order.txid) && orderHasReceipt()); }
+      function escHTML(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+      function txidRowHTML(withCopy) {
+        if (!order || !order.txid) return '<div class="buy-row"><span>TxID</span><b>—</b></div>';
+        var inner = '<b>' + shortenAddr(order.txid) + '</b>';
+        if (withCopy) inner += '<button class="copy-btn" type="button" data-copy-txid data-label="Copiar">Copiar</button>';
+        return '<div class="buy-row"><span>TxID</span><span class="kv-addr">' + inner + '</span></div>';
+      }
+      function receiptRowHTML(btnId) {
+        if (!orderHasReceipt()) return '<div class="buy-row"><span>Comprobante</span><b>Sin adjuntar</b></div>';
+        return '<div class="buy-row"><span>Comprobante</span><span class="kv-addr"><b>Adjunto</b><button class="copy-btn" type="button" id="' + btnId + '">Ver</button></span></div>';
+      }
+      function bindOrderDetailBtns(scope) {
+        Array.prototype.forEach.call(scope.querySelectorAll("[data-copy-txid]"), function (b) {
+          b.addEventListener("click", function () { if (order) copyWithFeedback(b, order.txid); });
+        });
+        ["buyVerifyReceiptBtn", "buyDoneReceiptBtn"].forEach(function (id) {
+          var b = document.getElementById(id);
+          if (b) b.addEventListener("click", openReceiptViewer);
+        });
+      }
+      function openReceiptViewer() {
+        if (!order || !orderHasReceipt()) return;
+        var body;
+        if (order.receiptThumb) {
+          body = '<img class="receipt-full" src="' + order.receiptThumb + '" alt="Comprobante de pago adjunto a la orden ' + order.id + '" />' +
+            '<p style="margin-top:10px">Comprobante adjunto a la orden <b>' + order.id + '</b>' + (order.receiptName ? ' · ' + escHTML(order.receiptName) : '') + '</p>';
+        } else {
+          body = '<div class="receipt-test-ph">' + BUY_ICONS.image + '<b>Comprobante de prueba</b><span>' + escHTML(order.receiptName || "comprobante-prueba.png") + '</span></div>' +
+            '<p style="margin-top:10px">Comprobante adjunto a la orden <b>' + order.id + '</b>.</p>';
+        }
+        openSheet("Comprobante de pago", body);
+      }
+      function processReceiptFile(file, done) {
+        var reader = new FileReader();
+        reader.onload = function () {
+          var url = reader.result;
+          var img = new Image();
+          img.onload = function () {
+            try {
+              var max = 480, w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
+              var scale = Math.min(1, max / Math.max(w, h));
+              var cv = document.createElement("canvas");
+              cv.width = Math.max(1, Math.round(w * scale));
+              cv.height = Math.max(1, Math.round(h * scale));
+              cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height);
+              done(cv.toDataURL("image/jpeg", 0.72));
+            } catch (e) { done(url); }
+          };
+          img.onerror = function () { done(url); };
+          img.src = url;
+        };
+        reader.onerror = function () { done(""); };
+        reader.readAsDataURL(file);
       }
       function closeBuyFlow() { buySheetEl.classList.remove("open"); }
       function openBuyFlow(idx) {
@@ -1996,19 +2111,111 @@
         html += '<div class="qr-center"><span class="qr-frame">' + qrSVG() + '</span>' +
           '<p>Escanea este código QR o copia la dirección de pago</p></div>';
         html += '<button class="btn btn-gold" type="button" id="buyCopyMainBtn" data-label="Copiar dirección" style="width:100%;min-height:50px">Copiar dirección</button>';
+        html += '<div class="confirm-transfer" id="confirmTransferBox">' +
+          '<h4 class="buy-h4" style="margin:0 2px 12px">Confirma tu transferencia</h4>' +
+          '<label class="buy-label" for="payTxidInput">ID de la transferencia (TxID)</label>' +
+          '<input class="txid-input" id="payTxidInput" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Pega aquí el ID de tu transferencia" value="' + escHTML(order.txid || "") + '" />' +
+          '<p class="field-help">Lo encuentras en tu billetera justo después de enviar el pago.</p>' +
+          '<p class="field-error" id="payTxidError" role="alert"></p>' +
+          '<span class="buy-label" style="margin-top:14px">Comprobante de pago</span>' +
+          '<div id="receiptArea"></div>' +
+          '<input type="file" id="payReceiptInput" accept="image/*" hidden />' +
+        '</div>';
         html += '<button class="btn btn-dark" type="button" id="buyTransferredBtn" style="width:100%;min-height:50px;margin-top:9px">Ya transferí · Verificar mi pago</button>';
+        html += '<div class="pay-gate" id="payGateMsg" role="alert"></div>';
         html += '<div class="warn-box"><div class="box-head">' + BUY_ICONS.warn + 'Importante</div><ul>' +
           '<li>Envía solo ' + order.amount + ' USDT (TRC-20).</li>' +
           '<li>No uses otras redes.</li>' +
           '<li>Verifica que la dirección coincida.</li>' +
           '<li>Una vez enviado, el pago se confirmará automáticamente en la red.</li>' +
+          '<li>Sin el ID y el comprobante no podrás confirmar tu transferencia.</li>' +
         '</ul></div>';
         html += '</div></div>';
         document.getElementById("buySheetBody").innerHTML = html;
         bindBuyHead(function () { buyState.step = "confirm"; buyState.idx = order.planId; renderBuySheet(); });
         bindCopyBtns(buySheetEl);
         document.getElementById("buyCopyMainBtn").addEventListener("click", function () { copyWithFeedback(this, PLATFORM_ADDRESS); });
-        document.getElementById("buyTransferredBtn").addEventListener("click", function () {
+        var txidInput = document.getElementById("payTxidInput");
+        var txidError = document.getElementById("payTxidError");
+        var gateMsg = document.getElementById("payGateMsg");
+        var receiptInput = document.getElementById("payReceiptInput");
+        var transferredBtn = document.getElementById("buyTransferredBtn");
+        function showTxidError(force) {
+          var v = txidInput.value.trim();
+          if (v && !isValidTxid(v)) {
+            txidError.textContent = "El ID debe tener 64 caracteres hexadecimales (0-9, a-f). Ahora tiene " + v.length + ".";
+            txidError.classList.add("show");
+            return false;
+          }
+          if (!v && force) {
+            txidError.textContent = "El ID debe tener 64 caracteres hexadecimales (0-9, a-f).";
+            txidError.classList.add("show");
+            return false;
+          }
+          txidError.classList.remove("show");
+          return isValidTxid(v);
+        }
+        function refreshTransferredBtn() {
+          var ready = isValidTxid(txidInput.value) && orderHasReceipt();
+          transferredBtn.classList.toggle("is-disabled", !ready);
+          transferredBtn.setAttribute("aria-disabled", ready ? "false" : "true");
+          if (ready) gateMsg.classList.remove("show");
+        }
+        function renderReceiptArea() {
+          var area = document.getElementById("receiptArea");
+          if (!area) return;
+          if (orderHasReceipt()) {
+            var thumb = order.receiptThumb
+              ? '<img src="' + order.receiptThumb + '" alt="Miniatura del comprobante de pago" />'
+              : '<span class="rp-thumb-ph">' + BUY_ICONS.image + '</span>';
+            area.innerHTML = '<div class="receipt-preview">' + thumb +
+              '<span class="rp-name">' + escHTML(order.receiptName || "comprobante") + '</span>' +
+              '<button class="rp-btn" type="button" id="receiptChangeBtn">Cambiar</button>' +
+              '<button class="rp-btn danger" type="button" id="receiptRemoveBtn">Quitar</button></div>';
+            document.getElementById("receiptChangeBtn").addEventListener("click", function () { receiptInput.click(); });
+            document.getElementById("receiptRemoveBtn").addEventListener("click", function () {
+              order.receiptThumb = ""; order.receiptName = ""; order.receiptTest = false;
+              receiptInput.value = "";
+              persistOrder();
+              renderReceiptArea();
+              refreshTransferredBtn();
+            });
+          } else {
+            area.innerHTML = '<button class="receipt-attach" type="button" id="receiptAttachBtn">' + BUY_ICONS.image + '<span>Adjuntar captura del pago</span></button>';
+            document.getElementById("receiptAttachBtn").addEventListener("click", function () { receiptInput.click(); });
+          }
+        }
+        txidInput.addEventListener("input", function () {
+          order.txid = txidInput.value.trim();
+          persistOrder();
+          showTxidError(false);
+          refreshTransferredBtn();
+        });
+        txidInput.addEventListener("blur", function () { showTxidError(false); });
+        receiptInput.addEventListener("change", function () {
+          var f = receiptInput.files && receiptInput.files[0];
+          if (!f) return;
+          processReceiptFile(f, function (dataUrl) {
+            order.receiptThumb = dataUrl || "";
+            order.receiptName = f.name || "comprobante";
+            order.receiptTest = false;
+            persistOrder();
+            renderReceiptArea();
+            refreshTransferredBtn();
+            showToast("Comprobante adjunto");
+          });
+        });
+        renderReceiptArea();
+        refreshTransferredBtn();
+        if (order.txid) showTxidError(false);
+        transferredBtn.addEventListener("click", function () {
+          if (!orderTransferReady()) {
+            showTxidError(true);
+            refreshTransferredBtn();
+            gateMsg.textContent = "Pega el ID de tu transferencia y adjunta tu comprobante para continuar.";
+            gateMsg.classList.add("show");
+            return;
+          }
           if (order && (order.status === "pago" || order.status === "error")) {
             order.errorReason = "";
             setOrderStatus("esperando");
@@ -2051,6 +2258,8 @@
           '<div class="buy-row"><span>Monto</span><b class="gold">' + order.amount + ' USDT</b></div>' +
           '<div class="buy-row"><span>Red</span><span class="kv-addr">' + tronBadge("sm") + '<b>TRON (TRC-20)</b></span></div>' +
           '<div class="buy-row"><span>Dirección</span><span class="kv-addr"><b>' + shortenAddr(order.address) + '</b><button class="copy-btn" type="button" data-copy-addr data-label="Copiar">Copiar</button></span></div>' +
+          txidRowHTML(true) +
+          receiptRowHTML("buyVerifyReceiptBtn") +
           '<div class="buy-row"><span>Estado</span>' + orderStatusChip() + '</div>' +
           '<div class="buy-row"><span>Fecha de creación</span><b>' + fmtOrderDate(order.createdAt) + '</b></div>' +
         '</div>';
@@ -2070,6 +2279,7 @@
         document.getElementById("buySheetBody").innerHTML = html;
         bindBuyHead(function () { closeBuyFlow(); });
         bindCopyBtns(buySheetEl);
+        bindOrderDetailBtns(buySheetEl);
         document.getElementById("buyBackToPayBtn").addEventListener("click", function () {
           buyState.step = "pay"; renderBuySheet(); buyScrollTop();
         });
@@ -2101,7 +2311,8 @@
           '<div class="buy-row"><span>Plan</span><b>' + p.plan + ' — ' + p.name + '</b></div>' +
           '<div class="buy-row"><span>Monto</span><b class="gold">' + order.amount + ' USDT</b></div>' +
           '<div class="buy-row"><span>Red</span><span class="kv-addr">' + tronBadge("sm") + '<b>TRON (TRC-20)</b></span></div>' +
-          '<div class="buy-row"><span>TxID</span><b>' + (order.txid ? shortenAddr(order.txid) : "—") + '</b></div>' +
+          txidRowHTML(false) +
+          receiptRowHTML("buyDoneReceiptBtn") +
           '<div class="buy-row"><span>Fecha</span><b>' + fmtOrderDate(order.createdAt) + '</b></div>' +
           '<div class="buy-row"><span>Estado</span><span class="state-chip green"><i></i>Confirmada</span></div>' +
         '</div>';
@@ -2123,6 +2334,7 @@
         html += '</div></div>';
         document.getElementById("buySheetBody").innerHTML = html;
         bindBuyHead(archiveAndClose);
+        bindOrderDetailBtns(buySheetEl);
         document.getElementById("buyDoneConnectBtn").addEventListener("click", function () {
           var u = order.unitId ? findUnit(order.unitId) : null;
           archiveAndClose();
@@ -2212,6 +2424,13 @@
           ["pago", "esperando", "confirmando", "confirmada", "error"].indexOf(order.status) === -1) {
         order = null;
       }
+      if (order) {
+        if (typeof order.txid !== "string") order.txid = "";
+        if (typeof order.receiptName !== "string") order.receiptName = "";
+        if (typeof order.receiptThumb !== "string") order.receiptThumb = "";
+        if (typeof order.receiptTest !== "boolean") order.receiptTest = false;
+        if (typeof order.celebrated !== "boolean") order.celebrated = false;
+      }
       var orderSeq = lsGet("gm_order_seq", 0);
       if (typeof orderSeq !== "number" || orderSeq < 0 || isNaN(orderSeq)) orderSeq = 0;
       function orderActive() { return !!(order && order.status !== "confirmada"); }
@@ -2229,6 +2448,10 @@
           status: "pago",
           createdAt: Date.now(),
           txid: "",
+          receiptName: "",
+          receiptThumb: "",
+          receiptTest: false,
+          celebrated: false,
           unitCreated: false,
           unitId: null,
           errorReason: "",
@@ -2238,8 +2461,35 @@
         renderPlans();
         return order;
       }
+      function simulateIncomingDeposit(idx) {
+        orderSeq++;
+        var p = PLANS[idx];
+        order = {
+          id: "GM-" + String(10000 + orderSeq).slice(1),
+          planId: idx,
+          amount: priceNum(p),
+          address: PLATFORM_ADDRESS,
+          status: "esperando",
+          createdAt: Date.now(),
+          txid: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+          receiptName: "comprobante-prueba.png",
+          receiptThumb: "",
+          receiptTest: true,
+          celebrated: false,
+          unitCreated: false,
+          unitId: null,
+          errorReason: "",
+          archived: false
+        };
+        persistOrder();
+        renderPlans();
+        closeSheet();
+        showToast("Depósito entrante: orden " + order.id + " en verificación");
+        openBuyFlow(idx);
+      }
       function setOrderStatus(st) {
         if (!order) return;
+        var wasConfirmed = order.status === "confirmada";
         order.status = st;
         if (st === "confirmada" && !order.unitCreated) {
           var u = createUnit(order.planId);
@@ -2249,6 +2499,7 @@
           renderMachines();
           showToast("Máquina agregada a tu flota: " + PLANS[order.planId].name);
         }
+        if (st === "confirmada" && !wasConfirmed) pushPurchaseNotification(order);
         persistTest();
         renderPlans();
         refreshBuySheet();
@@ -2588,6 +2839,10 @@
         planPaid = [false, false, false, false];
         order = null;
         closeBuyFlow();
+        notifications = [];
+        persistNotifications();
+        renderBell();
+        closeCeleb();
         smeltState.energy = sc.energy;
         smeltState.goldBase = sc.gold;
         smeltState.goldSpent = 0;
@@ -2672,20 +2927,31 @@
               '<button class="ot-btn go" type="button" disabled>Confirmar pago en la red</button>' +
               '<button class="ot-btn" type="button" disabled>Simular error</button>' +
               '<button class="ot-btn danger" type="button" disabled>Descartar orden</button>' +
+              '<button class="ot-btn" type="button" disabled>Rellenar TxID y comprobante de prueba</button>' +
             '</div></div>';
         } else {
           var op2 = PLANS[order.planId];
           orderBlock = '<div class="pw-block">' +
             '<div class="pw-head"><b>' + order.id + ' · ' + op2.plan + '</b><span>' + orderStatusLabels[order.status] + '</span></div>' +
             '<p class="fu-empty" style="margin:0">' + op2.name + ' · ' + order.amount + ' USDT · Estado: <b style="color:var(--gold-2)">' + orderStatusLabels[order.status] + '</b>' + (order.unitCreated ? ' · Unidad creada en la flota' : '') + '</p>' +
+            '<p class="fu-empty" style="margin:6px 0 0">TxID: <b style="color:var(--gold-2)">' + (order.txid ? shortenAddr(order.txid) : 'Sin adjuntar') + '</b> · Comprobante: <b style="color:var(--gold-2)">' + (orderHasReceipt() ? 'Adjunto' : 'Sin adjuntar') + '</b></p>' +
             '<div class="order-test-btns">' +
               '<button class="ot-btn" type="button" data-order-act="transferred"' + (order.status === "pago" ? '' : ' disabled') + '>Marcar transferido</button>' +
               '<button class="ot-btn" type="button" data-order-act="confirming"' + (order.status === "esperando" ? '' : ' disabled') + '>Red confirmando</button>' +
               '<button class="ot-btn go" type="button" data-order-act="confirm"' + (order.status === "esperando" || order.status === "confirmando" ? '' : ' disabled') + '>Confirmar pago en la red</button>' +
               '<button class="ot-btn" type="button" data-order-act="error"' + (order.status !== "confirmada" && order.status !== "error" ? '' : ' disabled') + '>Simular error</button>' +
               '<button class="ot-btn danger" type="button" data-order-act="discard">Descartar orden</button>' +
+              '<button class="ot-btn" type="button" data-order-act="fill-proof">Rellenar TxID y comprobante de prueba</button>' +
             '</div></div>';
         }
+        var depositBlock = '<div class="pw-block">' +
+          '<div class="pw-head"><b>Depósito entrante</b><span>Atajo rápido</span></div>' +
+          '<p class="fu-empty" style="margin:0 0 9px">Descarta la orden en curso y crea una nueva ya en «Esperando confirmación», con el TxID y el comprobante de prueba adjuntos, como si el cliente acabara de transferir. Se abre directo en la Etapa 2.</p>' +
+          '<select class="dep-plan-sel" id="depPlanSel" aria-label="Plan del depósito entrante">' +
+            PLANS.map(function (p, i) { return '<option value="' + i + '">' + p.plan + ' · ' + p.name + ' · ' + p.price + '</option>'; }).join("") +
+          '</select>' +
+          '<button class="dep-sim-btn" type="button" id="depSimBtn">Simular depósito entrante</button>' +
+        '</div>';
         var html =
           '<p>Elige un escenario para ver el panel tal como lo vive ese usuario. Cambiar de escenario reinicia cualquier fundición en curso.</p>' +
           '<div class="scenario-list">' + cards + '</div>' +
@@ -2707,6 +2973,7 @@
           '<h4 class="editor-h">Orden de compra (prueba)</h4>' +
           '<p class="adj-note" style="margin:0 0 10px">La orden se crea desde el flujo de compra de cualquier plan. Desde aquí avanzas su estado tal como lo haría la red: la Etapa 3 solo aparece cuando la orden llega a «Confirmada», y al confirmarse se crea la unidad en la flota una sola vez.</p>' +
           orderBlock +
+          depositBlock +
           '<h4 class="editor-h">Mis máquinas (prueba)</h4>' +
           '<p class="adj-note" style="margin:0 0 10px">Cada compra crea una unidad independiente en la flota. Agrega máquinas con el atajo de prueba o quítalas, y ajusta la billetera y el saldo de cada unidad: el catálogo, la ficha, el Inicio y el detalle leen siempre de esta flota. Tocar estos controles reinicia cualquier fundición en curso.</p>' +
           '<div>' + fleetBlocks + '</div>' +
@@ -2790,6 +3057,14 @@
               showToast("Orden " + order.id + ": la red está confirmando");
             } else if (act === "confirm") {
               setOrderStatus("confirmada");
+            } else if (act === "fill-proof") {
+              order.txid = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
+              order.receiptTest = true;
+              order.receiptName = "comprobante-prueba.png";
+              order.receiptThumb = "";
+              persistOrder();
+              refreshBuySheet();
+              showToast("TxID y comprobante de prueba aplicados a la orden " + order.id);
             } else if (act === "error") {
               order.errorReason = "No se encontró una transferencia válida asociada a esta orden en la red TRON. Comprueba el importe y la dirección de destino.";
               setOrderStatus("error");
@@ -2853,6 +3128,11 @@
             openTestMode();
           });
         });
+        var depSimBtn = document.getElementById("depSimBtn");
+        if (depSimBtn) depSimBtn.addEventListener("click", function () {
+          var sel = document.getElementById("depPlanSel");
+          simulateIncomingDeposit(sel ? Number(sel.value) : 0);
+        });
         document.getElementById("adjReset").addEventListener("click", function () {
           applyScenario(DEFAULT_SCENARIO);
           showToast("Todo restablecido · Nivel Hierro");
@@ -2886,6 +3166,7 @@
         closeSheet();
         closePlanSheet();
         closeBuyFlow();
+        closeCeleb();
       }
       function route() {
         var h = (location.hash || "#/inicio").replace("#/", "");
@@ -3012,9 +3293,7 @@
           if (s) openSheet(s.title, s.body);
         });
       });
-      document.getElementById("bellBtn").addEventListener("click", function () {
-        openSheet(SHEETS.notificaciones.title, SHEETS.notificaciones.body);
-      });
+      document.getElementById("bellBtn").addEventListener("click", openNotificationsSheet);
 
       /* Detalle de máquina */
       document.getElementById("machineList").addEventListener("click", function (e) {
@@ -3085,6 +3364,90 @@
       });
       document.getElementById("testModeCard").addEventListener("click", openTestMode);
 
+      /* ============ Notificaciones de compra y celebración al volver ============ */
+      var notifications = lsGet("gm_notifications", null);
+      if (!Array.isArray(notifications) || !notifications.every(function (n) { return n && typeof n.id === "string" && typeof n.title === "string" && typeof n.body === "string" && typeof n.read === "boolean"; })) {
+        notifications = [];
+      }
+      function persistNotifications() { lsSet("gm_notifications", notifications); }
+      function unreadCount() { return notifications.filter(function (n) { return !n.read; }).length; }
+      function renderBell() {
+        var badge = document.querySelector("#bellBtn .badge");
+        if (badge) badge.style.display = unreadCount() > 0 ? "" : "none";
+      }
+      function pushPurchaseNotification(o) {
+        var p = PLANS[o.planId];
+        notifications.unshift({
+          id: "n" + Date.now() + "-" + Math.floor(Math.random() * 100000),
+          kind: "purchase",
+          orderId: o.id,
+          planId: o.planId,
+          title: "¡Pago confirmado!",
+          body: "Tu " + p.name + " ya está en tu cuenta. Toca para ver tu compra.",
+          read: false,
+          createdAt: Date.now()
+        });
+        persistNotifications();
+        renderBell();
+      }
+      function openOrderDone(o) {
+        if (!o) return;
+        o.archived = false;
+        persistOrder();
+        openBuyFlow(o.planId);
+      }
+      function openNotificationsSheet() {
+        var html;
+        if (!notifications.length) {
+          html = '<p>No tienes notificaciones todavía. Cuando se confirme un pago, lo verás aquí.</p>';
+        } else {
+          html = notifications.map(function (n) {
+            return '<button class="notif-item' + (n.read ? ' read' : '') + '" type="button" data-notif="' + n.id + '">' +
+              '<span class="n-ic">' + BUY_ICONS.check + '</span>' +
+              '<span style="flex:1;min-width:0"><b>' + n.title + '</b><p>' + n.body + '</p></span>' +
+              (n.read ? '' : '<span class="n-dot" aria-hidden="true"></span>') +
+            '</button>';
+          }).join("");
+        }
+        openSheet("Notificaciones", html);
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-notif]"), function (b) {
+          b.addEventListener("click", function () {
+            var found = null;
+            notifications.forEach(function (x) { if (x.id === b.getAttribute("data-notif")) found = x; });
+            if (!found) return;
+            found.read = true;
+            persistNotifications();
+            renderBell();
+            closeSheet();
+            if (found.kind === "purchase" && order && order.id === found.orderId && order.status === "confirmada") {
+              openOrderDone(order);
+            }
+          });
+        });
+      }
+      var celebSheetEl = document.getElementById("celebSheet");
+      function closeCeleb() { celebSheetEl.classList.remove("open"); }
+      function maybeShowCelebration() {
+        if (!order || order.status !== "confirmada" || order.celebrated) return;
+        var p = PLANS[order.planId];
+        celebSheetEl.innerHTML = '<div class="celeb-body">' +
+          '<div class="big-circle green">' + BUY_ICONS.checkBig + '</div>' +
+          '<h3 class="celeb-title">¡Felicidades!</h3>' +
+          '<p class="celeb-text">Tu pago fue confirmado y tu ' + p.name + ' ya está en tu cuenta.</p>' +
+          '<div class="celeb-actions">' +
+            '<button class="btn btn-gold" type="button" id="celebViewBtn">Ver mi máquina</button>' +
+            '<button class="btn btn-dark" type="button" id="celebLaterBtn">Ahora no</button>' +
+          '</div></div>';
+        order.celebrated = true;
+        persistOrder();
+        celebSheetEl.classList.add("open");
+        document.getElementById("celebLaterBtn").addEventListener("click", closeCeleb);
+        document.getElementById("celebViewBtn").addEventListener("click", function () {
+          closeCeleb();
+          if (order && order.status === "confirmada") openOrderDone(order);
+        });
+      }
+
       /* ============ Arranque ============ */
       renderPlans();
       renderTestCard();
@@ -3092,8 +3455,10 @@
       updateSmeltGate();
       restoreSmelt();
       renderBalance(); renderMachines(); renderMoves();
+      renderBell();
       bindGoto(document);
       route();
+      maybeShowCelebration();
     </script>
   </body>
 </html>
