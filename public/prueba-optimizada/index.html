@@ -1,0 +1,2957 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#070503" />
+    <link rel="icon" href="data:," />
+    <title>Panel Principal — Gold Mining 2.0</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ================================================================
+         PANEL PRINCIPAL — GOLD MINING 2.0
+         Una sola página continua: Hero · Cómo funciona · Planes ·
+         Fundidora · Referidos · Ruleta · Tienda · Retiros · Pie.
+         ADN unificado: fondo oscuro cinematográfico con túnel fijo y
+         partículas doradas persistentes, Barlow / Barlow Condensed,
+         tarjetas oscuras con borde dorado sutil.
+         Animación SOLO ambiental (luz, polvo, resplandores):
+         ninguna máquina rota ni se mueve.
+         ================================================================ */
+      :root {
+        color-scheme: dark;
+        --bg: #070503;
+        --bg-deep: #050403;
+        --gold: #d4a017;
+        --gold-2: #e8b24b;
+        --gold-hi: #f2cd6b;
+        --gold-light: #ffe9a8;
+        --gold-pale: #f7e3a1;
+        --ink: #f5f0e6;
+        --ink-2: #e9e2d0;
+        --muted: #b6ad9c;
+        --muted-2: #8f8268;
+        --line: rgba(212, 160, 23, 0.24);
+        --line-soft: rgba(212, 160, 23, 0.13);
+        --panel: #14100a;
+        --panel-2: #1a150c;
+        --panel-inset: rgba(0, 0, 0, 0.32);
+        --ok: #8be26b;
+        --ember: #ff8a3d;
+        --font-d: "Barlow Condensed", "Arial Narrow", sans-serif;
+        --font-b: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+        --ease: cubic-bezier(0.22, 0.8, 0.3, 1);
+        --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        --depth: 0;
+      }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+      body {
+        background: var(--bg-deep);
+        color: var(--ink);
+        font-family: var(--font-b);
+        font-size: 16px;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+        min-height: 100vh;
+      }
+      ::selection { background: rgba(212, 160, 23, 0.35); }
+      a { color: var(--gold); text-decoration: none; }
+      a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+      img { max-width: 100%; }
+      .num { font-weight: 800; font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+
+      /* ---------- Fondo continuo: túnel fijo + velo + partículas ---------- */
+      .bg-photo {
+        position: fixed; inset: 0; z-index: 0;
+        background-image: url("assets/tunnel-bg.jpg");
+        background-size: cover;
+        background-position: center;
+        filter: brightness(calc(1 - var(--depth) * 0.45));
+        transform: translateY(calc(var(--depth) * -8%));
+      }
+      .bg-veil {
+        position: fixed; inset: 0; z-index: 0; pointer-events: none;
+        background:
+          radial-gradient(ellipse at center top, transparent 30%, rgba(5, 4, 3, calc(0.25 + var(--depth) * 0.35)) 100%),
+          linear-gradient(180deg, rgba(7, 5, 3, 0.16) 0%, rgba(7, 5, 3, 0.74) 52%, rgba(5, 4, 3, 0.93) 100%);
+      }
+      .bg-glow {
+        position: fixed; z-index: 0; pointer-events: none; border-radius: 50%;
+        will-change: transform;
+      }
+      .bg-glow-a {
+        width: 70vmax; height: 70vmax; right: -28vmax; top: -30vmax;
+        background: radial-gradient(circle, rgba(232, 178, 75, 0.10), transparent 62%);
+      }
+      .bg-glow-b {
+        width: 56vmax; height: 56vmax; left: -24vmax; bottom: -26vmax;
+        background: radial-gradient(circle, rgba(212, 160, 23, 0.07), transparent 62%);
+      }
+      #particles {
+        position: fixed; inset: 0; z-index: 0;
+        width: 100%; height: 100%;
+        pointer-events: none;
+      }
+      .scroll-progress {
+        position: fixed; top: 0; left: 0; height: 3px; width: 100%; z-index: 80;
+        transform-origin: 0 50%; transform: scaleX(0);
+        background: linear-gradient(90deg, #8a5d00, var(--gold) 55%, var(--gold-hi));
+        box-shadow: 0 0 10px rgba(212, 160, 23, 0.55);
+      }
+      main { position: relative; z-index: 1; }
+
+      /* ---------- Cabecera superior fija ---------- */
+      .appbar {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 70;
+        background: rgba(7, 5, 3, 0.74);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--line-soft);
+      }
+      .appbar-in {
+        max-width: 1120px; margin: 0 auto;
+        height: 56px; padding: 0 16px;
+        display: flex; align-items: center; gap: 12px;
+      }
+      .brand {
+        display: inline-flex; align-items: center; gap: 10px;
+        color: var(--gold-light); min-width: 0;
+      }
+      .brand svg { flex: none; color: var(--gold-hi); }
+      .brand .brand-name {
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase;
+        letter-spacing: 0.14em; font-size: 19px; line-height: 1; white-space: nowrap;
+      }
+      .brand .brand-name b { color: var(--gold-hi); font-weight: 800; }
+      .appbar .spacer { flex: 1; }
+      .account-pill {
+        display: inline-flex; align-items: center; gap: 7px;
+        padding: 7px 14px; border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(212, 160, 23, 0.09);
+        color: var(--gold-pale);
+        font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+        white-space: nowrap;
+      }
+      .account-pill .dot {
+        width: 7px; height: 7px; border-radius: 50%;
+        background: var(--ok);
+        box-shadow: 0 0 0 0 rgba(139, 226, 107, 0.55);
+        animation: dot-pulse 2.2s ease-out infinite;
+        flex: none;
+      }
+      @keyframes dot-pulse {
+        0% { box-shadow: 0 0 0 0 rgba(139, 226, 107, 0.55); }
+        70% { box-shadow: 0 0 0 7px rgba(139, 226, 107, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(139, 226, 107, 0); }
+      }
+      .menu-btn {
+        appearance: none; cursor: pointer;
+        width: 42px; height: 42px; flex: none;
+        display: grid; place-items: center;
+        border-radius: 11px;
+        border: 1px solid var(--line);
+        background: rgba(212, 160, 23, 0.07);
+        color: var(--gold-hi);
+        transition: background 0.2s ease;
+      }
+      .menu-btn:active { transform: scale(0.96); }
+      @media (hover: hover) { .menu-btn:hover { background: rgba(212, 160, 23, 0.16); } }
+      .menu-panel {
+        position: absolute; top: calc(100% + 8px); right: 12px;
+        width: min(280px, calc(100vw - 24px));
+        background: rgba(16, 12, 6, 0.97);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        box-shadow: 0 24px 54px rgba(0, 0, 0, 0.6);
+        padding: 8px;
+        opacity: 0; transform: translateY(-6px);
+        pointer-events: none;
+        transition: opacity 0.22s ease, transform 0.22s var(--ease);
+      }
+      .menu-panel.open { opacity: 1; transform: none; pointer-events: auto; }
+      .menu-panel a {
+        display: flex; align-items: center; gap: 11px;
+        padding: 11px 12px; border-radius: 10px;
+        color: var(--ink-2); font-weight: 600; font-size: 15px;
+        transition: background 0.18s ease, color 0.18s ease;
+      }
+      .menu-panel a svg { flex: none; color: var(--gold); }
+      @media (hover: hover) { .menu-panel a:hover { background: rgba(212, 160, 23, 0.10); color: var(--gold-light); } }
+      .menu-panel a:active { background: rgba(212, 160, 23, 0.14); }
+      /* Cabecera compacta en pantallas pequeñas: marca, pastilla y menú sin solaparse */
+      .brand { flex: 0 1 auto; overflow: hidden; }
+      .account-pill, .menu-btn { flex: none; }
+      @media (max-width: 520px) {
+        /* En móvil la cabecera usa fondo sólido en lugar de desenfoque:
+           una capa menos que Safari tenga que repintar en cada scroll. */
+        .appbar { background: rgba(7, 5, 3, 0.96); backdrop-filter: none; -webkit-backdrop-filter: none; }
+        .appbar-in { height: 52px; padding: 0 12px; gap: 8px; }
+        .brand { gap: 7px; }
+        .brand svg { width: 27px; height: 18px; }
+        .brand .brand-name { font-size: 15px; letter-spacing: 0.09em; }
+        .account-pill { padding: 6px 10px; font-size: 12px; gap: 6px; }
+        .menu-btn { width: 38px; height: 38px; border-radius: 10px; }
+      }
+
+      /* ---------- Ritmo de secciones ---------- */
+      .sec { position: relative; padding: 92px 0 10px; scroll-margin-top: 62px; }
+      .sec::before {
+        content: ""; position: absolute; top: 0; left: 50%;
+        transform: translateX(-50%);
+        width: min(720px, 92%); height: 190px; pointer-events: none;
+        background: radial-gradient(ellipse 60% 100% at 50% 0%, rgba(212, 160, 23, 0.09), transparent 70%);
+      }
+      .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; position: relative; }
+      @media (min-width: 760px) { .wrap { padding: 0 24px; } .sec { padding-top: 110px; } }
+
+      /* ---------- Revelado al hacer scroll (solo opacidad, sin transform) ----------
+         Sin desplazamiento al aparecer: mover bloques durante el scroll hacía
+         que Safari retuviera el fotograma anterior (doble pintado fantasma).
+         Progressive enhancement: el estado oculto (.pre) lo aplica el JS solo
+         cuando el IntersectionObserver está activo y el elemento está lejos del
+         viewport; sin JS o sin observador, todo se ve desde el primer momento
+         (nunca en blanco). */
+      .rv { transition: opacity 0.45s ease; }
+      .rv.pre { opacity: 0; }
+      .rv.pre:not(.in) { transition-delay: var(--d, 0s); }
+      .rv.in { opacity: 1; }
+
+      /* ---------- Botón volver arriba ---------- */
+      .to-top {
+        position: fixed; right: 16px; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 65;
+        width: 46px; height: 46px; border-radius: 50%;
+        display: grid; place-items: center;
+        border: 1px solid var(--line);
+        background: rgba(14, 10, 5, 0.85);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        color: var(--gold-hi); cursor: pointer;
+        opacity: 0; transform: translateY(10px); pointer-events: none;
+        transition: opacity 0.3s ease, transform 0.3s var(--ease), background 0.2s ease;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+      }
+      .to-top.show { opacity: 1; transform: none; pointer-events: auto; }
+      .to-top:active { transform: scale(0.94); }
+      @media (hover: hover) { .to-top:hover { background: rgba(212, 160, 23, 0.18); } }
+
+      /* ================================================================
+         1 · HERO (réplica del hero publicado, sin pastilla «Sistema activo»)
+         ================================================================ */
+      .hero {
+        min-height: 100vh; min-height: 100svh;
+        display: flex; align-items: center; justify-content: center;
+        text-align: center;
+        padding: 84px 16px 64px;
+        position: relative;
+        scroll-margin-top: 0;
+      }
+      .hero-inner {
+        max-width: 480px;
+        display: flex; flex-direction: column; align-items: center; gap: 16px;
+        position: relative; isolation: isolate;
+      }
+      .hero-inner::before {
+        content: ""; position: absolute; inset: -56px -40px; z-index: -1; pointer-events: none;
+        background: radial-gradient(ellipse 72% 64% at 50% 52%,
+          rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.34) 38%,
+          rgba(0, 0, 0, 0.16) 64%, rgba(0, 0, 0, 0) 82%);
+      }
+      .hero-title {
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase;
+        font-size: clamp(48px, 15vw, 96px);
+        letter-spacing: 0.04em; line-height: 1.05;
+        color: var(--gold-light);
+        text-shadow: 0 2px 30px rgba(0, 0, 0, 0.6);
+      }
+      .hero-line { display: block; }
+      .hero-subtitle { font-size: 20px; font-weight: 500; color: var(--ink); }
+      .hero-desc {
+        font-size: 16px; max-width: 320px; color: #c9c2b2;
+        text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9), 0 0 3px rgba(0, 0, 0, 0.85), 0 2px 24px rgba(0, 0, 0, 0.55);
+      }
+      .hero-ctas {
+        display: flex; flex-direction: column; gap: 8px;
+        width: 100%; max-width: 320px; margin-top: 16px;
+      }
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        padding: 14px 28px; border-radius: 999px;
+        font-size: 16px; font-weight: 500; min-height: 48px;
+        transition: transform 120ms var(--ease), box-shadow 250ms var(--ease);
+        position: relative; overflow: hidden;
+      }
+      .btn:active { transform: scale(0.97); }
+      .btn-primary { background: var(--gold); color: #0a0805; }
+      .btn-primary::after {
+        content: ""; position: absolute; top: 0; left: -100%;
+        width: 60%; height: 100%;
+        background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+        animation: btn-shine 4s ease-in-out infinite;
+      }
+      @keyframes btn-shine { 0%, 60% { left: -100%; } 100% { left: 200%; } }
+      .btn-secondary {
+        background: rgba(10, 8, 5, 0.65);
+        border: 1px solid var(--gold);
+        color: var(--gold-light);
+      }
+      .hero-more {
+        display: inline-flex; align-items: center;
+        min-height: 44px; padding: 12px 16px; margin-top: 24px;
+        font-size: 14px; color: var(--gold);
+      }
+      @keyframes heroUp {
+        from { opacity: 0; transform: translateY(var(--dy, 16px)); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes heroFade { from { opacity: 0; } to { opacity: 1; } }
+      .anim-line1 { --dy: 24px; animation: heroUp 0.6s var(--ease-out) 0.30s both; }
+      .anim-line2 { --dy: 24px; animation: heroUp 0.6s var(--ease-out) 0.42s both; }
+      .anim-sub { --dy: 16px; animation: heroUp 0.5s var(--ease-out) 0.50s both; }
+      .anim-desc { --dy: 16px; animation: heroUp 0.5s var(--ease-out) 0.60s both; }
+      .anim-ctas { --dy: 16px; animation: heroUp 0.5s var(--ease-out) 0.70s both; }
+      .anim-more { animation: heroFade 0.4s var(--ease-out) 0.90s both; }
+
+      /* ================================================================
+         2 · CÓMO FUNCIONA (5 tarjetas con timeline dorada)
+         ================================================================ */
+      .cf-head { text-align: center; max-width: 720px; margin: 0 auto 46px; }
+      .pill {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 7px 16px;
+        border: 1px solid rgba(212, 160, 23, 0.45); border-radius: 999px;
+        background: rgba(212, 160, 23, 0.07);
+        color: var(--gold-hi);
+        font-size: 11px; font-weight: 500; letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+      .pill svg { width: 13px; height: 13px; flex: 0 0 auto; }
+      .cf-head h2 {
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase;
+        font-size: clamp(38px, 9.4vw, 66px); line-height: 1.04; letter-spacing: 0.03em;
+        margin: 20px 0 14px;
+        text-shadow: 0 3px 22px rgba(0, 0, 0, 0.85);
+      }
+      .cf-head h2 .silver { color: #cfd2d6; }
+      .cf-head h2 .gold { color: var(--gold-hi); }
+      .cf-sub {
+        font-size: clamp(16px, 4.2vw, 19px); font-weight: 400; color: var(--muted);
+        line-height: 1.5; max-width: 520px; margin: 0 auto;
+      }
+      .cf-rule {
+        width: 110px; height: 2px; margin: 22px auto 0;
+        background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      }
+      .cf-flow { position: relative; max-width: 960px; margin: 0 auto; padding-left: 52px; }
+      .cf-flow::before {
+        content: ""; position: absolute; left: 23px; top: 14px; bottom: 14px; width: 2px;
+        background: linear-gradient(180deg, transparent, var(--gold) 6%, var(--gold) 94%, transparent);
+        opacity: 0.55;
+      }
+      .cf-step { position: relative; margin-bottom: 26px; }
+      .cf-step:last-child { margin-bottom: 0; }
+      .cf-num {
+        position: absolute; left: -52px; top: 22px;
+        width: 48px; height: 48px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        background: #0d0903; border: 1.5px solid var(--gold);
+        color: var(--gold-hi);
+        font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: 0.04em;
+        box-shadow: 0 0 0 5px var(--bg-deep), 0 0 18px rgba(212, 160, 23, 0.35);
+        z-index: 2;
+      }
+      .cf-card {
+        background: rgba(14, 10, 5, 0.86);
+        border: 1px solid var(--line-soft); border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+        transition: transform 0.35s var(--ease), box-shadow 0.35s ease, border-color 0.35s ease;
+      }
+      @media (hover: hover) {
+        .cf-card:hover { transform: translateY(-4px); border-color: var(--line); box-shadow: 0 20px 42px rgba(0, 0, 0, 0.55), 0 0 24px rgba(212, 160, 23, 0.08); }
+      }
+      .cf-card .txt { padding: 20px 20px 18px; }
+      .cf-card h3 {
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase;
+        font-size: clamp(22px, 5.6vw, 28px); line-height: 1.14; letter-spacing: 0.025em;
+        color: #fff; margin-bottom: 8px;
+      }
+      .cf-card h3 .g { color: var(--gold-hi); }
+      .cf-card p { font-size: clamp(15px, 3.9vw, 16.5px); font-weight: 400; line-height: 1.55; color: #b6ad9c; }
+      .cf-card p + p { margin-top: 9px; }
+      .cf-ph { position: relative; line-height: 0; }
+      .cf-ph img { width: 100%; height: auto; display: block; aspect-ratio: 16 / 9.4; object-fit: cover; }
+      .cf-chip {
+        position: absolute; left: 14px; bottom: 14px;
+        display: inline-flex; align-items: center; gap: 7px;
+        padding: 8px 14px;
+        border: 1px solid var(--gold); border-radius: 999px;
+        background: rgba(8, 5, 2, 0.78);
+        backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+        color: var(--gold-hi);
+        font-size: 11.5px; font-weight: 800; font-variant-numeric: tabular-nums;
+        letter-spacing: 0.14em; line-height: 1.3; text-transform: uppercase;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+      }
+      .cf-chip::before {
+        content: ""; width: 6px; height: 6px; border-radius: 50%;
+        background: var(--gold-hi); box-shadow: 0 0 8px var(--gold-hi); flex: 0 0 auto;
+      }
+      .cf-closing {
+        display: flex; flex-direction: column; align-items: center; gap: 2px;
+        padding: 44px 0 6px; color: var(--gold-hi);
+      }
+      .cf-closing span { font-size: 10.5px; font-weight: 500; letter-spacing: 0.34em; text-transform: uppercase; opacity: 0.85; }
+      .cf-closing svg { width: 26px; height: 26px; animation: cf-bob 2.2s ease-in-out infinite; }
+      @keyframes cf-bob { 0%, 100% { transform: translateY(0); opacity: 0.65; } 50% { transform: translateY(6px); opacity: 1; } }
+      @media (min-width: 820px) {
+        .cf-head { margin-bottom: 60px; }
+        .cf-flow { padding-left: 76px; }
+        .cf-flow::before { left: 31px; }
+        .cf-num { left: -76px; top: 30px; width: 64px; height: 64px; font-size: 18px; }
+        .cf-step { margin-bottom: 34px; }
+        .cf-card { display: grid; grid-template-columns: 1fr 1.12fr; align-items: stretch; }
+        .cf-card .txt { padding: 30px 30px 26px; display: flex; flex-direction: column; justify-content: center; }
+        .cf-ph img { height: 100%; aspect-ratio: auto; min-height: 230px; }
+      }
+
+      /* ================================================================
+         3 · PLANES (las 4 tarjetas aprobadas, intactas, con su bokeh)
+         ================================================================ */
+      .pl-wrap { max-width: 1040px; margin: 0 auto; position: relative; }
+      .pl-head { padding: 6px 4px; text-align: left; }
+      .pl-head .pl-rule {
+        width: 64px; height: 3px; border-radius: 2px; margin-bottom: 14px;
+        background: linear-gradient(90deg, var(--gold-hi), #8a5d00);
+        box-shadow: 0 0 12px rgba(212, 160, 23, 0.5);
+        transform-origin: 0 50%;
+      }
+      .pl-head h2 {
+        font-family: var(--font-d); font-weight: 800;
+        font-size: clamp(34px, 6.5vw, 54px); line-height: 0.95; letter-spacing: 0.02em;
+        text-transform: uppercase; color: var(--ink);
+      }
+      .pl-head h2 em { font-style: normal; color: var(--gold-hi); }
+      .pl-head p { margin: 10px 0 0; max-width: 560px; color: var(--muted); font-size: 16px; line-height: 1.5; font-weight: 500; }
+      .pl-fleet { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+      .pl-fleet span {
+        padding: 6px 12px; border: 1px solid rgba(212, 160, 23, 0.5); border-radius: 999px;
+        background: rgba(12, 10, 6, 0.7); color: var(--gold-pale);
+        font-size: 12.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1;
+      }
+      .pl-cards { display: flex; flex-direction: column; gap: 30px; margin-top: 26px; }
+      /* Mismo revelado que .rv: solo opacidad, y el estado oculto (.pre) lo
+         aplica el JS — ninguna tarjeta nace oculta en CSS. */
+      .pl-shell { margin: 0; transition: opacity 0.45s ease; }
+      .pl-shell.pre { opacity: 0; }
+      .pl-shell.in { opacity: 1; }
+      .pl-connector {
+        align-self: center; width: 2px; height: 34px; margin: -16px 0;
+        background: linear-gradient(180deg, transparent, rgba(212, 160, 23, 0.55), transparent);
+        opacity: 0; transition: opacity 0.8s ease 0.2s;
+      }
+      .pl-connector.in { opacity: 1; }
+
+      .plan-card {
+        position: relative; isolation: isolate; container-type: inline-size;
+        width: 100%; aspect-ratio: 16 / 9; overflow: hidden;
+        border: 1px solid #d99c0d; border-radius: 22px; background: #070503;
+        box-shadow: 0 30px 74px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 218, 97, 0.15) inset, 0 0 34px rgba(225, 145, 8, 0.12);
+        transition: transform 0.45s var(--ease), box-shadow 0.45s ease;
+      }
+      @media (hover: hover) and (min-width: 761px) {
+        .plan-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 40px 84px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 218, 97, 0.22) inset, 0 0 54px rgba(225, 145, 8, 0.22);
+        }
+      }
+      .plan-card::before {
+        content: ""; position: absolute; inset: 0; z-index: 5; pointer-events: none; border-radius: 21px;
+        border: 1px solid rgba(255, 230, 144, 0.18);
+        background:
+          linear-gradient(90deg, rgba(255, 198, 44, 0.6), transparent 9%, transparent 91%, rgba(255, 198, 44, 0.45)) top / 100% 1px no-repeat,
+          linear-gradient(90deg, rgba(255, 198, 44, 0.4), transparent 24%, transparent 76%, rgba(255, 198, 44, 0.5)) bottom / 100% 1px no-repeat;
+      }
+      .pc-rivet {
+        position: absolute; z-index: 6; width: 1cqw; min-width: 6px; aspect-ratio: 1; border-radius: 50%; pointer-events: none;
+        background: radial-gradient(circle at 35% 32%, #ffe9a3 0%, #d9a91f 42%, #7a5603 78%, #3d2b01 100%);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(0, 0, 0, 0.45);
+      }
+      .pc-rivet.tl { top: 1.1cqw; left: 1.1cqw; } .pc-rivet.tr { top: 1.1cqw; right: 1.1cqw; }
+      .pc-rivet.bl { bottom: 1.1cqw; left: 1.1cqw; } .pc-rivet.br { bottom: 1.1cqw; right: 1.1cqw; }
+      .pc-scene {
+        position: absolute; inset: 0; width: 100%; height: 100%;
+        object-fit: cover; object-position: center;
+        filter: saturate(1.05) contrast(1.05) brightness(0.94);
+        z-index: -3;
+      }
+      .pc-scene.zoomout {
+        transform: scale(var(--zs, 0.66)); transform-origin: 0 100%;
+        -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 15%, #000 100%);
+        mask-image: linear-gradient(180deg, transparent 0, #000 15%, #000 100%);
+      }
+      .pc-shade {
+        position: absolute; inset: 0; z-index: -2;
+        background:
+          linear-gradient(180deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.18) 22%, transparent 44%, transparent 78%, rgba(0, 0, 0, 0.5) 100%),
+          linear-gradient(90deg, rgba(0, 0, 0, 0.22) 0%, transparent 34%, transparent 58%, rgba(0, 0, 0, 0.34) 100%);
+      }
+      .pc-head {
+        position: absolute; z-index: 2; top: 4%; left: 3.2%; width: 60%;
+        display: grid; grid-template-columns: auto 1fr;
+        grid-template-areas: "badge top" "badge sub";
+        align-items: center; gap: 0.35cqw 1.5cqw;
+        text-shadow: 0 3px 14px #000, 0 1px 3px #000;
+      }
+      .pc-unit {
+        grid-area: badge; display: grid; place-items: center;
+        width: 7.3cqw; aspect-ratio: 1; border-radius: 50%;
+        color: #171003; font-family: var(--font-d);
+        font-size: 3.6cqw; line-height: 1; font-weight: 800;
+        background: linear-gradient(145deg, #ffe573 0%, #f6bd24 48%, #cf8500 100%);
+        border: 2px solid #efb417;
+        box-shadow: 0 0 0 3px rgba(29, 20, 2, 0.72) inset, 0 0 20px rgba(249, 176, 11, 0.28);
+      }
+      .pc-top { grid-area: top; display: flex; align-items: center; gap: 1.3cqw; min-width: 0; }
+      .pc-index {
+        flex: 0 0 auto; padding: 0.55cqw 1.15cqw 0.65cqw;
+        border: 1px solid #dca20f; border-radius: 0.95cqw;
+        background: linear-gradient(180deg, rgba(16, 14, 9, 0.92), rgba(6, 6, 4, 0.88));
+        box-shadow: 0 1px 0 rgba(255, 231, 127, 0.12) inset;
+        color: #ffe06a; font-family: var(--font-d);
+        font-size: 1.85cqw; font-weight: 700; letter-spacing: 0.03em; line-height: 1;
+      }
+      .plan-card h3 {
+        font-family: var(--font-d);
+        font-size: 3.35cqw; line-height: 0.95; letter-spacing: 0.015em; font-weight: 800;
+        text-transform: uppercase; white-space: nowrap; color: #fff8e8;
+      }
+      .plan-card h3.long { font-size: 2.9cqw; }
+      .pc-sub { grid-area: sub; color: #f0e7cf; font-size: 1.6cqw; line-height: 1.2; font-weight: 500; }
+      .pc-panel {
+        position: absolute; z-index: 3; right: 2.3%; top: 20.5%; bottom: 4.6%; width: 33.2%;
+        display: flex; flex-direction: column;
+        padding: 2cqw 2.1cqw 1.9cqw;
+        border: 1px solid #d39a0c; border-radius: 1.7cqw;
+        background: linear-gradient(180deg, rgba(46, 35, 13, 0.38), transparent 26%), rgba(6, 6, 4, 0.94);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.66), 0 0 0 1px rgba(255, 223, 108, 0.09) inset, -14px 0 32px rgba(0, 0, 0, 0.25);
+      }
+      .pc-panel::before {
+        content: ""; position: absolute; top: 0; left: 11%; right: 11%; height: 1px;
+        background: linear-gradient(90deg, transparent, #ffe071, transparent);
+      }
+      .pc-metric {
+        display: grid; grid-template-columns: 3.9cqw 1fr; align-items: center; gap: 1.15cqw;
+        padding: 1.12cqw 0; border-bottom: 1px solid rgba(243, 178, 20, 0.30);
+      }
+      .pc-metric:first-of-type { padding-top: 0.3cqw; }
+      .pc-micon {
+        display: grid; place-items: center; width: 3.9cqw; height: 3.9cqw;
+        border: 1px solid rgba(235, 176, 27, 0.42); border-radius: 0.85cqw; background: #0d0b07;
+        box-shadow: 0 1px 0 rgba(255, 225, 106, 0.1) inset; color: var(--gold-hi);
+      }
+      .pc-micon svg { width: 2.35cqw; height: 2.35cqw; stroke: currentColor; stroke-width: 1.7; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .pc-label { display: block; margin-bottom: 0.28cqw; color: #d6c9ad; font-size: 1.28cqw; line-height: 1.15; font-weight: 500; }
+      .pc-value { display: block; color: #fff8e8; font-size: 2.05cqw; line-height: 1.02; font-weight: 800; white-space: nowrap; font-variant-numeric: tabular-nums; }
+      .pc-value strong { color: #ffe37c; font-weight: 800; }
+      .pc-activate {
+        position: relative; overflow: hidden;
+        width: 100%; margin-top: auto; min-height: 5.4cqw; padding: 1cqw 1.2cqw;
+        border: 1px solid #ffd35f; border-radius: 1.15cqw;
+        color: #171005; background: linear-gradient(180deg, #ffd964 0%, #ffc12a 52%, #e9a609 100%);
+        box-shadow: 0 10px 22px rgba(234, 159, 7, 0.25), 0 1px 0 rgba(255, 255, 255, 0.55) inset;
+        font-family: var(--font-b); font-size: 1.8cqw; font-weight: 800; line-height: 1;
+        display: flex; align-items: center; justify-content: center; gap: 1cqw; cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.25s ease;
+      }
+      .pc-activate:active { transform: scale(0.97); }
+      @media (hover: hover) {
+        .pc-activate:hover { box-shadow: 0 14px 30px rgba(234, 159, 7, 0.42), 0 1px 0 rgba(255, 255, 255, 0.6) inset; }
+        .pc-activate::after {
+          content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 45%;
+          background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+          transform: translateX(-160%) skewX(-18deg);
+          transition: transform 0.6s ease;
+        }
+        .pc-activate:hover::after { transform: translateX(280%) skewX(-18deg); }
+      }
+      .pc-activate svg { width: 2cqw; height: 2cqw; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
+
+      /* Capa de efectos aprobada por tarjeta: resplandores, barrido, polvo, bokeh, pilotos */
+      .pc-fx { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+      .pc-glow {
+        position: absolute; border-radius: 50%; transform: translate(-50%, -50%);
+        mix-blend-mode: screen; will-change: opacity;
+        animation: pc-glow-breathe 4.6s ease-in-out infinite alternate;
+      }
+      .pc-glow.g-a { background: radial-gradient(circle, rgba(255, 178, 44, 0.55) 0%, rgba(255, 140, 10, 0.20) 46%, transparent 70%); }
+      .pc-glow.g-b { background: radial-gradient(circle, rgba(255, 196, 74, 0.5) 0%, rgba(255, 150, 20, 0.16) 48%, transparent 70%); animation-duration: 6.2s; animation-delay: 1.3s; }
+      .pc-glow.g-c { background: radial-gradient(circle, rgba(255, 205, 92, 0.45) 0%, rgba(255, 160, 30, 0.15) 48%, transparent 70%); animation-duration: 5.4s; animation-delay: 0.6s; }
+      @keyframes pc-glow-breathe { from { opacity: 0.42; } to { opacity: 0.92; } }
+      .pc-sweep {
+        position: absolute; top: -12%; bottom: -12%; left: 0; width: 36%;
+        background: linear-gradient(100deg, transparent 0%, rgba(255, 196, 64, 0.07) 38%, rgba(255, 224, 140, 0.13) 50%, rgba(255, 196, 64, 0.07) 62%, transparent 100%);
+        mix-blend-mode: screen; transform: translateX(-150%) skewX(-8deg);
+        will-change: transform; animation: pc-sweep-move 12s ease-in-out infinite;
+      }
+      @keyframes pc-sweep-move {
+        0%, 52% { transform: translateX(-150%) skewX(-8deg); }
+        88%, 100% { transform: translateX(430%) skewX(-8deg); }
+      }
+      .pc-dust { position: absolute; inset: 0; }
+      .pc-dust i {
+        position: absolute; bottom: -3%; left: var(--x);
+        width: var(--s); height: var(--s); border-radius: 50%;
+        background: radial-gradient(circle, rgba(255, 226, 140, 0.95) 0%, rgba(255, 178, 44, 0.55) 55%, transparent 75%);
+        filter: blur(0.6px); opacity: 0; will-change: transform, opacity;
+        animation: pc-dust-rise var(--d) linear infinite; animation-delay: var(--dl);
+      }
+      @keyframes pc-dust-rise {
+        0% { transform: translate3d(0, 0, 0); opacity: 0; }
+        14% { opacity: 0.75; }
+        68% { opacity: 0.4; }
+        100% { transform: translate3d(2.6cqw, -42cqw, 0); opacity: 0; }
+      }
+      .pc-bokeh { position: absolute; inset: 0; }
+      .pc-bokeh i {
+        position: absolute; left: var(--x); top: var(--y);
+        width: var(--s); height: var(--s); border-radius: 50%;
+        background: radial-gradient(circle, rgba(255, 216, 116, 0.9) 0%, rgba(255, 182, 48, 0.38) 42%, rgba(255, 160, 30, 0) 68%);
+        mix-blend-mode: screen; opacity: 0; will-change: transform, opacity;
+        animation: pc-bokeh-float var(--d) ease-in-out infinite alternate; animation-delay: var(--dl);
+      }
+      @keyframes pc-bokeh-float {
+        0% { transform: translate3d(0, 0, 0) scale(1); opacity: calc(var(--o) * 0.5); }
+        55% { opacity: var(--o); }
+        100% { transform: translate3d(var(--dx), var(--dy), 0) scale(1.09); opacity: calc(var(--o) * 0.72); }
+      }
+      .pc-pilot {
+        position: absolute; border-radius: 50%;
+        background: radial-gradient(circle at 42% 36%, #fff6cf 0%, #ffb400 52%, rgba(255, 150, 0, 0) 78%);
+        box-shadow: 0 0 1.7cqw 0.4cqw rgba(255, 170, 20, 0.5);
+        will-change: opacity; animation: pc-pilot-pulse 2.8s ease-in-out infinite;
+      }
+      .pc-pilot.p1 { width: 1.15cqw; height: 1.15cqw; min-width: 5px; min-height: 5px; }
+      .pc-pilot.p2 { width: 0.95cqw; height: 0.95cqw; min-width: 4px; min-height: 4px; animation-delay: 1.1s; }
+      .pc-pilot.ppanel { top: 1.15cqw; right: 1.15cqw; width: 0.85cqw; height: 0.85cqw; min-width: 4px; min-height: 4px; animation-duration: 2.2s; animation-delay: 0.4s; }
+      @keyframes pc-pilot-pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+      .plan-card.fxoff .pc-fx *, .plan-card.fxoff .pc-pilot.ppanel { animation-play-state: paused !important; }
+      .pl-foot {
+        margin-top: 26px; padding: 16px 4px 4px; border-top: 1px solid rgba(212, 160, 23, 0.3);
+        color: #8d7c5c; font-size: 13px; line-height: 1.5; font-weight: 500;
+        display: flex; flex-wrap: wrap; gap: 6px 18px; justify-content: space-between;
+      }
+      .pl-foot strong { color: var(--muted); }
+      .pl-foot .note { flex: 1 1 100%; color: var(--muted); font-size: 13.5px; }
+      @media (max-width: 640px) {
+        .plan-card { border-radius: 14px; }
+        .plan-card::before { border-radius: 13px; }
+        .pc-rivet { width: 5px; }
+        .pc-rivet.tl { top: 6px; left: 6px; } .pc-rivet.tr { top: 6px; right: 6px; }
+        .pc-rivet.bl { bottom: 6px; left: 6px; } .pc-rivet.br { bottom: 6px; right: 6px; }
+        .pc-head { top: 3.4%; left: 3%; width: 63%; gap: 0.5cqw 2.2cqw; }
+        .pc-unit { width: 10.6cqw; font-size: 5.2cqw; border-width: 1.5px; }
+        .pc-top { gap: 1.8cqw; }
+        .pc-index { padding: 0.9cqw 1.7cqw 1cqw; font-size: 2.7cqw; border-radius: 1.4cqw; }
+        .plan-card h3 { font-size: 4.9cqw; }
+        .plan-card h3.long { font-size: 4.15cqw; }
+        .pc-sub { font-size: 2.5cqw; }
+        .pc-panel { right: 2%; top: 21.5%; bottom: 3.4%; width: 36.5%; padding: 2.2cqw 2.4cqw 2cqw; border-radius: 2.4cqw; }
+        .pc-metric { grid-template-columns: 5.2cqw 1fr; gap: 1.4cqw; padding: 1.12cqw 0; }
+        .pc-micon { width: 5.2cqw; height: 5.2cqw; border-radius: 1.2cqw; }
+        .pc-micon svg { width: 3.2cqw; height: 3.2cqw; }
+        .pc-label { font-size: 2.1cqw; margin-bottom: 0.35cqw; white-space: nowrap; }
+        .pc-value { font-size: 3.3cqw; }
+        .pc-activate { min-height: 7.4cqw; font-size: 2.85cqw; border-radius: 1.7cqw; gap: 1.2cqw; padding: 1.2cqw 0.8cqw; white-space: nowrap; }
+        .pc-activate svg { width: 3cqw; height: 3cqw; }
+        .pl-cards { gap: 22px; }
+      }
+
+      /* ================================================================
+         4 · FUNDIDORA (niveles con monedas-sello + medidor de energía)
+         ================================================================ */
+      .fu-stack { display: flex; flex-direction: column; gap: clamp(16px, 3vw, 26px); max-width: 1060px; margin: 0 auto; }
+      .fu-banner {
+        position: relative; border-radius: 26px; overflow: hidden;
+        border: 1px solid rgba(232, 178, 75, 0.38);
+        min-height: 460px;
+        display: flex; align-items: flex-end;
+        isolation: isolate; background: #120b06;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+      }
+      .fu-banner img.bg {
+        position: absolute; inset: 0; width: 100%; height: 100%;
+        object-fit: cover; object-position: 50% 40%; z-index: -2;
+      }
+      .fu-banner::after {
+        content: ""; position: absolute; inset: 0; z-index: -1;
+        background:
+          linear-gradient(180deg, rgba(5, 3, 2, 0.45) 0%, rgba(5, 3, 2, 0) 32%),
+          linear-gradient(0deg, rgba(5, 3, 2, 0.92) 0%, rgba(5, 3, 2, 0.5) 44%, rgba(5, 3, 2, 0) 74%),
+          linear-gradient(90deg, rgba(5, 3, 2, 0.55) 0%, rgba(5, 3, 2, 0) 55%);
+      }
+      .fu-banner-top {
+        position: absolute; top: 0; left: 0; right: 0;
+        display: flex; justify-content: space-between; align-items: flex-start;
+        gap: 12px; flex-wrap: wrap;
+        padding: clamp(16px, 3vw, 26px);
+      }
+      .fu-pill {
+        font-family: var(--font-d); font-weight: 800; letter-spacing: 0.32em; text-transform: uppercase;
+        font-size: 13px; line-height: 1; color: #ffe9ad;
+        border: 1px solid rgba(255, 217, 122, 0.65);
+        background: rgba(10, 6, 3, 0.55);
+        backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+        padding: 9px 14px 8px 17px; border-radius: 999px;
+      }
+      .fu-status {
+        display: inline-flex; align-items: center; gap: 8px;
+        font-size: 12.5px; font-weight: 600; letter-spacing: 0.04em;
+        color: #ffeec4;
+        background: rgba(10, 6, 3, 0.55);
+        border: 1px solid rgba(255, 217, 122, 0.35);
+        backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+        padding: 8px 13px; border-radius: 999px; white-space: nowrap;
+      }
+      .fu-dot {
+        width: 8px; height: 8px; border-radius: 50%;
+        background: var(--ok);
+        box-shadow: 0 0 0 0 rgba(139, 226, 107, 0.55);
+        animation: dot-pulse 2.2s ease-out infinite; flex: none;
+      }
+      .fu-banner-body { padding: clamp(22px, 4vw, 36px); max-width: 640px; color: #fdf3dd; }
+      .fu-banner-body h2 {
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase;
+        font-size: clamp(38px, 12.5vw, 96px);
+        line-height: 0.9; letter-spacing: 0.015em;
+        margin: 0 0 14px; color: #ffe9ad;
+        text-shadow: 0 2px 30px rgba(0, 0, 0, 0.7), 0 0 44px rgba(255, 150, 40, 0.22);
+      }
+      .fu-banner-body p {
+        font-size: clamp(16px, 2.3vw, 18.5px); font-weight: 500; line-height: 1.55;
+        color: rgba(253, 243, 221, 0.92);
+        text-shadow: 0 1px 14px rgba(0, 0, 0, 0.75); max-width: 46ch;
+      }
+      .fu-panel {
+        background: linear-gradient(180deg, #1d1309, #150e07);
+        border: 1px solid rgba(232, 178, 75, 0.16);
+        border-radius: 20px;
+        padding: clamp(18px, 3.4vw, 28px);
+        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.4);
+      }
+      .fu-phead {
+        display: flex; align-items: baseline; justify-content: space-between;
+        gap: 12px; flex-wrap: wrap; margin-bottom: 18px;
+      }
+      .fu-phead h3 {
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase;
+        letter-spacing: 0.09em; font-size: clamp(22px, 3.6vw, 28px); line-height: 1.05;
+        color: #f7ecd7;
+      }
+      .fu-phead h3 .accent { color: var(--gold-2); }
+      .fu-phead .hint { font-size: 13px; font-weight: 500; color: #a68d63; }
+      .fu-stats { display: grid; grid-template-columns: 1fr 1fr; padding: 0; overflow: hidden; }
+      .fu-stat { padding: clamp(20px, 3.4vw, 30px); display: flex; flex-direction: column; gap: 6px; }
+      .fu-stat + .fu-stat { border-left: 1px solid rgba(232, 178, 75, 0.16); }
+      .fu-stat .label {
+        display: inline-flex; align-items: center; gap: 8px;
+        font-size: 12.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+        color: #a68d63;
+      }
+      .fu-stat .label svg { flex: none; }
+      .fu-stat .value {
+        font-size: clamp(36px, 6.4vw, 48px); line-height: 1; color: #f7ecd7;
+        text-shadow: 0 0 26px rgba(232, 178, 75, 0.14);
+      }
+      .fu-stat .value .unit { font-size: 0.52em; font-weight: 700; color: var(--gold-2); margin-left: 4px; }
+      .fu-stat .sub { font-size: 13.5px; font-weight: 500; color: #cdbb9c; }
+      .fu-energy {
+        border: 1px solid rgba(232, 178, 75, 0.16); border-radius: 16px;
+        background: var(--panel-inset);
+        padding: clamp(16px, 3vw, 24px);
+        margin-bottom: clamp(16px, 3vw, 22px);
+      }
+      .fu-energy-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+      .fu-energy-label {
+        display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.18em;
+        text-transform: uppercase; color: var(--gold-2); margin-bottom: 6px;
+      }
+      .fu-energy-figure { display: flex; align-items: baseline; gap: 8px; }
+      .fu-energy-figure .big { font-size: clamp(46px, 8vw, 64px); line-height: 0.95; color: #f7ecd7; }
+      .fu-energy-figure .of { font-size: 17px; font-weight: 600; color: #a68d63; }
+      .fu-energy-figure .bolt { align-self: center; }
+      .fu-energy-next { font-size: 14px; font-weight: 500; color: #cdbb9c; text-align: right; line-height: 1.45; max-width: 30ch; }
+      .fu-energy-next strong { color: var(--gold-2); font-weight: 800; font-variant-numeric: tabular-nums; }
+      .fu-meter {
+        position: relative; height: 20px; border-radius: 999px;
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(232, 178, 75, 0.16);
+        margin-top: 6px;
+      }
+      .fu-fill {
+        position: absolute; inset: 2px auto 2px 2px; width: 0%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #b97e14, var(--gold-2) 55%, #ffd97a);
+        box-shadow: 0 0 18px rgba(232, 178, 75, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+        transition: width 1.4s cubic-bezier(0.22, 0.9, 0.28, 1);
+      }
+      .fu-fill::after {
+        content: ""; position: absolute; inset: 0; border-radius: 999px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 55%);
+      }
+      .fu-tick {
+        position: absolute; top: -4px; bottom: -4px; width: 2px; margin-left: -1px;
+        background: rgba(232, 178, 75, 0.38); border-radius: 2px;
+      }
+      .fu-tick span {
+        position: absolute; top: calc(100% + 9px); left: 50%; transform: translateX(-50%);
+        font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+        color: #a68d63; white-space: nowrap;
+      }
+      .fu-tick span b { color: #cdbb9c; font-variant-numeric: tabular-nums; }
+      .fu-tick.first span { left: 0; transform: none; }
+      .fu-tick.last span { left: auto; right: 0; transform: none; }
+      .fu-legend {
+        display: flex; gap: 10px 26px; flex-wrap: wrap;
+        margin-top: 44px; padding-top: 16px;
+        border-top: 1px solid rgba(232, 178, 75, 0.16);
+      }
+      .fu-legend .item { display: inline-flex; align-items: center; gap: 9px; font-size: 14px; font-weight: 500; color: #cdbb9c; }
+      .fu-legend .tag {
+        font-weight: 800; font-variant-numeric: tabular-nums; font-size: 13px;
+        padding: 3px 9px; border-radius: 999px; border: 1px solid rgba(232, 178, 75, 0.38);
+      }
+      .fu-legend .tag.plus { color: var(--gold-2); }
+      .fu-legend .tag.minus { color: var(--ember); border-color: rgba(255, 138, 61, 0.45); }
+      .fu-levels { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(10px, 2vw, 18px); }
+      .fu-level {
+        position: relative;
+        border: 1px solid rgba(232, 178, 75, 0.16); border-radius: 16px;
+        background: var(--panel-inset);
+        padding: 18px 12px 16px;
+        display: flex; flex-direction: column; align-items: center; text-align: center; gap: 5px;
+        transition: transform 0.35s var(--ease), border-color 0.35s ease, box-shadow 0.35s ease;
+      }
+      @media (hover: hover) { .fu-level:hover { transform: translateY(-4px); border-color: rgba(232, 178, 75, 0.38); } }
+      .fu-level .coin {
+        width: clamp(76px, 14vw, 104px); height: clamp(76px, 14vw, 104px);
+        border-radius: 50%; overflow: hidden;
+        border: 2px solid rgba(255, 255, 255, 0.10);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
+        margin-bottom: 6px; background: #000; flex: none;
+      }
+      .fu-level .coin img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .fu-level .lvl { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #a68d63; }
+      .fu-level h4 {
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+        font-size: clamp(19px, 3vw, 23px); line-height: 1; color: #f7ecd7;
+      }
+      .fu-level .req { font-size: 12.5px; font-weight: 500; color: #cdbb9c; }
+      .fu-level .req b { font-weight: 800; font-variant-numeric: tabular-nums; color: #f7ecd7; }
+      .fu-level .state {
+        margin-top: 7px; font-size: 11px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+        padding: 5px 11px; border-radius: 999px;
+        border: 1px solid rgba(232, 178, 75, 0.16); color: #a68d63;
+      }
+      .fu-level.done .state { color: var(--ok); border-color: rgba(139, 226, 107, 0.35); }
+      .fu-level.locked { opacity: 0.6; }
+      .fu-level.locked .coin img { filter: saturate(0.5) brightness(0.78); }
+      .fu-level.current {
+        border-color: var(--gold-2);
+        background: linear-gradient(180deg, rgba(232, 178, 75, 0.15), rgba(232, 178, 75, 0.04));
+        box-shadow: 0 0 0 1px var(--gold-2), 0 14px 34px rgba(232, 178, 75, 0.16);
+      }
+      .fu-level.current .coin { border-color: #ffd97a; box-shadow: 0 0 26px rgba(255, 217, 122, 0.5), 0 10px 24px rgba(0, 0, 0, 0.5); }
+      .fu-level.current .state { color: #1d1204; background: linear-gradient(180deg, #ffd97a, var(--gold-2)); border-color: transparent; }
+      .fu-note { margin: 16px 2px 0; font-size: 13.5px; font-weight: 500; line-height: 1.55; color: #a68d63; }
+      .fu-note strong { color: #cdbb9c; font-weight: 700; }
+      .fu-bridge { margin: 14px 2px 18px; font-size: 14px; font-weight: 500; line-height: 1.5; color: #cdbb9c; }
+      .fu-bridge a { color: var(--gold-2); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(232, 178, 75, 0.5); }
+      .fu-specs { width: 100%; margin-top: 10px; }
+      .fu-spec { padding: 7px 0 6px; border-top: 1px dashed rgba(232, 178, 75, 0.18); }
+      .fu-spec .k { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #a68d63; }
+      .fu-spec .v { display: block; margin-top: 2px; font-size: 14.5px; font-weight: 800; color: #f7ecd7; font-variant-numeric: tabular-nums; }
+      .fu-seq { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(10px, 2vw, 18px); list-style: none; }
+      .fu-step { position: relative; display: flex; flex-direction: column; gap: 10px; }
+      .fu-step .thumb {
+        position: relative; border-radius: 14px; overflow: hidden;
+        border: 1px solid rgba(232, 178, 75, 0.16);
+        aspect-ratio: 1 / 1; background: #000;
+      }
+      .fu-step .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .fu-step .n {
+        position: absolute; top: 10px; left: 10px;
+        font-family: var(--font-d); font-weight: 800; font-size: 15px; letter-spacing: 0.08em; line-height: 1;
+        color: #ffe9ad; background: rgba(8, 5, 2, 0.72);
+        border: 1px solid rgba(255, 217, 122, 0.45);
+        padding: 6px 9px 5px; border-radius: 8px;
+        backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+      }
+      .fu-step .arrow {
+        position: absolute; top: 36%; right: calc(-1 * clamp(10px, 2vw, 18px) / 2 - 9px);
+        transform: translateY(-50%); z-index: 2; color: var(--gold-2); display: flex;
+      }
+      .fu-step h4 {
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em;
+        font-size: clamp(18px, 2.8vw, 22px); line-height: 1; color: #f7ecd7;
+      }
+      .fu-step p { font-size: 13.5px; font-weight: 500; line-height: 1.5; color: #cdbb9c; }
+      @media (max-width: 720px) {
+        .fu-banner { min-height: 430px; }
+        .fu-stats { grid-template-columns: 1fr; }
+        .fu-stat + .fu-stat { border-left: none; border-top: 1px solid rgba(232, 178, 75, 0.16); }
+        .fu-levels { grid-template-columns: repeat(2, 1fr); }
+        .fu-seq { grid-template-columns: repeat(2, 1fr); }
+        .fu-step .arrow { display: none; }
+        .fu-energy-next { text-align: left; }
+      }
+      @media (max-width: 380px) {
+        .fu-seq { grid-template-columns: 1fr; }
+        .fu-step .thumb { aspect-ratio: 16 / 10; }
+      }
+
+      /* ================================================================
+         5 · REFERIDOS (versión final compacta horizontal, imágenes v2)
+         ================================================================ */
+      .rf-banner {
+        position: relative;
+        border: 1px solid var(--line); border-radius: 18px; overflow: hidden;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+        background: #100b05;
+      }
+      .rf-banner img.bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 42%; }
+      .rf-banner .scrim {
+        position: absolute; inset: 0;
+        background:
+          linear-gradient(180deg, rgba(10, 7, 3, 0.52) 0%, rgba(10, 7, 3, 0.34) 38%, rgba(10, 7, 3, 0.86) 100%),
+          radial-gradient(760px 300px at 50% 100%, rgba(10, 7, 3, 0.55), transparent 70%);
+      }
+      .rf-banner .content { position: relative; padding: 64px 16px 18px; text-align: center; }
+      .rf-pill {
+        display: inline-flex; align-items: center; gap: 7px;
+        padding: 4px 13px;
+        border: 1px solid var(--line); border-radius: 999px;
+        background: rgba(16, 11, 5, 0.72);
+        color: var(--gold-hi);
+        font-family: var(--font-d); font-weight: 700; font-size: 12.5px;
+        letter-spacing: 0.32em; text-transform: uppercase;
+      }
+      .rf-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold-hi); box-shadow: 0 0 10px rgba(240, 201, 92, 0.9); }
+      .rf-title {
+        margin: 12px 0 6px;
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase;
+        font-size: clamp(36px, 9vw, 64px); line-height: 0.98; letter-spacing: 0.01em;
+        color: #fff8e7; text-shadow: 0 4px 28px rgba(0, 0, 0, 0.65);
+      }
+      .rf-title .gold { color: var(--gold-hi); }
+      .rf-subtitle { margin: 0 auto; max-width: 560px; font-size: clamp(14px, 3.8vw, 17px); font-weight: 500; color: #e9ddc0; text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7); }
+      .rf-chips { margin-top: 14px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+      .rf-chip {
+        display: inline-flex; align-items: center; gap: 7px;
+        padding: 6px 12px;
+        border: 1px solid var(--line); border-radius: 999px;
+        background: rgba(16, 11, 5, 0.78);
+        font-size: 12.5px; font-weight: 500; color: #b9ab8d;
+      }
+      .rf-chip svg { flex: none; }
+      .rf-chip .num { color: var(--gold-pale); font-size: 14px; }
+      .rf-panel {
+        margin-top: 14px;
+        background: linear-gradient(180deg, var(--panel-2), var(--panel));
+        border: 1px solid var(--line-soft); border-radius: 14px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+        padding: 12px 10px;
+      }
+      .rf-phead { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; }
+      .rf-phead .ic {
+        width: 30px; height: 30px; flex: none;
+        display: grid; place-items: center;
+        border: 1px solid var(--line); border-radius: 9px;
+        background: rgba(212, 160, 23, 0.08);
+      }
+      .rf-phead h3 {
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+        font-size: 19px; line-height: 1.1; color: var(--ink);
+      }
+      .rf-phead p { color: #b9ab8d; font-size: 12.5px; }
+      .rf-account-row { display: flex; align-items: stretch; gap: 8px; }
+      .rf-invite-block { flex: 0 0 31%; min-width: 0; display: flex; flex-direction: column; }
+      .rf-invite-label { font-size: 10.5px; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase; color: #8d8069; margin: 0 0 6px; }
+      .rf-invite-link {
+        flex: 1; display: flex; align-items: center; gap: 7px;
+        padding: 9px 11px;
+        border: 1px dashed rgba(212, 160, 23, 0.4); border-radius: 10px;
+        background: rgba(212, 160, 23, 0.05);
+        color: var(--gold-pale); font-weight: 600; font-size: 11.5px; min-width: 0;
+      }
+      .rf-invite-link svg { flex: none; }
+      .rf-invite-link .link-text { white-space: normal; word-break: break-all; min-width: 0; }
+      .rf-account-stats { flex: 1; min-width: 0; display: grid; grid-template-columns: minmax(0, 0.82fr) minmax(0, 0.82fr) minmax(0, 1.3fr); gap: 6px; }
+      .rf-stat { border: 1px solid var(--line-soft); border-radius: 10px; background: rgba(0, 0, 0, 0.28); padding: 7px 6px; min-width: 0; }
+      .rf-stat .v { font-size: 17px; line-height: 1.05; color: var(--ink); white-space: nowrap; }
+      .rf-stat .v.money { font-size: 13px; letter-spacing: -0.02em; }
+      .rf-stat .v .cur { color: var(--gold-hi); font-size: 11px; }
+      .rf-stat .k { margin-top: 3px; color: #b9ab8d; font-size: 10px; font-weight: 600; line-height: 1.25; }
+      .rf-stat .s { color: #8d8069; font-size: 9.5px; line-height: 1.25; }
+      .rf-red-layout { display: flex; flex-direction: column; gap: 7px; }
+      .rf-red-fig {
+        margin: 0; border: 1px solid var(--line-soft); border-radius: 10px; overflow: hidden;
+        background: #070503; min-height: 0; aspect-ratio: 16 / 10;
+      }
+      .rf-red-fig img { display: block; width: 100%; height: 100%; object-fit: cover; }
+      .rf-red-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+      .rf-level-card {
+        border: 1px solid var(--line); border-radius: 10px;
+        background:
+          radial-gradient(300px 130px at 100% 0%, rgba(212, 160, 23, 0.12), transparent 65%),
+          rgba(0, 0, 0, 0.28);
+        padding: 8px; display: flex; flex-direction: column;
+        transition: transform 0.35s var(--ease), border-color 0.35s ease;
+      }
+      @media (hover: hover) { .rf-level-card:hover { transform: translateY(-3px); border-color: rgba(212, 160, 23, 0.45); } }
+      .rf-level-card .tag {
+        align-self: flex-start; padding: 2px 7px; border-radius: 999px;
+        border: 1px solid var(--line); background: rgba(212, 160, 23, 0.1);
+        color: var(--gold-hi);
+        font-family: var(--font-d); font-weight: 700; letter-spacing: 0.12em; font-size: 9.5px;
+        text-transform: uppercase; white-space: nowrap;
+      }
+      .rf-level-card .pct { margin-top: 6px; font-size: 24px; line-height: 1; color: var(--gold-hi); }
+      .rf-level-card h4 {
+        margin: 5px 0 3px;
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase;
+        font-size: 13px; line-height: 1.12; letter-spacing: 0.01em; color: var(--ink);
+      }
+      .rf-level-card p { color: #b9ab8d; font-size: 10.5px; line-height: 1.35; }
+      .rf-level-card .of { margin-top: auto; padding-top: 5px; color: #8d8069; font-size: 9.5px; font-weight: 600; }
+      .rf-legend { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px 14px; color: #b9ab8d; font-size: 11.5px; font-weight: 500; }
+      .rf-legend b { color: var(--gold-pale); font-weight: 700; }
+      .rf-energy-note {
+        margin-top: 10px; display: flex; gap: 9px; align-items: flex-start;
+        border: 1px solid var(--line-soft); border-radius: 10px;
+        background: rgba(212, 160, 23, 0.05);
+        padding: 10px 12px; color: #b9ab8d; font-size: 12.5px; line-height: 1.4;
+      }
+      .rf-energy-note svg { flex: none; margin-top: 1px; }
+      .rf-energy-note b { color: var(--gold-pale); font-weight: 700; }
+      .rf-examples { display: grid; grid-template-columns: 1fr; gap: 6px; }
+      .rf-example {
+        display: flex; align-items: stretch;
+        border: 1px solid var(--line-soft); border-radius: 10px; overflow: hidden;
+        background: rgba(0, 0, 0, 0.28);
+        transition: transform 0.35s var(--ease), border-color 0.35s ease;
+      }
+      @media (hover: hover) { .rf-example:hover { transform: translateY(-3px); border-color: var(--line); } }
+      .rf-example .thumb { position: relative; flex: 0 0 76px; background: #070503; }
+      .rf-example .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      .rf-example .body { flex: 1; min-width: 0; padding: 7px 9px 7px 10px; }
+      .rf-example .lvl {
+        display: inline-block; padding: 0 7px; border-radius: 999px;
+        border: 1px solid var(--line); background: rgba(212, 160, 23, 0.1);
+        color: var(--gold-hi);
+        font-family: var(--font-d); font-weight: 700; letter-spacing: 0.16em; font-size: 9.5px; line-height: 1.5;
+        text-transform: uppercase;
+      }
+      .rf-example .title-row { display: flex; align-items: center; gap: 7px; margin-top: 3px; }
+      .rf-plan-icon {
+        width: 28px; height: 28px; flex: none;
+        display: grid; place-items: center;
+        border: 1px solid var(--line); border-radius: 7px;
+        background: rgba(212, 160, 23, 0.12);
+      }
+      .rf-example h4 {
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase;
+        font-size: 15.5px; line-height: 1.05; letter-spacing: 0.02em; color: var(--ink);
+      }
+      .rf-example .who { margin: 2px 0 0; color: #b9ab8d; font-size: 11px; line-height: 1.3; }
+      .rf-example .math { margin-top: 5px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 6px; font-size: 11.5px; color: #b9ab8d; font-weight: 500; }
+      .rf-example .math .num { color: var(--ink); font-size: 12.5px; }
+      .rf-example .math .op { color: #8d8069; font-weight: 700; }
+      .rf-example .result { margin-left: auto; text-align: right; white-space: nowrap; }
+      .rf-example .result .k { display: block; font-size: 8.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #8d8069; }
+      .rf-example .result .v { font-size: 17px; line-height: 1.1; color: var(--gold-hi); }
+      .rf-benefits { margin-top: 14px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+      .rf-benefit {
+        border: 1px solid var(--line-soft); border-radius: 14px;
+        background: linear-gradient(180deg, var(--panel-2), var(--panel));
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+        padding: 9px 7px; min-width: 0;
+        transition: transform 0.35s var(--ease), border-color 0.35s ease;
+      }
+      @media (hover: hover) { .rf-benefit:hover { transform: translateY(-3px); border-color: var(--line); } }
+      .rf-benefit .ic {
+        width: 26px; height: 26px; display: grid; place-items: center;
+        border: 1px solid var(--line); border-radius: 8px;
+        background: rgba(212, 160, 23, 0.08); margin-bottom: 8px;
+      }
+      .rf-benefit h4 {
+        margin: 0 0 4px;
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase;
+        font-size: 11.5px; line-height: 1.24; color: var(--ink);
+      }
+      .rf-benefit p { color: #b9ab8d; font-size: 10px; line-height: 1.35; }
+      .rf-benefit p .num { color: var(--gold-hi); }
+      @media (min-width: 640px) {
+        .rf-banner { border-radius: 22px; }
+        .rf-banner .content { padding: 96px 28px 26px; }
+        .rf-panel { padding: 18px; margin-top: 16px; }
+        .rf-phead h3 { font-size: 21px; }
+        .rf-phead p { font-size: 13px; }
+        .rf-account-row { gap: 14px; }
+        .rf-invite-block { flex: 0 0 34%; }
+        .rf-invite-label { font-size: 11.5px; }
+        .rf-invite-link { font-size: 14px; padding: 11px 13px; }
+        .rf-invite-link .link-text { white-space: nowrap; }
+        .rf-account-stats { gap: 10px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .rf-stat { padding: 11px 13px; }
+        .rf-stat .v { font-size: 26px; }
+        .rf-stat .v.money { font-size: 20px; letter-spacing: -0.01em; }
+        .rf-stat .v .cur { font-size: 16px; }
+        .rf-stat .k { font-size: 12.5px; }
+        .rf-stat .s { font-size: 11.5px; }
+        .rf-red-layout { gap: 12px; }
+        .rf-red-cards { gap: 12px; }
+        .rf-red-fig { aspect-ratio: 16 / 8.5; }
+        .rf-level-card { padding: 14px; }
+        .rf-level-card .tag { font-size: 11px; letter-spacing: 0.2em; padding: 2px 9px; }
+        .rf-level-card .pct { font-size: 36px; }
+        .rf-level-card h4 { font-size: 19px; }
+        .rf-level-card p { font-size: 13px; }
+        .rf-level-card .of { font-size: 11.5px; }
+        .rf-legend { font-size: 12.5px; }
+        .rf-energy-note { font-size: 13.5px; padding: 12px 14px; }
+        .rf-example .thumb { flex-basis: 118px; }
+        .rf-example .body { padding: 9px 12px; }
+        .rf-plan-icon { width: 32px; height: 32px; border-radius: 8px; }
+        .rf-example h4 { font-size: 17.5px; }
+        .rf-example .who { font-size: 12px; }
+        .rf-example .math { font-size: 12.5px; }
+        .rf-example .math .num { font-size: 13.5px; }
+        .rf-example .result .v { font-size: 20px; }
+        .rf-benefits { gap: 12px; margin-top: 16px; }
+        .rf-benefit { padding: 15px 14px; }
+        .rf-benefit .ic { width: 36px; height: 36px; margin-bottom: 10px; }
+        .rf-benefit h4 { font-size: 16.5px; letter-spacing: 0.02em; }
+        .rf-benefit p { font-size: 12.5px; }
+      }
+      @media (min-width: 900px) {
+        .rf-examples { grid-template-columns: 1fr 1fr; }
+        .rf-example .thumb { flex-basis: 96px; }
+      }
+
+      /* ================================================================
+         6 · RULETA (rueda solo con iconos, sin botón de giro)
+         ================================================================ */
+      .ru-head { text-align: center; }
+      .ru-pill {
+        display: inline-flex; align-items: center; gap: 8px;
+        font-family: var(--font-d); font-weight: 700;
+        font-size: 13px; letter-spacing: 0.32em; text-transform: uppercase;
+        color: var(--gold-hi);
+        border: 1px solid var(--line); border-radius: 999px;
+        padding: 7px 16px 6px 18px;
+        background: rgba(212, 160, 23, 0.07);
+      }
+      .ru-pill svg { width: 12px; height: 12px; flex: none; }
+      .ru-head h2 {
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase; line-height: 0.94;
+        font-size: clamp(46px, 11vw, 84px);
+        margin: 18px 0 0; letter-spacing: 0.01em; color: var(--ink);
+      }
+      .ru-head h2 .gold { color: var(--gold); text-shadow: 0 0 34px rgba(212, 160, 23, 0.35); }
+      .ru-sub { margin: 14px auto 0; max-width: 520px; font-size: clamp(16px, 4.2vw, 19px); font-weight: 500; color: #bcb094; }
+      .ru-chip {
+        display: inline-flex; align-items: center; gap: 9px;
+        margin-top: 20px;
+        font-weight: 700; font-size: 13.5px; letter-spacing: 0.14em; text-transform: uppercase;
+        color: #14100a;
+        background: linear-gradient(180deg, var(--gold-hi), var(--gold));
+        border-radius: 999px; padding: 9px 18px;
+        box-shadow: 0 6px 24px rgba(212, 160, 23, 0.35);
+      }
+      .ru-chip svg { width: 17px; height: 17px; flex: none; }
+      .ru-stage { position: relative; max-width: 620px; margin: clamp(26px, 5vw, 44px) auto 0; }
+      .ru-glow {
+        position: absolute; inset: 6% 4%;
+        background: radial-gradient(circle, rgba(212, 160, 23, 0.30) 0%, rgba(212, 160, 23, 0.08) 46%, transparent 70%);
+        filter: blur(18px); z-index: 0;
+        animation: ru-breathe 6s ease-in-out infinite;
+      }
+      @keyframes ru-breathe { 0%, 100% { opacity: 0.75; transform: scale(1); } 50% { opacity: 1; transform: scale(1.035); } }
+      .ru-frame {
+        position: relative; z-index: 1;
+        border-radius: 26px; overflow: hidden;
+        border: 1px solid var(--line);
+        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 0, 0, 0.4), 0 0 55px rgba(212, 160, 23, 0.14);
+      }
+      .ru-frame img { display: block; width: 100%; height: auto; }
+      .ru-spins {
+        max-width: 620px; margin: 18px auto 0;
+        display: flex; align-items: center; gap: 16px;
+        background: linear-gradient(180deg, var(--panel-2), var(--panel));
+        border: 1px solid var(--line); border-radius: 18px;
+        padding: 16px 20px;
+      }
+      .ru-spins .ic {
+        width: 46px; height: 46px; flex: none;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 13px;
+        background: rgba(212, 160, 23, 0.12);
+        border: 1px solid var(--line-soft);
+        color: var(--gold-hi);
+      }
+      .ru-spins .ic svg { width: 24px; height: 24px; }
+      .ru-spins .lbl {
+        font-family: var(--font-d); font-weight: 700;
+        font-size: clamp(19px, 5vw, 24px); letter-spacing: 0.12em; text-transform: uppercase; line-height: 1.05;
+        color: var(--ink);
+      }
+      .ru-spins .hint { font-size: 13.5px; color: #bcb094; margin-top: 3px; font-weight: 500; }
+      .ru-spins .num {
+        margin-left: auto; flex: none;
+        width: 58px; height: 58px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 800; font-size: 30px; font-variant-numeric: tabular-nums;
+        color: #14100a;
+        background: radial-gradient(circle at 32% 28%, var(--gold-hi), var(--gold) 70%);
+        box-shadow: 0 0 0 5px rgba(212, 160, 23, 0.16), 0 8px 22px rgba(212, 160, 23, 0.35);
+      }
+      .ru-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 1060px; margin: clamp(22px, 4.5vw, 36px) auto 0; }
+      @media (min-width: 760px) { .ru-cards { grid-template-columns: repeat(4, 1fr); gap: 14px; } }
+      .ru-card {
+        background: linear-gradient(180deg, var(--panel-2), var(--panel));
+        border: 1px solid var(--line-soft); border-radius: 18px;
+        padding: 18px 16px 16px;
+        transition: transform 0.35s var(--ease), border-color 0.35s ease;
+      }
+      @media (hover: hover) { .ru-card:hover { transform: translateY(-4px); border-color: var(--line); } }
+      .ru-card .ic {
+        width: 40px; height: 40px;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 11px; margin-bottom: 12px;
+        background: rgba(212, 160, 23, 0.12);
+        border: 1px solid var(--line-soft);
+        color: var(--gold-hi);
+      }
+      .ru-card .ic svg { width: 21px; height: 21px; }
+      .ru-card h3 {
+        font-family: var(--font-d); font-weight: 700; font-size: 19px;
+        letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.08; color: var(--ink);
+      }
+      .ru-card p { margin: 6px 0 0; font-size: 14px; line-height: 1.45; color: #bcb094; font-weight: 500; }
+      .ru-prizes {
+        max-width: 620px; margin: 24px auto 0;
+        background: linear-gradient(180deg, var(--panel-2), var(--panel));
+        border: 1px solid var(--line); border-radius: 18px;
+        padding: 18px 20px 12px;
+      }
+      .ru-prizes h3 {
+        font-family: var(--font-d); font-weight: 700; font-size: 20px;
+        letter-spacing: 0.12em; text-transform: uppercase; text-align: center;
+        color: var(--ink); margin-bottom: 8px;
+      }
+      .ru-prizes h3 .gold { color: var(--gold-hi); }
+      .ru-prize-row {
+        display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+        padding: 9px 0; border-top: 1px dashed rgba(212, 160, 23, 0.16);
+        font-size: 14.5px;
+      }
+      .ru-prize-row .p { color: var(--ink-2); font-weight: 500; }
+      .ru-prize-row .p .bolt { color: var(--gold-2); font-weight: 800; }
+      .ru-prize-row .pct { flex: none; font-weight: 800; color: var(--gold-hi); font-variant-numeric: tabular-nums; }
+      .ru-card-link {
+        display: inline-block; margin-top: 9px;
+        font-size: 13px; font-weight: 700; color: var(--gold-hi);
+        text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(232, 178, 75, 0.5);
+      }
+
+      /* ================================================================
+         7 · TIENDA (sin botones: paquetes y tarjetas solo visuales)
+         ================================================================ */
+      .ti-stack { display: flex; flex-direction: column; gap: clamp(16px, 3vw, 26px); max-width: 1060px; margin: 0 auto; }
+      .ti-packs { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(10px, 2vw, 18px); }
+      @media (min-width: 820px) { .ti-packs { grid-template-columns: repeat(4, 1fr); } }
+      .ti-pack {
+        border: 1px solid rgba(232, 178, 75, 0.16); border-radius: 16px;
+        background: var(--panel-inset);
+        padding: 20px 12px 16px;
+        display: flex; flex-direction: column; align-items: center; text-align: center; gap: 5px;
+        transition: transform 0.35s var(--ease), border-color 0.35s ease;
+      }
+      @media (hover: hover) { .ti-pack:hover { transform: translateY(-4px); border-color: rgba(232, 178, 75, 0.38); } }
+      .ti-pack .tp-name {
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;
+        font-size: 19px; line-height: 1; color: #f7ecd7;
+      }
+      .ti-pack .tp-energy { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; font-size: clamp(30px, 5vw, 38px); font-weight: 800; line-height: 1.05; color: var(--gold-hi); font-variant-numeric: tabular-nums; }
+      .ti-pack .tp-energy svg { color: var(--gold-2); flex: none; }
+      .ti-pack .tp-elabel { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #a68d63; }
+      .ti-pack .tp-bonus {
+        margin-top: 9px; font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums;
+        padding: 4px 10px; border-radius: 999px;
+        border: 1px solid rgba(232, 178, 75, 0.45); color: var(--gold-2);
+        background: rgba(232, 178, 75, 0.10);
+      }
+      .ti-pack .tp-bonus.is-empty { visibility: hidden; }
+      .ti-spins {
+        display: flex; gap: 16px; align-items: center;
+        border: 1px solid rgba(232, 178, 75, 0.16); border-radius: 16px;
+        background: var(--panel-inset);
+        padding: clamp(16px, 3vw, 22px);
+      }
+      .ti-spins .ic {
+        width: 46px; height: 46px; flex: none;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 13px;
+        background: rgba(212, 160, 23, 0.12);
+        border: 1px solid rgba(232, 178, 75, 0.16);
+        color: var(--gold-2);
+      }
+      .ti-spins .ic svg { width: 24px; height: 24px; }
+      .ti-spins p { font-size: 15.5px; font-weight: 500; line-height: 1.55; color: #cdbb9c; }
+      .ti-spins p strong { color: #f7ecd7; font-weight: 700; }
+
+      /* ================================================================
+         8 · RETIROS (sin botones, sin historial)
+         ================================================================ */
+      .rt-banner { position: relative; border-radius: 22px; overflow: hidden; border: 1px solid var(--line); background: #000; }
+      .rt-banner img { display: block; width: 100%; height: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: 50% 42%; }
+      .rt-banner::after {
+        content: ""; position: absolute; inset: 0;
+        background:
+          linear-gradient(180deg, rgba(6, 4, 2, 0.55) 0%, rgba(6, 4, 2, 0.08) 34%, rgba(6, 4, 2, 0.30) 68%, rgba(6, 4, 2, 0.88) 100%),
+          linear-gradient(90deg, rgba(6, 4, 2, 0.45) 0%, transparent 45%);
+      }
+      .rt-banner-content {
+        position: absolute; inset: 0; z-index: 2;
+        display: flex; flex-direction: column; justify-content: flex-end;
+        padding: 22px 22px 24px;
+      }
+      .rt-pill {
+        align-self: flex-start; display: inline-flex; align-items: center; gap: 8px;
+        font-weight: 600; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+        color: #f2dc9b;
+        border: 1px solid rgba(212, 175, 55, 0.45);
+        background: rgba(10, 7, 3, 0.55);
+        padding: 6px 14px; border-radius: 999px;
+        margin-bottom: 12px;
+      }
+      .rt-pill::before {
+        content: ""; width: 7px; height: 7px; border-radius: 50%;
+        background: var(--gold); box-shadow: 0 0 8px rgba(212, 175, 55, 0.9);
+      }
+      .rt-title {
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase;
+        font-size: clamp(38px, 8.4vw, 64px); line-height: 0.98; letter-spacing: 0.01em;
+        margin: 0 0 10px; color: var(--ink);
+        text-shadow: 0 2px 18px rgba(0, 0, 0, 0.65);
+      }
+      .rt-title .gold { color: var(--gold); }
+      .rt-subtitle { font-size: clamp(15px, 3.8vw, 18px); font-weight: 500; color: #e6dcc2; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.8); max-width: 520px; }
+      .rt-panel {
+        margin-top: 18px;
+        background: linear-gradient(180deg, #1e170b, #171208);
+        border: 1px solid var(--line); border-radius: 18px;
+        padding: 20px;
+      }
+      .rt-phead { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+      .rt-phead .ic {
+        flex: 0 0 auto; width: 34px; height: 34px; border-radius: 10px;
+        display: grid; place-items: center;
+        background: rgba(212, 175, 55, 0.12);
+        border: 1px solid var(--line); color: var(--gold);
+      }
+      .rt-phead h3 {
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em;
+        font-size: 22px; color: var(--ink);
+      }
+      .rt-saldo { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; }
+      .rt-saldo-main { flex: 1 1 240px; min-width: 0; }
+      .rt-saldo-label { font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #bcae8f; margin: 0 0 6px; }
+      .rt-saldo-amount { font-weight: 800; font-size: clamp(34px, 8vw, 46px); line-height: 1; color: #f7ecc4; font-variant-numeric: tabular-nums; white-space: nowrap; }
+      .rt-saldo-amount .cur { font-size: 0.52em; color: var(--gold); letter-spacing: 0.06em; margin-left: 6px; }
+      .rt-wallet {
+        flex: 1 1 260px; min-width: 0;
+        display: flex; align-items: center; gap: 14px;
+        background: #100b05; border: 1px solid var(--line); border-radius: 14px;
+        padding: 14px 16px;
+      }
+      .rt-wallet .tether {
+        flex: 0 0 auto; width: 44px; height: 44px; border-radius: 50%;
+        background: radial-gradient(circle at 35% 30%, #3ec79c, #26a17b 70%);
+        display: grid; place-items: center;
+        color: #fff; font-weight: 800; font-size: 22px; line-height: 1;
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+      }
+      .rt-wallet-info { min-width: 0; }
+      .rt-wallet-name { font-weight: 800; font-size: 17px; letter-spacing: 0.02em; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; color: var(--ink); }
+      .rt-chip-ok {
+        font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+        color: #7fe3c0; border: 1px solid rgba(38, 161, 123, 0.55); background: rgba(38, 161, 123, 0.14);
+        padding: 2px 9px; border-radius: 999px;
+        display: inline-flex; align-items: center; gap: 5px;
+      }
+      .rt-chip-ok::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #3ec79c; }
+      .rt-wallet-addr { margin-top: 3px; font-size: 14px; color: #bcae8f; font-variant-numeric: tabular-nums; word-break: break-all; }
+      .rt-field-label { font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: #bcae8f; margin: 0 0 8px; }
+      .rt-amount-field {
+        display: flex; align-items: baseline; gap: 10px;
+        background: #100b05; border: 1px solid rgba(212, 175, 55, 0.45); border-radius: 14px;
+        padding: 14px 16px;
+      }
+      .rt-amount-field .sign { font-weight: 800; font-size: 22px; color: var(--gold); }
+      .rt-amount-field .value { font-weight: 800; font-size: 30px; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+      .rt-amount-field .cur { margin-left: auto; font-weight: 600; font-size: 13px; letter-spacing: 0.14em; color: #bcae8f; }
+      .rt-breakdown { margin-top: 16px; background: #100b05; border: 1px solid var(--line); border-radius: 14px; padding: 6px 16px; }
+      .rt-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 11px 0; }
+      .rt-row + .rt-row { border-top: 1px dashed rgba(212, 175, 55, 0.16); }
+      .rt-row .k { font-size: 15px; font-weight: 500; color: #bcae8f; }
+      .rt-row .v { font-weight: 800; font-size: 16px; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+      .rt-row.net { border-top: 1px solid rgba(212, 175, 55, 0.45); padding-top: 13px; padding-bottom: 13px; }
+      .rt-row.net .k { color: #f2dc9b; font-weight: 600; }
+      .rt-row.net .v { font-size: 21px; color: var(--gold); }
+      .rt-cond-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+      .rt-cond {
+        background: #100b05; border: 1px solid var(--line); border-radius: 14px;
+        padding: 16px 14px; text-align: center;
+        transition: transform 0.35s var(--ease), border-color 0.35s ease;
+      }
+      @media (hover: hover) { .rt-cond:hover { transform: translateY(-3px); border-color: rgba(212, 175, 55, 0.45); } }
+      .rt-cond .ic {
+        width: 40px; height: 40px; margin: 0 auto 10px; border-radius: 50%;
+        display: grid; place-items: center;
+        background: rgba(212, 175, 55, 0.12); border: 1px solid var(--line); color: var(--gold);
+      }
+      .rt-cond .big { font-weight: 800; font-size: 21px; line-height: 1.15; color: #f7ecc4; font-variant-numeric: tabular-nums; }
+      .rt-cond .small { margin-top: 4px; font-size: 13px; font-weight: 500; color: #bcae8f; line-height: 1.35; }
+      .rt-network-note {
+        margin-top: 14px; display: flex; gap: 12px; align-items: flex-start;
+        background: rgba(212, 175, 55, 0.07); border: 1px solid var(--line); border-radius: 14px;
+        padding: 14px 16px; font-size: 15px; color: #e2d5ae;
+      }
+      .rt-network-note svg { flex: 0 0 auto; margin-top: 2px; color: var(--gold); }
+      .rt-network-note p { margin: 0; }
+      .rt-network-note strong { color: #f2dc9b; font-weight: 800; }
+      .rt-note {
+        margin-top: 18px; display: flex; gap: 12px; align-items: flex-start;
+        border: 1px solid var(--line); border-radius: 18px;
+        padding: 16px 18px;
+        background: linear-gradient(180deg, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0.03));
+        font-size: 15px; color: #ddd0ab;
+      }
+      .rt-note svg { flex: 0 0 auto; margin-top: 2px; color: var(--gold); }
+      .rt-note p { margin: 0; }
+      .rt-note strong { color: #f2dc9b; font-weight: 800; }
+      @media (max-width: 720px) {
+        .rt-cond-grid { grid-template-columns: repeat(2, 1fr); }
+        .rt-banner img { aspect-ratio: 4 / 3; object-position: 62% 50%; }
+        .rt-banner-content { padding: 18px 18px 20px; }
+        .rt-panel { padding: 18px 16px; }
+      }
+      @media (max-width: 380px) { .rt-saldo-amount { font-size: 32px; } }
+
+      /* ================================================================
+         9 · PIE (banner al atardecer + explorar + ayuda + cierre)
+         ================================================================ */
+      .ft-banner {
+        position: relative; border-radius: 22px; overflow: hidden;
+        border: 1px solid var(--line);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(0, 0, 0, 0.35), 0 0 44px rgba(212, 160, 23, 0.08);
+        isolation: isolate;
+      }
+      .ft-banner img.photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 42%; z-index: -2; }
+      .ft-banner::after {
+        content: ""; position: absolute; inset: 0; z-index: -1;
+        background:
+          linear-gradient(180deg, rgba(5, 3, 1, 0.18) 0%, rgba(5, 3, 1, 0) 34%, rgba(5, 3, 1, 0.42) 68%, rgba(4, 2, 1, 0.88) 100%),
+          radial-gradient(120% 90% at 50% 108%, rgba(0, 0, 0, 0.5), transparent 60%);
+      }
+      .ft-banner-inner {
+        min-height: 340px;
+        display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+        text-align: center;
+        padding: 120px 20px 30px;
+      }
+      .ft-logo { color: var(--gold-hi); filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.65)); }
+      .ft-banner h2 {
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase; letter-spacing: 0.14em;
+        font-size: clamp(30px, 6.4vw, 46px); line-height: 1.02;
+        margin: 10px 0 0; color: var(--gold-light);
+        text-shadow: 0 3px 18px rgba(0, 0, 0, 0.85), 0 0 26px rgba(212, 160, 23, 0.25);
+      }
+      .ft-lema { margin: 10px 0 0; font-size: clamp(14.5px, 3.6vw, 18px); font-weight: 500; color: #f7efdd; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9); max-width: 560px; }
+      .ft-panel {
+        margin-top: 20px;
+        background: rgba(19, 15, 9, 0.9);
+        border: 1px solid var(--line); border-radius: 22px;
+        padding: 22px 18px 20px;
+        box-shadow: 0 18px 46px rgba(0, 0, 0, 0.5);
+      }
+      .ft-panel h3 {
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em;
+        font-size: clamp(21px, 5vw, 27px);
+        color: var(--ink);
+        display: flex; align-items: center; gap: 12px;
+      }
+      .ft-panel h3::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--line), transparent); }
+      .ft-panel h3 .accent { color: var(--gold-hi); }
+      .ft-rows { list-style: none; margin: 10px 0 0; }
+      .ft-row { display: flex; align-items: center; gap: 14px; padding: 12px 4px; border-radius: 12px; transition: background 0.2s ease; }
+      .ft-row + .ft-row { border-top: 1px solid var(--line-soft); }
+      @media (hover: hover) { .ft-row:hover { background: rgba(212, 160, 23, 0.05); } }
+      .ft-row .thumb {
+        flex: 0 0 auto; width: 92px; height: 64px; border-radius: 12px; object-fit: cover;
+        border: 1px solid var(--line);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45); background: #14100a;
+        transition: transform 0.35s var(--ease);
+      }
+      @media (hover: hover) { .ft-row:hover .thumb { transform: scale(1.04); } }
+      .ft-row .txt { flex: 1 1 auto; min-width: 0; }
+      .ft-row .t {
+        font-family: var(--font-d); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+        font-size: 19px; line-height: 1.1; color: var(--gold-hi);
+      }
+      .ft-row .d { margin: 3px 0 0; font-size: 14.5px; font-weight: 400; color: #b8ab90; line-height: 1.35; }
+      .ft-row .d.def { font-size: 12.5px; color: #8d8168; }
+      .ft-row .chevs { flex: 0 0 auto; color: var(--gold); opacity: 0.9; display: flex; transition: transform 0.3s var(--ease); }
+      @media (hover: hover) { .ft-row:hover .chevs { transform: translateX(4px); } }
+      .ft-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
+      .ft-card {
+        background: rgba(24, 19, 11, 0.74);
+        border: 1px solid var(--line-soft); border-radius: 16px;
+        padding: 18px 14px 16px;
+        display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+        min-height: 118px;
+        transition: transform 0.35s var(--ease), border-color 0.35s ease;
+      }
+      @media (hover: hover) { .ft-card:hover { transform: translateY(-3px); border-color: var(--line); } }
+      .ft-card .ic {
+        width: 44px; height: 44px; border-radius: 12px;
+        border: 1px solid var(--line);
+        background: rgba(212, 160, 23, 0.08);
+        display: flex; align-items: center; justify-content: center;
+        color: var(--gold-hi);
+      }
+      .ft-card .ct {
+        font-family: var(--font-d); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+        font-size: 17.5px; line-height: 1.15; color: var(--ink);
+      }
+      .ft-cierre { margin-top: 30px; padding: 8px 16px 40px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+      .ft-cierre .brand {
+        font-family: var(--font-d); font-weight: 800; text-transform: uppercase; letter-spacing: 0.16em;
+        font-size: 24px; color: var(--gold-light); margin: 8px 0 0;
+      }
+      .ft-social { display: flex; gap: 14px; margin-top: 20px; }
+      .ft-social .s {
+        width: 46px; height: 46px; border-radius: 50%;
+        border: 1px solid var(--line);
+        background: rgba(212, 160, 23, 0.07);
+        display: flex; align-items: center; justify-content: center;
+        color: var(--gold-hi);
+        transition: transform 0.3s var(--ease), background 0.25s ease;
+      }
+      @media (hover: hover) { .ft-social .s:hover { transform: translateY(-3px); background: rgba(212, 160, 23, 0.15); } }
+      .ft-copy { margin: 22px 0 0; font-size: 13.5px; font-weight: 400; color: #8d8168; letter-spacing: 0.02em; }
+      .ft-divider { width: min(420px, 72%); height: 1px; margin-top: 26px; background: linear-gradient(90deg, transparent, var(--line), transparent); }
+      @media (min-width: 760px) {
+        .ft-banner-inner { min-height: 400px; padding-bottom: 38px; }
+        .ft-panel { padding: 26px 26px 22px; }
+        .ft-row { gap: 18px; padding: 14px 6px; }
+        .ft-row .thumb { width: 118px; height: 78px; }
+        .ft-row .t { font-size: 21px; }
+        .ft-row .d { font-size: 15.5px; }
+        .ft-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+        .ft-card { min-height: 128px; padding: 20px 16px 18px; }
+      }
+
+      /* ---------- Movimiento reducido ---------- */
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+        html { scroll-behavior: auto; }
+        #particles { display: none; }
+        .bg-photo { transform: none; animation: none; }
+        .pc-fx, .pc-pilot.ppanel { display: none; }
+        .rv, .pl-shell, .rv.pre, .pl-shell.pre { opacity: 1; transform: none; transition: none; }
+        .pl-connector { opacity: 1; transition: none; }
+        .fu-fill { transition: none; }
+        .anim-line1, .anim-line2, .anim-sub, .anim-desc, .anim-ctas, .anim-more { animation: none; opacity: 1; }
+        .scroll-progress { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Fondo continuo de la página -->
+    <div class="bg-photo" aria-hidden="true"></div>
+    <div class="bg-veil" aria-hidden="true"></div>
+    <div class="bg-glow bg-glow-a" id="glowA" aria-hidden="true"></div>
+    <div class="bg-glow bg-glow-b" id="glowB" aria-hidden="true"></div>
+    <canvas id="particles" aria-hidden="true"></canvas>
+    <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+    <!-- Cabecera superior fija -->
+    <header class="appbar">
+      <div class="appbar-in">
+        <a class="brand" href="#hero" aria-label="Gold Mining 2.0 — ir al inicio">
+          <svg width="34" height="22" viewBox="0 0 72 46" fill="none" aria-hidden="true">
+            <path d="M4 40 L24 12 L33 25 L42 6 L68 40" stroke="currentColor" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+            <path d="M24 12 L29 20 M42 6 L47 15" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" opacity="0.75"/>
+            <path d="M14 40 H58" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+          <span class="brand-name">Gold Mining <b>2.0</b></span>
+        </a>
+        <span class="spacer"></span>
+        <span class="account-pill"><span class="dot" aria-hidden="true"></span>Mi cuenta</span>
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="Abrir menú de secciones" aria-expanded="false" aria-controls="menuPanel">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+      <nav class="menu-panel" id="menuPanel" aria-label="Secciones de la plataforma">
+        <a href="#hero"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/></svg>Inicio</a>
+        <a href="#func"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v3M12 18.2v3M2.8 12h3M18.2 12h3"/></svg>Cómo funciona</a>
+        <a href="#planes"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 20.5h15M6.5 20v-4.5M11 20V10M15.5 20V6.5M20 20V3.5"/></svg>Planes</a>
+        <a href="#fundidora"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 3-3 4.5-3 7.5a3 3 0 0 0 6 0c0-1-.5-1.8-1-2.5 2 1 4 3 4 6a6 6 0 0 1-12 0c0-4.5 4-6.5 6-9z"/></svg>Fundidora</a>
+        <a href="#referidos"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Referidos</a>
+        <a href="#ruleta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg>Ruleta</a>
+        <a href="#tienda"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Tienda</a>
+        <a href="#retiros"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg>Retiros</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- ============ 1 · HERO ============ -->
+      <section class="hero" id="hero" aria-label="Presentación">
+        <div class="hero-inner" id="heroInner">
+          <h1 class="hero-title">
+            <span class="hero-line anim-line1">GOLD</span>
+            <span class="hero-line anim-line2">MINING</span>
+          </h1>
+          <p class="hero-subtitle anim-sub">El oro del futuro, hoy</p>
+          <p class="hero-desc anim-desc">Invierte en minería de oro y haz crecer tu capital</p>
+          <div class="hero-ctas anim-ctas">
+            <a class="btn btn-primary" href="#planes">Registrarme ahora</a>
+            <a class="btn btn-secondary" href="#retiros">Iniciar sesión</a>
+          </div>
+          <a class="hero-more anim-more" href="#func">Conocer más ↓</a>
+        </div>
+      </section>
+
+      <!-- ============ 2 · CÓMO FUNCIONA ============ -->
+      <section class="sec" id="func" aria-label="Cómo funciona">
+        <div class="wrap">
+          <header class="cf-head rv">
+            <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.64 8.9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h.01A1.7 1.7 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09c0 .68.4 1.3 1 1.55.61.26 1.32.1 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.01c.26.6.87 1 1.55 1H21a2 2 0 1 1 0 4h-.09c-.68 0-1.3.4-1.51 1z"/></svg>Proceso de la plataforma</span>
+            <h2><span class="silver">Cómo</span> <span class="gold">funciona</span></h2>
+            <p class="cf-sub">De la maquinaria minera a la gestión de tus activos digitales.</p>
+            <div class="cf-rule"></div>
+          </header>
+
+          <div class="cf-flow">
+            <article class="cf-step rv">
+              <div class="cf-num" aria-hidden="true">01</div>
+              <div class="cf-card">
+                <div class="txt">
+                  <h3>Elige tu <span class="g">maquinaria</span></h3>
+                  <p>Conoce los planes disponibles, el costo de cada máquina y las condiciones correspondientes.</p>
+                  <p>Debes comprar un plan para empezar a minar. Sin plan activo, no hay generación de oro.</p>
+                </div>
+                <div class="cf-ph">
+                  <img src="assets/cf-01-maquinaria.webp" srcset="assets/cf-01-maquinaria-900.webp 900w, assets/cf-01-maquinaria.webp 2736w" sizes="(max-width: 640px) 100vw, (max-width: 1100px) 92vw, 960px" alt="Excavadora minera perforando una pared de roca con vetas de oro dentro del túnel" width="2736" height="1520" loading="lazy" decoding="async" />
+                  <span class="cf-chip">4 planes disponibles</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="cf-step rv" style="--d:.08s">
+              <div class="cf-num" aria-hidden="true">02</div>
+              <div class="cf-card">
+                <div class="txt">
+                  <h3>Activa tu <span class="g">plan</span></h3>
+                  <p>Revisa los datos de tu selección y confirma la activación de la máquina en la plataforma.</p>
+                </div>
+                <div class="cf-ph">
+                  <img src="assets/cf-02-activacion.webp" srcset="assets/cf-02-activacion-900.webp 900w, assets/cf-02-activacion.webp 2736w" sizes="(max-width: 640px) 100vw, (max-width: 1100px) 92vw, 960px" alt="Panel de activación de la máquina en la plataforma, dentro de la mina" width="2736" height="1520" loading="lazy" decoding="async" />
+                  <span class="cf-chip">Activación inmediata</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="cf-step rv" style="--d:.08s">
+              <div class="cf-num" aria-hidden="true">03</div>
+              <div class="cf-card">
+                <div class="txt">
+                  <h3>Consulta la <span class="g">actividad</span></h3>
+                  <p>Monitorea el estado de tu plan y consulta los datos que registre la plataforma.</p>
+                  <p>Tu máquina genera oro solo los días que la activas. Debes entrar cada 24 horas y pulsar 'Activar'. Si no lo haces, ese día no produce.</p>
+                </div>
+                <div class="cf-ph">
+                  <img src="assets/cf-03-actividad.webp" srcset="assets/cf-03-actividad-900.webp 900w, assets/cf-03-actividad.webp 2736w" sizes="(max-width: 640px) 100vw, (max-width: 1100px) 92vw, 960px" alt="Pantallas de monitoreo con el estado y la actividad del plan en la mina" width="2736" height="1520" loading="lazy" decoding="async" />
+                </div>
+              </div>
+            </article>
+
+            <article class="cf-step rv" style="--d:.08s">
+              <div class="cf-num" aria-hidden="true">04</div>
+              <div class="cf-card">
+                <div class="txt">
+                  <h3>Gestiona el <span class="g">oro</span></h3>
+                  <p>Tu oro se acumula con la máquina, pero debes fundirlo para convertirlo en USD y transferirlo a tu billetera interna.</p>
+                  <p>El oro no vale hasta que lo fundes. La fundición convierte tu oro en saldo en tu billetera interna de retiros, que luego puedes retirar.</p>
+                </div>
+                <div class="cf-ph">
+                  <img src="assets/cf-04-fundidora.webp" srcset="assets/cf-04-fundidora-900.webp 900w, assets/cf-04-fundidora.webp 2736w" sizes="(max-width: 640px) 100vw, (max-width: 1100px) 92vw, 960px" alt="Fundidora vertiendo oro fundido en la planta de procesamiento" width="2736" height="1520" loading="lazy" decoding="async" />
+                  <span class="cf-chip">Convierte oro en USD</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="cf-step rv" style="--d:.08s">
+              <div class="cf-num" aria-hidden="true">05</div>
+              <div class="cf-card">
+                <div class="txt">
+                  <h3>Gestiona tus <span class="g">operaciones</span></h3>
+                  <p>Accede a todas las funciones de la plataforma: referidos, ruleta y solicitudes de retiro, según las condiciones de cada función.</p>
+                </div>
+                <div class="cf-ph">
+                  <img src="assets/cf-05-operaciones.webp" srcset="assets/cf-05-operaciones-900.webp 900w, assets/cf-05-operaciones.webp 1776w" sizes="(max-width: 640px) 100vw, (max-width: 1100px) 92vw, 960px" alt="Panel de operaciones de la plataforma con los apartados Referidos, Ruleta, Retiros e Historial" width="1776" height="1168" loading="lazy" decoding="async" />
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="cf-closing rv" aria-hidden="true">
+            <span>Desliza</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8l8 8 8-8"/></svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 3 · PLANES ============ -->
+      <section class="sec" id="planes" aria-label="Planes de operación">
+        <div class="wrap">
+          <div class="pl-wrap">
+            <header class="pl-head rv">
+              <div class="pl-rule" aria-hidden="true"></div>
+              <h2>Planes de <em>operación</em></h2>
+              <p>Cuatro unidades de extracción y procesamiento. Elige la máquina, aporta el capital y genera rendimiento diario.</p>
+              <div class="pl-fleet" aria-hidden="true">
+                <span>4 unidades</span>
+                <span>Desde $25 USD</span>
+                <span>Hasta 5.5% diario</span>
+              </div>
+            </header>
+
+            <div class="pl-cards" id="plCards"></div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 4 · FUNDIDORA ============ -->
+      <section class="sec" id="fundidora" aria-label="Fundidora">
+        <div class="wrap">
+          <div class="fu-stack">
+            <header class="fu-banner rv">
+              <img class="bg" src="assets/fun-banner.webp" srcset="assets/fun-banner-900.webp 900w, assets/fun-banner.webp 2736w" sizes="(max-width: 640px) 100vw, (max-width: 1200px) 95vw, 1120px" alt="Horno rotatorio de la fundidora vertiendo oro fundido, con cinta transportadora de mineral y lingotes apilados" loading="lazy" decoding="async" />
+              <div class="fu-banner-top">
+                <span class="fu-pill">Fundidora</span>
+                <span class="fu-status"><span class="fu-dot" aria-hidden="true"></span> Sistema activo · Procesando oro</span>
+              </div>
+              <div class="fu-banner-body">
+                <h2>Fundidora</h2>
+                <p>Transforma el oro disponible mediante el proceso de fundición.</p>
+              </div>
+            </header>
+
+            <section class="fu-panel fu-stats rv" aria-label="Oro disponible">
+              <div class="fu-stat">
+                <span class="label">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 17.5 9 9h6l5 8.5H4Z" fill="#e8b24b"/><path d="M9 9l3-4 3 4" stroke="#e8b24b" stroke-width="2" stroke-linejoin="round"/></svg>
+                  Oro disponible
+                </span>
+                <span class="value num">125.50<span class="unit">g</span></span>
+                <span class="sub">Oro refinado listo en tu fundidora</span>
+              </div>
+              <div class="fu-stat">
+                <span class="label">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="#e8b24b" stroke-width="2"/><path d="M12 6.5v11M15 8.6c-.6-.8-1.7-1.2-3-1.2-1.9 0-3.2 1-3.2 2.4 0 3.3 6.6 1.8 6.6 4.9 0 1.4-1.5 2.4-3.4 2.4-1.4 0-2.6-.5-3.3-1.4" stroke="#e8b24b" stroke-width="1.7" stroke-linecap="round"/></svg>
+                  Equivalente estimado
+                </span>
+                <span class="value num">$125.50<span class="unit">USD</span></span>
+                <span class="sub">Valor estimado de tu oro refinado</span>
+              </div>
+            </section>
+
+            <section class="fu-panel rv" aria-label="Nivel de la fundidora">
+              <div class="fu-phead">
+                <h3>Nivel de la <span class="accent">fundidora</span></h3>
+                <span class="hint">Cada nivel tiene su moneda-sello · El nivel refleja tu energía acumulada</span>
+              </div>
+
+              <div class="fu-energy">
+                <div class="fu-energy-top">
+                  <div>
+                    <span class="fu-energy-label">Energía acumulada</span>
+                    <div class="fu-energy-figure">
+                      <svg class="bolt" width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13 2 4.5 13.5H11L9.8 22 19 9.8h-6.5L13 2Z" fill="#e8b24b" stroke="#ffd97a" stroke-linejoin="round"/></svg>
+                      <span class="big num" id="fuEnergyValue">320</span>
+                      <span class="of">/ <span class="num">400</span> de energía</span>
+                    </div>
+                  </div>
+                  <p class="fu-energy-next">Nivel actual: <strong>Hierro</strong>. Te faltan <strong>80</strong> de energía para el nivel <strong>Oro</strong>, que se alcanza a los <strong>400</strong>.</p>
+                </div>
+                <div class="fu-meter" role="img" aria-label="Medidor de energía: 320 de 400. Nivel actual Hierro, desde 150. Siguiente nivel Oro, desde 400.">
+                  <div class="fu-fill" id="fuMeterFill" style="width:80%"></div>
+                  <div class="fu-tick first" style="left:0%"><span>Carbón <b>0</b></span></div>
+                  <div class="fu-tick" style="left:37.5%"><span>Hierro <b>150</b></span></div>
+                  <div class="fu-tick last" style="left:100%"><span>Oro <b>400</b></span></div>
+                </div>
+                <div class="fu-legend">
+                  <span class="item"><span class="tag plus">+ Energía</span> +50 ⚡ por cada referido directo a partir del 3ro · +15 ⚡ por cada referido de nivel 2 activo</span>
+                  <span class="item"><span class="tag minus">− Energía</span> Cada operación de fundición que realizas</span>
+                </div>
+              </div>
+
+              <p class="fu-bridge">También puedes comprar energía en la <a href="#tienda">Tienda</a>.</p>
+
+              <div class="fu-levels">
+                <article class="fu-level done rv">
+                  <div class="coin"><img src="assets/fun-token-carbon.webp" alt="Moneda-sello del nivel Carbón, con trozos de carbón en relieve" loading="lazy" decoding="async" /></div>
+                  <span class="lvl">Nivel 1</span>
+                  <h4>Carbón</h4>
+                  <span class="req">desde <b>0</b> de energía acumulada</span>
+                  <div class="fu-specs">
+                    <div class="fu-spec"><span class="k">Costo por fundición</span><span class="v">120 ⚡</span></div>
+                    <div class="fu-spec"><span class="k">Límite por operación</span><span class="v">$50</span></div>
+                    <div class="fu-spec"><span class="k">Enfriamiento</span><span class="v">24 horas</span></div>
+                  </div>
+                  <span class="state">Alcanzado</span>
+                </article>
+                <article class="fu-level current rv" style="--d:.07s" aria-current="true">
+                  <div class="coin"><img src="assets/fun-token-hierro.webp" alt="Moneda-sello del nivel Hierro, de metal forjado" loading="lazy" decoding="async" /></div>
+                  <span class="lvl">Nivel 2</span>
+                  <h4>Hierro</h4>
+                  <span class="req">desde <b>150</b> de energía acumulada</span>
+                  <div class="fu-specs">
+                    <div class="fu-spec"><span class="k">Costo por fundición</span><span class="v">80 ⚡</span></div>
+                    <div class="fu-spec"><span class="k">Límite por operación</span><span class="v">$150</span></div>
+                    <div class="fu-spec"><span class="k">Enfriamiento</span><span class="v">12 horas</span></div>
+                  </div>
+                  <span class="state">Tu nivel actual</span>
+                </article>
+                <article class="fu-level locked rv" style="--d:.14s">
+                  <div class="coin"><img src="assets/fun-token-oro.webp" alt="Moneda-sello del nivel Oro, dorada con un lingote en relieve" loading="lazy" decoding="async" /></div>
+                  <span class="lvl">Nivel 3</span>
+                  <h4>Oro</h4>
+                  <span class="req">desde <b>400</b> de energía acumulada</span>
+                  <div class="fu-specs">
+                    <div class="fu-spec"><span class="k">Costo por fundición</span><span class="v">45 ⚡</span></div>
+                    <div class="fu-spec"><span class="k">Límite por operación</span><span class="v">$500</span></div>
+                    <div class="fu-spec"><span class="k">Enfriamiento</span><span class="v">6 horas</span></div>
+                  </div>
+                  <span class="state">Bloqueado</span>
+                </article>
+                <article class="fu-level locked rv" style="--d:.21s">
+                  <div class="coin"><img src="assets/fun-token-diamante.webp" alt="Moneda-sello del nivel Diamante, plateada con un diamante en relieve" loading="lazy" decoding="async" /></div>
+                  <span class="lvl">Nivel 4</span>
+                  <h4>Diamante</h4>
+                  <span class="req">desde <b>1,000</b> de energía acumulada</span>
+                  <div class="fu-specs">
+                    <div class="fu-spec"><span class="k">Costo por fundición</span><span class="v">15 ⚡</span></div>
+                    <div class="fu-spec"><span class="k">Límite por operación</span><span class="v">Ilimitado</span></div>
+                    <div class="fu-spec"><span class="k">Enfriamiento</span><span class="v">3 horas</span></div>
+                  </div>
+                  <span class="state">Bloqueado</span>
+                </article>
+              </div>
+              <p class="fu-note">
+                <strong>Degradación automática:</strong> Si después de una fundición tu energía baja del umbral
+                de tu nivel, la fundidora se degrada automáticamente al nivel que corresponda.
+              </p>
+              <p class="fu-note">
+                Al fundir, tu oro se convierte en <strong>saldo en tu billetera interna de retiros</strong>,
+                listo para retirar desde el Centro de Retiros.
+              </p>
+            </section>
+
+            <section class="fu-panel rv" aria-label="Secuencia de la fundición">
+              <div class="fu-phead">
+                <h3>Secuencia de la <span class="accent">fundición</span></h3>
+                <span class="hint">Del mineral en bruto al oro refinado</span>
+              </div>
+              <ol class="fu-seq">
+                <li class="fu-step rv">
+                  <div class="thumb">
+                    <img src="assets/fun-seq-1-carga.webp" alt="Mineral con vetas de oro avanzando por la cinta de carga hacia el horno" loading="lazy" decoding="async" />
+                    <span class="n">01</span>
+                  </div>
+                  <h4>Carga</h4>
+                  <p>El mineral extraído entra por la cinta al horno rotatorio.</p>
+                  <span class="arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12h15m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </li>
+                <li class="fu-step rv" style="--d:.07s">
+                  <div class="thumb">
+                    <img src="assets/fun-seq-2-calentamiento.webp" alt="Interior del horno al rojo vivo durante el calentamiento del mineral" loading="lazy" decoding="async" />
+                    <span class="n">02</span>
+                  </div>
+                  <h4>Calentamiento</h4>
+                  <p>El horno sube la temperatura hasta que la roca empieza a ceder.</p>
+                  <span class="arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12h15m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </li>
+                <li class="fu-step rv" style="--d:.14s">
+                  <div class="thumb">
+                    <img src="assets/fun-seq-3-fundicion.webp" alt="Oro fundido vertiéndose en estado líquido durante la fundición" loading="lazy" decoding="async" />
+                    <span class="n">03</span>
+                  </div>
+                  <h4>Fundición</h4>
+                  <p>El oro se separa del mineral y fluye en estado líquido.</p>
+                  <span class="arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12h15m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </li>
+                <li class="fu-step rv" style="--d:.21s">
+                  <div class="thumb">
+                    <img src="assets/fun-seq-4-oro-listo.webp" alt="Lingotes de oro refinado listos al final del proceso" loading="lazy" decoding="async" />
+                    <span class="n">04</span>
+                  </div>
+                  <h4>Oro listo</h4>
+                  <p>El oro refinado queda listo y se suma a tu disponible.</p>
+                </li>
+              </ol>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 5 · REFERIDOS ============ -->
+      <section class="sec" id="referidos" aria-label="Red de referidos">
+        <div class="wrap">
+          <header class="rf-banner rv">
+            <img class="bg" src="assets/ref-banner.webp" srcset="assets/ref-banner-900.webp 900w, assets/ref-banner.webp 2736w" sizes="(max-width: 640px) 100vw, (max-width: 1200px) 95vw, 1120px" alt="Sala de control de la red de referidos con un mapa mundial dorado en la pantalla principal" loading="lazy" decoding="async" />
+            <div class="scrim"></div>
+            <div class="content">
+              <span class="rf-pill"><span class="dot"></span>Referidos</span>
+              <h2 class="rf-title">Red de <span class="gold">Referidos</span></h2>
+              <p class="rf-subtitle">Invita, construye tu red y multiplica tus ganancias</p>
+              <div class="rf-chips">
+                <span class="rf-chip">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f0c95c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  <span class="num">1,248</span> usuarios activos
+                </span>
+                <span class="rf-chip">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f0c95c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M15 9.2c-.6-1-1.7-1.4-3-1.4-1.7 0-3 .9-3 2.2 0 3 6 1.6 6 4.2 0 1.3-1.3 2.2-3 2.2-1.4 0-2.6-.6-3.2-1.6"/></svg>
+                  <span class="num">$12,560</span> en comisiones generadas
+                </span>
+              </div>
+            </div>
+          </header>
+
+          <section class="rf-panel rv" aria-labelledby="rf-cuenta">
+            <div class="rf-phead">
+              <span class="ic">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#f0c95c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+              </span>
+              <div>
+                <h3 id="rf-cuenta">Tu cuenta</h3>
+                <p>Así se verá tu panel de referidos</p>
+              </div>
+            </div>
+            <div class="rf-account-row">
+              <div class="rf-invite-block">
+                <p class="rf-invite-label">Tu enlace de invitación</p>
+                <div class="rf-invite-link">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f0c95c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  <span class="link-text">goldmining.io/ref/tu-usuario</span>
+                </div>
+              </div>
+              <div class="rf-account-stats">
+                <div class="rf-stat">
+                  <div class="v num">12</div>
+                  <div class="k">Referidos directos</div>
+                  <div class="s">Nivel 1 · 30%</div>
+                </div>
+                <div class="rf-stat">
+                  <div class="v num">38</div>
+                  <div class="k">Referidos nivel 2</div>
+                  <div class="s">Nivel 2 · 10%</div>
+                </div>
+                <div class="rf-stat">
+                  <div class="v num money"><span class="cur">$</span>1,245.50</div>
+                  <div class="k">Comisiones totales</div>
+                  <div class="s">Generadas por tu red</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="rf-panel rv" aria-labelledby="rf-red">
+            <div class="rf-phead">
+              <span class="ic">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#f0c95c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.4"/><circle cx="5" cy="19" r="2.4"/><circle cx="19" cy="19" r="2.4"/><path d="M12 7.4 6.2 16.8M12 7.4l5.8 9.4M7.4 19h9.2"/></svg>
+              </span>
+              <div>
+                <h3 id="rf-red">Tu red</h3>
+                <p>Dos niveles de profundidad, una sola red</p>
+              </div>
+            </div>
+            <div class="rf-red-layout">
+              <figure class="rf-red-fig">
+                <img src="assets/ref-red.webp" srcset="assets/ref-red-900.webp 900w, assets/ref-red.webp 2048w" sizes="(max-width: 640px) 100vw, (max-width: 1100px) 92vw, 900px" alt="Red jerárquica de referidos en una mina a cielo abierto: la planta de procesamiento en lo alto y, conectados con líneas doradas, las máquinas de los planes — planta minera, excavadora con barrenas y perforadoras — en los niveles inferiores" loading="lazy" decoding="async" />
+              </figure>
+              <div class="rf-red-cards">
+                <article class="rf-level-card">
+                  <span class="tag">Nivel 1</span>
+                  <div class="pct num">30%</div>
+                  <h4>Referidos directos</h4>
+                  <p>Las personas que se registran con tu enlace y compran un plan.</p>
+                  <div class="of">de comisión por la compra de un plan</div>
+                </article>
+                <article class="rf-level-card">
+                  <span class="tag">Nivel 2</span>
+                  <div class="pct num">10%</div>
+                  <h4>Referidos indirectos</h4>
+                  <p>Las personas que invitan tus referidos directos y compran un plan.</p>
+                  <div class="of">de comisión por la compra de un plan</div>
+                </article>
+              </div>
+            </div>
+            <div class="rf-legend">
+              <span><b>Tú</b> · Nivel 0</span>
+              <span><b>Nivel 1</b> · Máquinas de los planes — tus directos</span>
+              <span><b>Nivel 2</b> · Máquinas de los planes — los referidos de tus referidos</span>
+            </div>
+            <div class="rf-energy-note">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f0c95c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4.5 13.5H11L9.8 22 19 10h-6.5L13 2z"/></svg>
+              <span>Cada referido activo <b>suma energía a tu fundidora</b>. Con <b>2 referidos directos</b> que a su vez inviten a <b>1 persona cada uno</b> (2 referidos de nivel 2 activos), desbloqueas tu fundidora.</span>
+            </div>
+          </section>
+
+          <section class="rf-panel rv" aria-labelledby="rf-ejemplos">
+            <div class="rf-phead">
+              <span class="ic">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#f0c95c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7.5h8M8 12h.01M12 12h.01M16 12h.01M8 15.5h.01M12 15.5h.01M16 15.5h.01"/></svg>
+              </span>
+              <div>
+                <h3 id="rf-ejemplos">Ejemplos de comisiones</h3>
+                <p>La comisión se calcula sobre el plan que compra tu referido</p>
+              </div>
+            </div>
+            <div class="rf-examples">
+              <article class="rf-example">
+                <div class="thumb">
+                  <img src="assets/ref-ejemplo-1.webp" srcset="assets/ref-ejemplo-1-900.webp 900w, assets/ref-ejemplo-1.webp 2048w" sizes="(max-width: 640px) 100vw, (max-width: 1100px) 60vw, 620px" alt="Planta minera de procesamiento iluminada de noche" loading="lazy" decoding="async" />
+                </div>
+                <div class="body">
+                  <span class="lvl">Nivel 1 · Directo</span>
+                  <div class="title-row">
+                    <span class="rf-plan-icon" aria-hidden="true">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f0c95c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V10l5 3v-3l5 3V6h3v15H3z"/><path d="M17 21v-6l4-2v8"/><path d="M7 17h.01M11 17h.01M15 17h.01"/></svg>
+                    </span>
+                    <h4>Planta Minera</h4>
+                  </div>
+                  <p class="who">Tu referido directo compra el plan Planta Minera.</p>
+                  <div class="math">
+                    <span><span class="num">200 USD</span> del plan</span>
+                    <span class="op">×</span>
+                    <span><span class="num">30%</span> nivel 1</span>
+                    <span class="result">
+                      <span class="k">Tu comisión</span>
+                      <span class="v num">60 USD</span>
+                    </span>
+                  </div>
+                </div>
+              </article>
+              <article class="rf-example">
+                <div class="thumb">
+                  <img src="assets/ref-ejemplo-2.webp" srcset="assets/ref-ejemplo-2-900.webp 900w, assets/ref-ejemplo-2.webp 2048w" sizes="(max-width: 640px) 100vw, (max-width: 1100px) 60vw, 620px" alt="Excavadora con oruga trabajando de noche entre rocas doradas" loading="lazy" decoding="async" />
+                </div>
+                <div class="body">
+                  <span class="lvl">Nivel 2 · Indirecto</span>
+                  <div class="title-row">
+                    <span class="rf-plan-icon" aria-hidden="true">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f0c95c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="16.5" width="11" height="4" rx="2"/><path d="M5.5 16.5v-3h5l2 3"/><path d="M10.5 13.5 15 7l4.5 2.2L18 13"/><path d="M19.5 9.2 22 12l-3.2 1.2"/></svg>
+                    </span>
+                    <h4>Excavadora con Oruga</h4>
+                  </div>
+                  <p class="who">Un referido de segundo nivel compra el plan Excavadora con Oruga.</p>
+                  <div class="math">
+                    <span><span class="num">75 USD</span> del plan</span>
+                    <span class="op">×</span>
+                    <span><span class="num">10%</span> nivel 2</span>
+                    <span class="result">
+                      <span class="k">Tu comisión</span>
+                      <span class="v num">7.50 USD</span>
+                    </span>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <div class="rf-benefits">
+            <article class="rf-benefit rv">
+              <span class="ic">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#f0c95c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              </span>
+              <h4>Tu enlace de invitación</h4>
+              <p>Un enlace único y personal. Cada registro que llegue por él queda en tu red para siempre.</p>
+            </article>
+            <article class="rf-benefit rv" style="--d:.07s">
+              <span class="ic">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#f0c95c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5z"/><path d="m3 13 9 5 9-5"/></svg>
+              </span>
+              <h4>2 niveles de comisiones</h4>
+              <p><span class="num">30%</span> por tus referidos directos y <span class="num">10%</span> por los de segundo nivel, sobre cada plan comprado.</p>
+            </article>
+            <article class="rf-benefit rv" style="--d:.14s">
+              <span class="ic">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#f0c95c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+              </span>
+              <h4>Comisiones en tiempo real</h4>
+              <p>Cada compra de un plan dentro de tu red se refleja al instante en tu panel de cuenta.</p>
+            </article>
+            <article class="rf-benefit rv" style="--d:.21s">
+              <span class="ic">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#f0c95c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 12c-2-2.67-4-4-6-4a4 4 0 1 0 0 8c2 0 4-1.33 6-4Zm0 0c2 2.67 4 4 6 4a4 4 0 0 0 0-8c-2 0-4 1.33-6 4Z"/></svg>
+              </span>
+              <h4>Sin límite de referidos</h4>
+              <p>Invita a cuantas personas quieras: tu red puede crecer sin tope en ambos niveles.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 6 · RULETA ============ -->
+      <section class="sec" id="ruleta" aria-label="Ruleta de premios">
+        <div class="wrap">
+          <header class="ru-head rv">
+            <span class="ru-pill">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 L22 12 L12 22 L2 12 Z"/></svg>
+              Ruleta
+            </span>
+            <h2>Ruleta <span class="gold">Gold Mining</span></h2>
+            <p class="ru-sub">Gira y descubre el premio disponible</p>
+            <div>
+              <span class="ru-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg>
+                3 tiradas gratis diarias
+              </span>
+            </div>
+          </header>
+
+          <div class="ru-stage rv">
+            <div class="ru-glow" aria-hidden="true"></div>
+            <div class="ru-frame">
+              <img src="assets/ruleta.webp" srcset="assets/ruleta-900.webp 900w, assets/ruleta.webp 1600w" sizes="(max-width: 680px) 100vw, 620px" alt="Ruleta dorada de Gold Mining con premios de oro, monedas, diamantes, cofres y energía en cada segmento" width="1600" height="1600" loading="lazy" decoding="async" />
+            </div>
+          </div>
+
+          <section class="ru-spins rv" aria-label="Tiradas disponibles">
+            <span class="ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>
+            </span>
+            <div>
+              <div class="lbl">Tiradas disponibles</div>
+              <div class="hint">Tus 3 tiradas gratis de hoy</div>
+            </div>
+            <span class="num">3</span>
+          </section>
+
+          <div class="ru-cards">
+            <article class="ru-card rv">
+              <span class="ic">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>
+              </span>
+              <h3>Premios reales</h3>
+              <p>Gana oro, USD, energía y más</p>
+            </article>
+            <article class="ru-card rv" style="--d:.07s">
+              <span class="ic">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg>
+              </span>
+              <h3>3 tiradas gratis</h3>
+              <p>Todos los días</p>
+            </article>
+            <article class="ru-card rv" style="--d:.14s">
+              <span class="ic">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              </span>
+              <h3>Compra más tiradas</h3>
+              <p>Compra tiradas extra con el saldo de tu billetera.</p>
+              <a class="ru-card-link" href="#tienda">Disponible en la Tienda</a>
+            </article>
+            <article class="ru-card rv" style="--d:.21s">
+              <span class="ic">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+              </span>
+              <h3>Premios directos</h3>
+              <p>Se acreditan en tu cuenta</p>
+            </article>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ 7 · TIENDA ============ -->
+      <section class="sec" id="tienda" aria-label="Tienda">
+        <div class="wrap">
+          <header class="cf-head rv">
+            <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Tienda</span>
+            <h2><span class="silver">La</span> <span class="gold">tienda</span></h2>
+            <p class="cf-sub">Aquí adquieres todo lo que se usa en la plataforma: energía para tu fundidora y tiradas extra para la ruleta.</p>
+            <div class="cf-rule"></div>
+          </header>
+
+          <div class="ti-stack">
+            <section class="fu-panel rv" aria-label="Energía para tu fundidora">
+              <div class="fu-phead">
+                <h3>Energía para tu <span class="accent">fundidora</span></h3>
+                <span class="hint">¿Sin referidos? Compra energía directamente</span>
+              </div>
+              <div class="ti-packs">
+                <article class="ti-pack">
+                  <span class="tp-name">Arranque</span>
+                  <span class="tp-energy">+100 ⚡</span>
+                  <span class="tp-elabel">de energía</span>
+                  <span class="tp-bonus is-empty" aria-hidden="true">Bono</span>
+                </article>
+                <article class="ti-pack">
+                  <span class="tp-name">Operativo</span>
+                  <span class="tp-energy">+250 ⚡</span>
+                  <span class="tp-elabel">de energía</span>
+                  <span class="tp-bonus">+25 ⚡ de bono</span>
+                </article>
+                <article class="ti-pack">
+                  <span class="tp-name">Maestro</span>
+                  <span class="tp-energy">+500 ⚡</span>
+                  <span class="tp-elabel">de energía</span>
+                  <span class="tp-bonus">+125 ⚡ de bono</span>
+                </article>
+                <article class="ti-pack">
+                  <span class="tp-name">Lord</span>
+                  <span class="tp-energy">+1,000 ⚡</span>
+                  <span class="tp-elabel">de energía</span>
+                  <span class="tp-bonus">+500 ⚡ de bono</span>
+                </article>
+              </div>
+            </section>
+
+            <section class="fu-panel rv" aria-label="Tiradas de ruleta">
+              <div class="fu-phead">
+                <h3>Tiradas de <span class="accent">ruleta</span></h3>
+                <span class="hint">Se pagan con el saldo de tu billetera</span>
+              </div>
+              <div class="ti-spins">
+                <span class="ic" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>
+                </span>
+                <p>¿Se te acabaron las tiradas gratis del día? Aquí puedes <strong>comprar tiradas extra de ruleta con el saldo de tu billetera</strong> y seguir girando por más premios.</p>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 8 · RETIROS ============ -->
+      <section class="sec" id="retiros" aria-label="Centro de retiros">
+        <div class="wrap">
+          <section class="rt-banner rv" aria-label="Retiros">
+            <img src="assets/ret-banner.webp" srcset="assets/ret-banner-900.webp 900w, assets/ret-banner.webp 2736w" sizes="(max-width: 640px) 100vw, (max-width: 1200px) 95vw, 1120px" alt="Mina nocturna con una cinta transportadora de mineral de oro y una bóveda circular con el emblema de Tether" loading="lazy" decoding="async" />
+            <div class="rt-banner-content">
+              <span class="rt-pill">Retiros</span>
+              <h2 class="rt-title">Centro de <span class="gold">Retiros</span></h2>
+              <p class="rt-subtitle">Gestiona tus fondos y consulta tus solicitudes</p>
+            </div>
+          </section>
+
+          <div class="rt-network-note rv" style="margin-top:18px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3-3 4.5-3 7.5a3 3 0 0 0 6 0c0-1-.5-1.8-1-2.5 2 1 4 3 4 6a6 6 0 0 1-12 0c0-4.5 4-6.5 6-9z"/></svg>
+            <p>Tu saldo disponible proviene de las fundiciones que hayas completado.</p>
+          </div>
+
+          <section class="rt-panel rv" aria-label="Saldo disponible">
+            <div class="rt-saldo">
+              <div class="rt-saldo-main">
+                <p class="rt-saldo-label">Saldo disponible</p>
+                <div class="rt-saldo-amount">$125.50<span class="cur">USD</span></div>
+              </div>
+              <div class="rt-wallet">
+                <div class="tether" aria-hidden="true">₮</div>
+                <div class="rt-wallet-info">
+                  <div class="rt-wallet-name">USDT TRC-20 <span class="rt-chip-ok">Conectada</span></div>
+                  <div class="rt-wallet-addr">TLa8...7K3m</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="rt-panel rv" aria-label="Solicitar retiro">
+            <div class="rt-phead">
+              <span class="ic" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg>
+              </span>
+              <h3>Solicitar retiro</h3>
+            </div>
+            <p class="rt-field-label">Monto a retirar</p>
+            <div class="rt-amount-field" aria-label="Monto a retirar: 50.00 USD">
+              <span class="sign">$</span>
+              <span class="value">50.00</span>
+              <span class="cur">USD</span>
+            </div>
+            <div class="rt-breakdown">
+              <div class="rt-row">
+                <span class="k">Monto solicitado</span>
+                <span class="v">$50.00 USD</span>
+              </div>
+              <div class="rt-row">
+                <span class="k">Comisión de la plataforma (12%)</span>
+                <span class="v">−$6.00 USD</span>
+              </div>
+              <div class="rt-row net">
+                <span class="k">Monto neto estimado</span>
+                <span class="v">$44.00 USDT</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="rt-panel rv" aria-label="Condiciones del retiro">
+            <div class="rt-phead">
+              <span class="ic" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-3.6 8-10V5l-8-3-8 3v7c0 6.4 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+              </span>
+              <h3>Condiciones del retiro</h3>
+            </div>
+            <div class="rt-cond-grid">
+              <div class="rt-cond rv">
+                <span class="ic" aria-hidden="true">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1Z"/><path d="M3 7h17"/><circle cx="16.5" cy="13.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+                </span>
+                <div class="big">$20 USD</div>
+                <div class="small">Retiro mínimo</div>
+              </div>
+              <div class="rt-cond rv" style="--d:.07s">
+                <span class="ic" aria-hidden="true">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+                </span>
+                <div class="big">12%</div>
+                <div class="small">Comisión</div>
+              </div>
+              <div class="rt-cond rv" style="--d:.14s">
+                <span class="ic" aria-hidden="true">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg>
+                </span>
+                <div class="big">2 retiros</div>
+                <div class="small">Máximo por semana</div>
+              </div>
+              <div class="rt-cond rv" style="--d:.21s">
+                <span class="ic" aria-hidden="true">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                </span>
+                <div class="big">24 horas</div>
+                <div class="small">Tiempo aproximado</div>
+              </div>
+            </div>
+            <div class="rt-network-note">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><circle cx="12" cy="16.5" r="0.6" fill="currentColor"/></svg>
+              <p><strong>Red de retiro: USDT TRC-20</strong> — Asegúrate de que tu billetera sea compatible con la red TRC-20.</p>
+            </div>
+          </section>
+
+          <div class="rt-note rv" role="note">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3z"/><path d="M12 10v4"/><circle cx="12" cy="17" r="0.6" fill="currentColor"/></svg>
+            <p><strong>Importante:</strong> Los retiros se procesan en un tiempo aproximado de 24 horas. Solo se permiten 2 retiros por semana y el monto mínimo es de 20 USD.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 9 · PIE ============ -->
+      <footer class="sec" id="pie" aria-label="Pie de página" style="padding-bottom:0">
+        <div class="wrap">
+          <section class="ft-banner rv" aria-label="Gold Mining 2.0">
+            <img class="photo" src="assets/pie-banner.webp" srcset="assets/pie-banner-900.webp 900w, assets/pie-banner.webp 2048w" sizes="100vw" alt="Mina de oro a cielo abierto al atardecer, con torres, cintas transportadoras y un camión minero bajo un cielo dorado" loading="lazy" decoding="async" />
+            <div class="ft-banner-inner">
+              <svg class="ft-logo" width="72" height="46" viewBox="0 0 72 46" fill="none" aria-hidden="true">
+                <path d="M4 40 L24 12 L33 25 L42 6 L68 40" stroke="currentColor" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round"/>
+                <path d="M24 12 L29 20 M42 6 L47 15" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity="0.75"/>
+                <path d="M14 40 H58" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/>
+              </svg>
+              <h2>Gold Mining 2.0</h2>
+              <p class="ft-lema">Tecnología, maquinaria y gestión minera en una sola plataforma</p>
+            </div>
+          </section>
+
+          <section class="ft-panel rv" aria-label="Explorar plataforma">
+            <h3>Explorar <span class="accent">plataforma</span></h3>
+            <ul class="ft-rows">
+              <li>
+                <a class="ft-row" href="#planes">
+                  <img class="thumb" src="assets/thumb-planes.webp" alt="Excavadora minera de los planes de minería trabajando en la mina" loading="lazy" decoding="async" />
+                  <span class="txt">
+                    <span class="t">Planes de minería</span>
+                    <span class="d" style="display:block">Conoce las máquinas y sus beneficios</span>
+                  </span>
+                  <span class="chevs" aria-hidden="true">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 5 L11 12 L4 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/><path d="M12 5 L19 12 L12 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="ft-row" href="#fundidora">
+                  <img class="thumb" src="assets/thumb-fundidora.webp" alt="Oro fundido vertiéndose en la fundidora" loading="lazy" decoding="async" />
+                  <span class="txt">
+                    <span class="t">Fundidora</span>
+                    <span class="d" style="display:block">Convierte tu oro en saldo en tu billetera interna de retiros</span>
+                  </span>
+                  <span class="chevs" aria-hidden="true">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 5 L11 12 L4 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/><path d="M12 5 L19 12 L12 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="ft-row" href="#referidos">
+                  <img class="thumb" src="assets/thumb-referidos.webp" alt="Red de referidos conectando las máquinas de los planes" loading="lazy" decoding="async" />
+                  <span class="txt">
+                    <span class="t">Referidos</span>
+                    <span class="d" style="display:block">Invita, crece y gana en 2 niveles</span>
+                  </span>
+                  <span class="chevs" aria-hidden="true">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 5 L11 12 L4 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/><path d="M12 5 L19 12 L12 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="ft-row" href="#ruleta">
+                  <img class="thumb" src="assets/thumb-ruleta.webp" alt="Ruleta de premios de Gold Mining" loading="lazy" decoding="async" />
+                  <span class="txt">
+                    <span class="t">Ruleta</span>
+                    <span class="d" style="display:block">Gira y descubre tus premios</span>
+                  </span>
+                  <span class="chevs" aria-hidden="true">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 5 L11 12 L4 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/><path d="M12 5 L19 12 L12 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="ft-row" href="#tienda">
+                  <img class="thumb" src="assets/fun-token-oro.webp" alt="Moneda de oro de la tienda de la plataforma" loading="lazy" decoding="async" />
+                  <span class="txt">
+                    <span class="t">Tienda</span>
+                    <span class="d" style="display:block">Energía para tu fundidora y tiradas extra de ruleta</span>
+                  </span>
+                  <span class="chevs" aria-hidden="true">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 5 L11 12 L4 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/><path d="M12 5 L19 12 L12 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="ft-row" href="#retiros">
+                  <img class="thumb" src="assets/thumb-retiros.webp" alt="Mina con la bóveda de retiros en USDT" loading="lazy" decoding="async" />
+                  <span class="txt">
+                    <span class="t">Retiros</span>
+                    <span class="d" style="display:block">Gestiona tus fondos de forma segura</span>
+                  </span>
+                  <span class="chevs" aria-hidden="true">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 5 L11 12 L4 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/><path d="M12 5 L19 12 L12 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </section>
+
+          <section class="ft-panel rv" aria-label="Información y ayuda">
+            <h3>Información <span class="accent">y ayuda</span></h3>
+            <div class="ft-grid">
+              <div class="ft-card rv">
+                <span class="ic" aria-hidden="true">
+                  <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                </span>
+                <p class="ct">Términos y condiciones</p>
+              </div>
+              <div class="ft-card rv" style="--d:.06s">
+                <span class="ic" aria-hidden="true">
+                  <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9.5 11.5 L11.2 13.2 L14.8 9.6"/></svg>
+                </span>
+                <p class="ct">Política de privacidad</p>
+              </div>
+              <div class="ft-card rv" style="--d:.12s">
+                <span class="ic" aria-hidden="true">
+                  <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 13.5 L10.6 15 L15 10.8"/></svg>
+                </span>
+                <p class="ct">Reglas de los planes</p>
+              </div>
+              <div class="ft-card rv">
+                <span class="ic" aria-hidden="true">
+                  <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+                </span>
+                <p class="ct">Condiciones de retiro</p>
+              </div>
+              <div class="ft-card rv" style="--d:.06s">
+                <span class="ic" aria-hidden="true">
+                  <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                </span>
+                <p class="ct">Ayuda y contacto</p>
+              </div>
+              <div class="ft-card rv" style="--d:.12s">
+                <span class="ic" aria-hidden="true">
+                  <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </span>
+                <p class="ct">Preguntas frecuentes</p>
+              </div>
+            </div>
+          </section>
+
+          <div class="ft-cierre rv">
+            <svg class="ft-logo" width="62" height="40" viewBox="0 0 72 46" fill="none" aria-hidden="true">
+              <path d="M4 40 L24 12 L33 25 L42 6 L68 40" stroke="currentColor" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round"/>
+              <path d="M24 12 L29 20 M42 6 L47 15" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity="0.75"/>
+              <path d="M14 40 H58" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/>
+            </svg>
+            <p class="brand">Gold Mining 2.0</p>
+            <div class="ft-social">
+              <span class="s" role="img" aria-label="Telegram">
+                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><path d="M22 2 L15 22 L11 13 L2 9 Z"/></svg>
+              </span>
+              <span class="s" role="img" aria-label="Discord">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.32 4.37a19.8 19.8 0 0 0-4.93-1.51 13.8 13.8 0 0 0-.64 1.28 18.3 18.3 0 0 1 5.5 2.28 15.5 15.5 0 0 0-13.1-1.04 15.5 15.5 0 0 0-2.05 1.04 18.3 18.3 0 0 1 5.5-2.28c-.2-.43-.42-.86-.64-1.28h-.05A19.8 19.8 0 0 0 3.68 4.37C.53 9.1-.32 13.58.1 18.06a19.9 19.9 0 0 0 6.03 3.02c.24-.33.47-.67.67-1.03-.36-.13-.71-.3-1.06-.5.09-.07.18-.14.26-.21a14.2 14.2 0 0 0 12 0c.09.07.17.14.26.21-.34.2-.69.37-1.06.5.2.36.43.7.67 1.03a19.8 19.8 0 0 0 6.03-3.02c.5-5.18-.65-9.67-3.58-13.69ZM8.02 15.33c-1.18 0-2.16-1.08-2.16-2.42s.95-2.42 2.16-2.42c1.21 0 2.18 1.09 2.16 2.42 0 1.34-.95 2.42-2.16 2.42Zm7.97 0c-1.18 0-2.15-1.08-2.15-2.42s.95-2.42 2.15-2.42c1.22 0 2.18 1.09 2.16 2.42 0 1.34-.94 2.42-2.16 2.42Z"/></svg>
+              </span>
+              <span class="s" role="img" aria-label="YouTube">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 7.2s-.22-1.55-.9-2.23c-.86-.9-1.82-.9-2.26-.96C16.7 3.75 12 3.75 12 3.75s-4.7 0-7.84.26c-.44.05-1.4.06-2.26.96C1.22 5.65 1 7.2 1 7.2S.75 9.02.75 10.84v1.7c0 1.82.25 3.64.25 3.64s.22 1.55.9 2.23c.86.9 1.99.87 2.5 1 1.8.17 7.6.23 7.6.23s4.71 0 7.85-.27c.44-.05 1.4-.06 2.26-.96.68-.68.9-2.23.9-2.23s.25-1.82.25-3.64v-1.7c0-1.82-.25-3.64-.25-3.64ZM9.75 15.02V8.4l6.27 3.32-6.27 3.3Z"/></svg>
+              </span>
+              <span class="s" role="img" aria-label="Instagram">
+                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><line x1="17.4" y1="6.6" x2="17.41" y2="6.6"/></svg>
+              </span>
+            </div>
+            <div class="ft-divider" aria-hidden="true"></div>
+            <p class="ft-copy">© Gold Mining 2.0. Todos los derechos reservados</p>
+          </div>
+        </div>
+      </footer>
+    </main>
+
+    <button class="to-top" id="toTop" type="button" aria-label="Volver arriba">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+    </button>
+
+    <script>
+      (function () {
+        "use strict";
+        var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        /* ================= Menú de secciones ================= */
+        var menuBtn = document.getElementById("menuBtn");
+        var menuPanel = document.getElementById("menuPanel");
+        function closeMenu() {
+          menuPanel.classList.remove("open");
+          menuBtn.setAttribute("aria-expanded", "false");
+        }
+        menuBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          var open = menuPanel.classList.toggle("open");
+          menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+        });
+        menuPanel.addEventListener("click", function (e) {
+          if (e.target.closest("a")) closeMenu();
+        });
+        document.addEventListener("click", function (e) {
+          if (!menuPanel.contains(e.target) && e.target !== menuBtn) closeMenu();
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") closeMenu();
+        });
+
+        /* ================= Revelado al hacer scroll ================= */
+        var revealEls = document.querySelectorAll(".rv");
+        if (reduced || !("IntersectionObserver" in window)) {
+          for (var i = 0; i < revealEls.length; i++) revealEls[i].classList.add("in");
+        } else {
+          var revealIO = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+              if (en.isIntersecting) {
+                en.target.classList.remove("pre");
+                en.target.classList.add("in");
+                revealIO.unobserve(en.target);
+              }
+            });
+          }, { threshold: 0, rootMargin: "0px 0px 18% 0px" });
+          revealEls.forEach(function (el) {
+            var r = el.getBoundingClientRect();
+            if (r.top < window.innerHeight * 1.18 && r.bottom > 0) {
+              /* Ya dentro o cerca del viewport: nunca se oculta. */
+              el.classList.add("in");
+            } else {
+              el.classList.add("pre");
+              revealIO.observe(el);
+            }
+          });
+        }
+
+        /* ================= Descenso: progreso y resplandores =================
+           Sin parallax sobre el Hero ni actualización de --depth por frame:
+           reescribir estilos de capas con texto en cada scroll provocaba el
+           doble pintado fantasma en Safari. El parallax queda solo en los
+           resplandores de fondo, que no contienen texto ni botones. */
+        var progress = document.getElementById("scrollProgress");
+        var glowA = document.getElementById("glowA");
+        var glowB = document.getElementById("glowB");
+        var toTop = document.getElementById("toTop");
+        var depth = 0;
+        var ticking = false;
+        function onScroll() {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(function () {
+            ticking = false;
+            var y = window.scrollY || 0;
+            var max = document.documentElement.scrollHeight - window.innerHeight;
+            depth = max > 0 ? Math.min(y / max, 1) : 0;
+            progress.style.transform = "scaleX(" + depth.toFixed(4) + ")";
+            if (!reduced) {
+              glowA.style.transform = "translate3d(0," + (y * 0.06).toFixed(1) + "px,0)";
+              glowB.style.transform = "translate3d(0," + (-y * 0.04).toFixed(1) + "px,0)";
+            }
+            toTop.classList.toggle("show", y > window.innerHeight * 0.9);
+          });
+        }
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+        toTop.addEventListener("click", function () {
+          window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+        });
+
+        /* ================= Partículas doradas persistentes ================= */
+        var canvas = document.getElementById("particles");
+        if (canvas && !reduced) {
+          var ctx = canvas.getContext("2d");
+          var particles = [];
+          var running = true;
+          var rafId = null;
+          function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+          }
+          function spawn() {
+            return {
+              x: Math.random() * canvas.width,
+              y: canvas.height + 10,
+              vx: (Math.random() - 0.5) * 0.3,
+              vy: -(0.2 + Math.random() * 0.5),
+              size: 1 + Math.random() * 2.5,
+              opacity: 0.15 + Math.random() * 0.25
+            };
+          }
+          function initParticles() {
+            resize();
+            var count = window.innerWidth < 768 ? 50 : 120;
+            particles = [];
+            for (var i = 0; i < count; i++) {
+              var p = spawn();
+              p.y = Math.random() * canvas.height;
+              particles.push(p);
+            }
+          }
+          var last = performance.now();
+          /* Pausa mientras hay scroll activo: el canvas deja de repintar
+             durante el desplazamiento y se reanuda al soltar. */
+          var scrollPaused = false;
+          var scrollResumeTimer = null;
+          function kickParticles() {
+            if (running && !scrollPaused && rafId === null) {
+              last = performance.now();
+              rafId = requestAnimationFrame(tick);
+            }
+          }
+          window.addEventListener("scroll", function () {
+            scrollPaused = true;
+            if (scrollResumeTimer) clearTimeout(scrollResumeTimer);
+            scrollResumeTimer = setTimeout(function () {
+              scrollPaused = false;
+              kickParticles();
+            }, 160);
+          }, { passive: true });
+          function tick(now) {
+            if (!running || scrollPaused) { rafId = null; return; }
+            var dt = Math.min((now - last) / 16.67, 3);
+            last = now;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            var speedMul = 1 + depth * 0.5;
+            for (var i = 0; i < particles.length; i++) {
+              var p = particles[i];
+              p.x += p.vx * dt * speedMul;
+              p.y += p.vy * dt * speedMul;
+              if (p.y < -10) {
+                var np = spawn();
+                p.x = np.x; p.y = np.y; p.vx = np.vx; p.vy = np.vy;
+                p.size = np.size; p.opacity = np.opacity;
+              }
+              if (p.x < -10) p.x = canvas.width + 10;
+              if (p.x > canvas.width + 10) p.x = -10;
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+              ctx.fillStyle = "rgba(212, 160, 23, " + p.opacity.toFixed(3) + ")";
+              ctx.fill();
+            }
+            rafId = requestAnimationFrame(tick);
+          }
+          document.addEventListener("visibilitychange", function () {
+            running = !document.hidden;
+            kickParticles();
+          });
+          window.addEventListener("resize", initParticles);
+          initParticles();
+          rafId = requestAnimationFrame(tick);
+        }
+
+        /* ================= PLANES: las 4 tarjetas aprobadas ================= */
+        var ICON_PRICE = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v3M12 18.2v3M2.8 12h3M18.2 12h3M5.5 5.5l2.1 2.1M16.4 16.4l2.1 2.1M18.5 5.5l-2.1 2.1M7.6 16.4l-2.1 2.1"/></svg>';
+        var ICON_CAPITAL = '<svg viewBox="0 0 24 24"><path d="M12 3.2 20 7.6v8.8l-8 4.4-8-4.4V7.6l8-4.4Z"/><path d="M4 7.6l8 4.4 8-4.4M12 12v8.8M7.8 5.4 15.9 9.8"/></svg>';
+        var ICON_YIELD = '<svg viewBox="0 0 24 24"><path d="M4.5 20.5h15M6.5 20v-4.5M11 20V10M15.5 20V6.5M20 20V3.5"/></svg>';
+        var ICON_MAINT = '<svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>';
+        var ICON_CART = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M2 3h3l2.6 11.2a2 2 0 0 0 2 1.5h7.8a2 2 0 0 0 2-1.6L21 7H7"/></svg>';
+        var ICON_ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M14 7l5 5-5 5"/></svg>';
+
+        var PLANS = [
+          {
+            n: 1, unit: "01", title: "MINI PERFORADORA", longTitle: false,
+            subtitle: "Extracción inicial de mineral.",
+            img: "assets/escena-plan-1-16x9.webp", img900: "assets/escena-plan-1-16x9-900.webp",
+            alt: "Mini perforadora amarilla con barrena en una operación minera nocturna iluminada en tonos dorados; el tercio derecho queda oscuro para el panel de datos",
+            price: '<strong>$25</strong> USD', capital: "50 – 249 USDT", yield: '<strong>2.5%</strong> diario', maint: '<strong>$5</strong> USD',
+            glows: [
+              { x: 33.2, y: 52, s: 16, t: "a" },
+              { x: 47.7, y: 54, s: 9.5, t: "b" },
+              { x: 2.2, y: 21, s: 11, t: "c" }
+            ],
+            pilots: [ { x: 35.1, y: 38.9, c: "p1" }, { x: 59.3, y: 25.6, c: "p2" } ]
+          },
+          {
+            n: 2, unit: "02", title: "EXCAVADORA CON ORUGA", longTitle: true,
+            subtitle: "Mayor capacidad de extracción.",
+            img: "assets/escena-plan-2-16x9.webp", img900: "assets/escena-plan-2-16x9-900.webp",
+            alt: "Excavadora amarilla con orugas y cuatro barrenas en una operación minera nocturna iluminada en tonos dorados; el tercio derecho queda oscuro para el panel de datos",
+            price: '<strong>$75</strong> USD', capital: "250 – 749 USDT", yield: '<strong>3.5%</strong> diario', maint: '<strong>$12</strong> USD',
+            zoom: 0.66,
+            glows: [
+              { x: 19.5, y: 85.5, s: 15, t: "a" },
+              { x: 9.8, y: 67.3, s: 10, t: "b" },
+              { x: 24.8, y: 88.5, s: 11, t: "c" }
+            ],
+            pilots: [ { x: 9.8, y: 67.3, c: "p1" }, { x: 41, y: 60, c: "p2" } ]
+          },
+          {
+            n: 3, unit: "03", title: "PLANTA MINERA", longTitle: false,
+            subtitle: "Procesamiento de mineral.",
+            img: "assets/escena-plan-3-16x9.webp", img900: "assets/escena-plan-3-16x9-900.webp",
+            alt: "Planta trituradora sobre orugas vertiendo mineral incandescente por una cinta transportadora en una operación minera nocturna; el tercio derecho queda oscuro para el panel de datos",
+            price: '<strong>$200</strong> USD', capital: "750 – 1,999 USDT", yield: '<strong>4.5%</strong> diario', maint: '<strong>$25</strong> USD',
+            glows: [
+              { x: 11, y: 53, s: 16, t: "a" },
+              { x: 12, y: 64, s: 12, t: "b" },
+              { x: 60.5, y: 51, s: 11, t: "c" }
+            ],
+            pilots: [ { x: 11.5, y: 49.5, c: "p1" }, { x: 59.5, y: 48, c: "p2" } ]
+          },
+          {
+            n: 4, unit: "04", title: "PLANTA MINERA AVANZADA", longTitle: true,
+            subtitle: "Procesamiento a gran escala.",
+            img: "assets/escena-plan-4-16x9.webp", img900: "assets/escena-plan-4-16x9-900.webp",
+            alt: "Planta minera avanzada con torres, plataformas y un chorro de oro fundido en una operación minera nocturna; el tercio derecho queda oscuro para el panel de datos",
+            price: '<strong>$500</strong> USD', capital: "2,000 USDT +", yield: '<strong>5.5%</strong> diario', maint: '<strong>$45</strong> USD',
+            glows: [
+              { x: 40.5, y: 62, s: 17, t: "a" },
+              { x: 40.5, y: 93, s: 13, t: "b" },
+              { x: 39.3, y: 19.5, s: 10, t: "c" }
+            ],
+            pilots: [ { x: 37, y: 34.5, c: "p1" }, { x: 4.5, y: 32, c: "p2" } ]
+          }
+        ];
+
+        function dustHTML(seedOffset) {
+          var out = "";
+          var seed = [7, 19, 26, 33, 41, 48, 55, 12, 63, 3, 22, 37, 44, 51, 29, 58];
+          for (var i = 0; i < seed.length; i++) {
+            var j = (i + seedOffset) % seed.length;
+            var x = seed[j] + ((i * 37) % 5) - 2;
+            var size = (0.45 + ((i * 13) % 10) / 14).toFixed(2);
+            var dur = 9 + ((i * 29) % 8);
+            var delay = -((i * 17) % 14);
+            out += '<i style="--x:' + x + '%;--s:' + size + 'cqw;--d:' + dur + 's;--dl:' + delay + 's"></i>';
+          }
+          return out;
+        }
+        function bokehHTML(seedOffset) {
+          var base = [
+            { x: 6, y: 8, s: 9, o: 0.16, dx: 1.6, dy: -1.2, d: 13 },
+            { x: 22, y: 58, s: 3.2, o: 0.40, dx: -1.2, dy: -2, d: 9 },
+            { x: 38, y: 14, s: 5.5, o: 0.22, dx: 1.4, dy: 1, d: 11 },
+            { x: 52, y: 66, s: 2.4, o: 0.45, dx: 1, dy: -1.6, d: 8 },
+            { x: 64, y: 10, s: 11, o: 0.12, dx: -1.8, dy: 1.4, d: 15 },
+            { x: 78, y: 44, s: 4, o: 0.30, dx: -1, dy: -1.2, d: 10 },
+            { x: 88, y: 70, s: 6.5, o: 0.18, dx: -1.4, dy: -1, d: 12 },
+            { x: 14, y: 82, s: 4.5, o: 0.26, dx: 1.2, dy: -1.8, d: 10.5 }
+          ];
+          var out = "";
+          for (var i = 0; i < base.length; i++) {
+            var b = base[(i + seedOffset) % base.length];
+            var jx = ((i * 13 + seedOffset * 7) % 7) - 3;
+            var delay = -((i * 23 + seedOffset * 5) % 12);
+            out += '<i style="--x:' + (b.x + jx) + '%;--y:' + b.y + '%;--s:' + b.s + 'cqw;--o:' + b.o +
+                   ';--dx:' + b.dx + 'cqw;--dy:' + b.dy + 'cqw;--d:' + b.d + 's;--dl:' + delay + 's"></i>';
+          }
+          return out;
+        }
+        function cardHTML(p) {
+          var g = "", pl = "";
+          for (var i = 0; i < p.glows.length; i++) {
+            var gl = p.glows[i];
+            g += '<div class="pc-glow g-' + gl.t + '" style="left:' + gl.x + '%;top:' + gl.y + '%;width:' + gl.s + 'cqw;height:' + gl.s + 'cqw"></div>';
+          }
+          for (var k = 0; k < p.pilots.length; k++) {
+            var pi = p.pilots[k];
+            pl += '<span class="pc-pilot ' + pi.c + '" style="left:' + pi.x + '%;top:' + pi.y + '%"></span>';
+          }
+          var fx = '<div class="pc-fx" aria-hidden="true">' +
+                     '<div class="pc-bokeh">' + bokehHTML(p.n * 2) + '</div>' + g +
+                     '<div class="pc-sweep"></div>' +
+                     '<div class="pc-dust">' + dustHTML(p.n * 3) + '</div>' + pl +
+                   '</div>';
+          return (
+            '<article class="plan-card" aria-label="Tarjeta del Plan ' + p.n + ': ' + p.title + '">' +
+              '<img class="pc-scene' + (p.zoom ? ' zoomout' : '') + '"' + (p.zoom ? ' style="--zs:' + p.zoom + '"' : '') + ' src="' + p.img + '" srcset="' + p.img900 + ' 900w, ' + p.img + ' 1600w" sizes="(max-width: 640px) 100vw, (max-width: 1100px) 94vw, 1040px" alt="' + p.alt + '" loading="lazy" decoding="async">' +
+              '<div class="pc-shade" aria-hidden="true"></div>' +
+              fx +
+              '<span class="pc-rivet tl" aria-hidden="true"></span>' +
+              '<span class="pc-rivet tr" aria-hidden="true"></span>' +
+              '<span class="pc-rivet bl" aria-hidden="true"></span>' +
+              '<span class="pc-rivet br" aria-hidden="true"></span>' +
+              '<header class="pc-head">' +
+                '<div class="pc-unit" aria-hidden="true">' + p.unit + '</div>' +
+                '<div class="pc-top">' +
+                  '<span class="pc-index">PLAN.0' + p.n + '</span>' +
+                  '<h3' + (p.longTitle ? ' class="long"' : '') + '>' + p.title + '</h3>' +
+                '</div>' +
+                '<p class="pc-sub">' + p.subtitle + '</p>' +
+              '</header>' +
+              '<section class="pc-panel" aria-label="Información del Plan ' + p.n + '">' +
+                '<span class="pc-pilot ppanel" aria-hidden="true"></span>' +
+                '<div class="pc-metric">' +
+                  '<span class="pc-micon" aria-hidden="true">' + ICON_PRICE + '</span>' +
+                  '<span><span class="pc-label">Precio de la máquina</span><span class="pc-value">' + p.price + '</span></span>' +
+                '</div>' +
+                '<div class="pc-metric">' +
+                  '<span class="pc-micon" aria-hidden="true">' + ICON_CAPITAL + '</span>' +
+                  '<span><span class="pc-label">Capital requerido</span><span class="pc-value">' + p.capital + '</span></span>' +
+                '</div>' +
+                '<div class="pc-metric">' +
+                  '<span class="pc-micon" aria-hidden="true">' + ICON_YIELD + '</span>' +
+                  '<span><span class="pc-label">Rendimiento indicado</span><span class="pc-value">' + p.yield + '</span></span>' +
+                '</div>' +
+                '<div class="pc-metric">' +
+                  '<span class="pc-micon" aria-hidden="true">' + ICON_MAINT + '</span>' +
+                  '<span><span class="pc-label">Mantenimiento semanal</span><span class="pc-value">' + p.maint + '</span></span>' +
+                '</div>' +
+                '<button class="pc-activate" type="button">' + ICON_CART + '<span>Activar plan</span>' + ICON_ARROW + '</button>' +
+              '</section>' +
+            '</article>'
+          );
+        }
+
+        var plCards = document.getElementById("plCards");
+        var html = "";
+        for (var pi2 = 0; pi2 < PLANS.length; pi2++) {
+          if (pi2 > 0) html += '<div class="pl-connector" aria-hidden="true"></div>';
+          html += '<figure class="pl-shell">' + cardHTML(PLANS[pi2]) + '</figure>';
+        }
+        plCards.innerHTML = html;
+
+        /* Revelado de tarjetas + pausa automática de efectos fuera de pantalla */
+        var planCards = plCards.querySelectorAll(".plan-card");
+        var shells = plCards.querySelectorAll(".pl-shell");
+        if (reduced || !("IntersectionObserver" in window)) {
+          shells.forEach(function (s) { s.classList.add("in"); });
+          plCards.querySelectorAll(".pl-connector").forEach(function (c) { c.classList.add("in"); });
+        } else {
+          var shellIO = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+              if (en.isIntersecting) {
+                en.target.classList.remove("pre");
+                en.target.classList.add("in");
+                var conn = en.target.previousElementSibling;
+                if (conn && conn.classList.contains("pl-connector")) conn.classList.add("in");
+                shellIO.unobserve(en.target);
+              }
+            });
+          }, { threshold: 0.01, rootMargin: "0px 0px 300% 0px" });
+          shells.forEach(function (s) {
+            var r = s.getBoundingClientRect();
+            if (r.top < window.innerHeight * 1.2 && r.bottom > 0) {
+              /* Ya dentro o cerca del viewport: nunca se oculta. */
+              s.classList.add("in");
+              var conn = s.previousElementSibling;
+              if (conn && conn.classList.contains("pl-connector")) conn.classList.add("in");
+            } else {
+              s.classList.add("pre");
+              shellIO.observe(s);
+            }
+          });
+          var docHidden = false;
+          var visMap = new WeakMap();
+          function refreshFx() {
+            planCards.forEach(function (card) {
+              card.classList.toggle("fxoff", docHidden || visMap.get(card) === false);
+            });
+          }
+          var pauseIO = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) { visMap.set(en.target, en.isIntersecting); });
+            refreshFx();
+          }, { threshold: 0.08 });
+          planCards.forEach(function (card) { visMap.set(card, true); pauseIO.observe(card); });
+          document.addEventListener("visibilitychange", function () {
+            docHidden = document.hidden;
+            refreshFx();
+          });
+        }
+
+        /* ================= FUNDIDORA: medidor de energía ================= */
+        var fuFill = document.getElementById("fuMeterFill");
+        var fuValue = document.getElementById("fuEnergyValue");
+        var TARGET = 320, MAX = 400;
+        var pct = Math.round((TARGET / MAX) * 100);
+        function renderEnergy() {
+          if (reduced) { fuFill.style.width = pct + "%"; fuValue.textContent = TARGET; return; }
+          fuFill.style.transition = "none";
+          fuFill.style.width = "0%";
+          fuValue.textContent = "0";
+          void fuFill.offsetWidth;
+          fuFill.style.transition = "";
+          fuFill.style.width = pct + "%";
+          var start = null;
+          function step(ts) {
+            if (!start) start = ts;
+            var t = Math.min((ts - start) / 1200, 1);
+            var eased = 1 - Math.pow(1 - t, 3);
+            fuValue.textContent = Math.round(TARGET * eased);
+            if (t < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        }
+        if ("IntersectionObserver" in window && !reduced) {
+          var fuIO = new IntersectionObserver(function (entries) {
+            if (entries[0].isIntersecting) { renderEnergy(); fuIO.disconnect(); }
+          }, { threshold: 0.3 });
+          fuIO.observe(fuFill);
+        } else {
+          renderEnergy();
+        }
+      })();
+    </script>
+  </body>
+</html>
