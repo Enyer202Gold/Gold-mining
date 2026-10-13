@@ -365,8 +365,8 @@
       .plan-status i{ width:7px; height:7px; border-radius:50%; flex:none; }
       .plan-status.avail{ background:rgba(6,26,15,.86); border:1px solid rgba(61,220,132,.55); color:#7bf0ae; }
       .plan-status.avail i{ background:var(--green); box-shadow:0 0 7px var(--green); }
-      .plan-status.active{ background:linear-gradient(180deg,#ffe9a8,var(--gold-2) 55%,var(--gold)); border:1px solid #ffedb5; color:#241a02; }
-      .plan-status.active i{ background:#241a02; }
+      .plan-status.owned{ background:linear-gradient(180deg,#ffe9a8,var(--gold-2) 55%,var(--gold)); border:1px solid #ffedb5; color:#241a02; }
+      .plan-status.owned i{ background:#241a02; }
       .process-strip{
         display:flex; align-items:flex-start; justify-content:space-between; gap:2px;
         border:1px solid var(--line-soft); border-radius:12px; background:#0d0a06;
@@ -463,6 +463,30 @@
       .pw-toggle.on b{ color:#7bf0ae; }
       .pw-toggle.on .pw-knob{ background:var(--green); }
       .pw-toggle.on .pw-knob::after{ left:17px; }
+
+      /* ---------- Flota: unidades en el Modo de prueba y compra ---------- */
+      .fu-controls{ display:grid; grid-template-columns:1fr auto; gap:8px; margin-bottom:4px; }
+      .fu-add{
+        border:1px solid var(--gold); border-radius:11px; background:rgba(212,160,23,.10);
+        color:var(--gold-2); font:800 13px "Barlow"; padding:6px 12px; min-height:44px; white-space:nowrap;
+      }
+      .fu-unit{ border-top:1px solid rgba(212,160,23,.14); margin-top:11px; padding-top:11px; }
+      .fu-unit-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px; }
+      .fu-unit-head b{ font-size:13.5px; }
+      .fu-remove{
+        flex:none; border:1px solid rgba(255,93,93,.5); border-radius:999px; min-height:30px; padding:3px 11px;
+        background:rgba(255,93,93,.07); color:#ff9c9c; font-size:12px; font-weight:800;
+      }
+      .fu-unit .pw-toggle{ width:100%; }
+      .fu-empty{ margin:6px 0 0; color:var(--muted); font-size:12.5px; }
+      .buy-success{
+        border:1px solid rgba(61,220,132,.55); border-radius:12px; padding:13px 12px; margin-top:4px;
+        background:rgba(61,220,132,.07); color:#7bf0ae; text-align:center;
+        font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:21px; letter-spacing:.03em;
+      }
+      .buy-actions{ display:grid; gap:8px; margin-top:10px; }
+      .buy-actions .btn{ width:100%; }
+      .machine h3 .unit-num{ font-family:"Barlow",sans-serif; font-size:12.5px; font-weight:700; color:var(--gold-3); letter-spacing:.03em; }
 
       .note-box{ border:1px solid var(--line-soft); border-radius:16px; padding:14px 16px; color:var(--muted); font-size:14px; line-height:1.55; background:var(--panel); margin:14px 0; }
       .note-box b{ color:var(--gold-2); }
@@ -1226,25 +1250,52 @@
       /* Dirección de la plataforma para pagar el precio de cada plan (dato de ejemplo) */
       var PLATFORM_ADDRESS = "TGm9xKpL2sQw7rTnY4hJkF6d8xQa";
 
-      /* Billetera conectada de cada máquina: una dirección de ejemplo distinta por plan */
-      var PLAN_WALLET_DEFAULTS = [
-        { address: "TXk3m9RvLpQw8sTnY2hJkF9fQa", balance: 0, paid: false, connected: false },
-        { address: "TMp7qL2sHdRw9xVcB4nKjF6eZa", balance: 0, paid: false, connected: false },
-        { address: "TRd5wN8kPqLs3vXyA7mHcJ2bNe", balance: 0, paid: false, connected: false },
-        { address: "TFs9zQ4hBnMk6wPxD1rVtY8gLc", balance: 0, paid: false, connected: false }
+      /* ============ Flota de máquinas: una unidad independiente por compra ============ */
+      /* Direcciones de billetera de ejemplo: una distinta por unidad, sin duplicados */
+      var UNIT_ADDRESS_POOL = [
+        "TXk3m9RvLpQw8sTnY2hJkF9fQa", "TMp7qL2sHdRw9xVcB4nKjF6eZa",
+        "TRd5wN8kPqLs3vXyA7mHcJ2bNe", "TFs9zQ4hBnMk6wPxD1rVtY8gLc",
+        "TNw4bK8xQpLs7vRyC3mHjD9eZa", "TQz6mN3kPrWt5xVcF8nBjH2dYs",
+        "TJh9sP5wQeMk2xDnR7vLcB4aXf", "TWr2xK7nBmQp9sVcH5jFdL3eZt",
+        "TLp8dR4vNqXs6wKmJ2bHcF9gYe", "TBn5kW9sMxQp3vLcR8jHfD6aZu",
+        "TDs7qM2xPkVn4wHbJ9cRfL5eGt", "TGx3nB6wQsMk8vPdH2jVcR7fLa"
       ];
-      function buildPlanWallets(sc) {
-        return PLAN_WALLET_DEFAULTS.map(function (d, i) {
-          var w = { address: d.address, balance: d.balance, paid: d.paid, connected: d.connected };
-          var o = sc && sc.wallets ? sc.wallets[i] : null;
-          if (o) {
-            if (typeof o.address === "string" && o.address) w.address = o.address;
-            if (typeof o.balance === "number") w.balance = o.balance;
-            if (typeof o.paid === "boolean") w.paid = o.paid;
-            if (typeof o.connected === "boolean") w.connected = o.connected;
-          }
-          return w;
+      var uidCounter = 0;
+      function uid() { uidCounter++; return "u" + uidCounter + "-" + Math.floor(Math.random() * 1000000); }
+      function firstFreeAddr(used) {
+        for (var i = 0; i < UNIT_ADDRESS_POOL.length; i++) if (!used[UNIT_ADDRESS_POOL[i]]) return UNIT_ADDRESS_POOL[i];
+        var n = 0; for (var k in used) n++;
+        return "TQ" + (7000 + n) + "xKm9RvLpQw8sTnY2hJfQa";
+      }
+      function buildFleet(sc) {
+        var used = {};
+        return (sc && sc.fleet ? sc.fleet : []).map(function (u) {
+          var addr = u.address;
+          if (!addr || used[addr]) addr = firstFreeAddr(used);
+          used[addr] = true;
+          return { id: uid(), plan: u.plan, connected: !!u.connected, balance: typeof u.balance === "number" ? u.balance : 0, address: addr };
         });
+      }
+      function fleetCount(planIdx) { return fleet.filter(function (u) { return u.plan === planIdx; }).length; }
+      function unitNumber(u) {
+        var n = 0;
+        for (var i = 0; i < fleet.length; i++) { if (fleet[i].plan === u.plan) n++; if (fleet[i] === u) return n; }
+        return n;
+      }
+      function findUnit(id) { for (var i = 0; i < fleet.length; i++) if (fleet[i].id === id) return fleet[i]; return null; }
+      function nextAddress() {
+        var used = {}; fleet.forEach(function (u) { used[u.address] = true; });
+        return firstFreeAddr(used);
+      }
+      function createUnit(planIdx) {
+        return { id: uid(), plan: planIdx, connected: false, balance: 0, address: nextAddress() };
+      }
+      /* Cifras de ejemplo por unidad: el % es el del plan; solo varía el oro producido */
+      function unitStats(u) {
+        var m = MACHINES[u.plan], n = unitNumber(u);
+        var factors = [0.64, 0.83, 0.51, 0.72];
+        var f = n <= 1 ? 1 : factors[(n - 2) % factors.length];
+        return { oro: fmt(parseFloat(m.oro) * f, 2) + " g", prog: Math.min(95, m.prog + (n - 1) * 9) };
       }
 
       var LEVELS = [
@@ -1291,23 +1342,18 @@
       /* ============ Modo de prueba: escenarios del usuario ============ */
       var DEFAULT_SCENARIO = "hierro";
       var SCENARIOS = [
-        { key: "nuevo", name: "Usuario nuevo", desc: "Recién registrado: sin planes, sin oro y sin referidos.",
-          machines: [], gold: 0, wallet: 0, energy: 0, unlocked: false, unlockDone: 0, moves: [], wallets: {} },
-        { key: "sinref", name: "Sin referidos", desc: "Plan 1 activo produciendo, pero sin ningún referido.",
-          machines: [0], gold: 45.20, wallet: 0, energy: 0, unlocked: false, unlockDone: 0, moves: MOVES_SINREF,
-          wallets: { 0: { paid: true, connected: true, balance: 180 } } },
+        { key: "nuevo", name: "Usuario nuevo", desc: "Recién registrado: sin máquinas, sin oro y sin referidos.",
+          fleet: [], gold: 0, wallet: 0, energy: 0, unlocked: false, unlockDone: 0, moves: [] },
+        { key: "sinref", name: "Sin referidos", desc: "Una máquina del Plan 1 produciendo, pero sin ningún referido.",
+          fleet: [{ plan: 0, connected: true, balance: 120 }], gold: 45.20, wallet: 0, energy: 0, unlocked: false, unlockDone: 0, moves: MOVES_SINREF },
         { key: "mitad", name: "Desbloqueo a mitad", desc: "Plan 2 activo y 1 de 2 directos completos para desbloquear.",
-          machines: [1], gold: 80.00, wallet: 0, energy: 0, unlocked: false, unlockDone: 1, moves: MOVES_MITAD,
-          wallets: { 1: { paid: true, connected: true, balance: 300 } } },
-        { key: "hierro", name: "Nivel Hierro", desc: "El estado aprobado: 2 planes, fundidora desbloqueada en Hierro.",
-          machines: [0, 1], gold: 125.50, wallet: 125.50, energy: 320, unlocked: true, unlockDone: 2, moves: MOVES_FULL,
-          wallets: { 0: { paid: true, connected: true, balance: 180 }, 1: { paid: true, connected: true, balance: 620 } } },
-        { key: "oro", name: "Nivel Oro", desc: "3 planes activos y energía para operar en Nivel Oro.",
-          machines: [0, 1, 2], gold: 640.75, wallet: 480.20, energy: 720, unlocked: true, unlockDone: 2, moves: MOVES_ORO,
-          wallets: { 0: { paid: true, connected: true, balance: 180 }, 1: { paid: true, connected: true, balance: 620 }, 2: { paid: true, connected: true, balance: 1200 } } },
-        { key: "diamante", name: "Nivel Diamante", desc: "Los 4 planes activos y el nivel máximo de la fundidora.",
-          machines: [0, 1, 2, 3], gold: 2450.00, wallet: 1930.00, energy: 1480, unlocked: true, unlockDone: 2, moves: MOVES_DIAMANTE,
-          wallets: { 0: { paid: true, connected: true, balance: 180 }, 1: { paid: true, connected: true, balance: 620 }, 2: { paid: true, connected: true, balance: 1200 }, 3: { paid: true, connected: true, balance: 3400 } } }
+          fleet: [{ plan: 1, connected: true, balance: 300 }], gold: 80.00, wallet: 0, energy: 0, unlocked: false, unlockDone: 1, moves: MOVES_MITAD },
+        { key: "hierro", name: "Nivel Hierro", desc: "El estado aprobado: 2 máquinas, fundidora desbloqueada en Hierro.",
+          fleet: [{ plan: 0, connected: true, balance: 180 }, { plan: 1, connected: true, balance: 620 }], gold: 125.50, wallet: 125.50, energy: 320, unlocked: true, unlockDone: 2, moves: MOVES_FULL },
+        { key: "oro", name: "Nivel Oro", desc: "3 máquinas activas y energía para operar en Nivel Oro.",
+          fleet: [{ plan: 0, connected: true, balance: 180 }, { plan: 1, connected: true, balance: 620 }, { plan: 2, connected: true, balance: 1200 }], gold: 640.75, wallet: 480.20, energy: 720, unlocked: true, unlockDone: 2, moves: MOVES_ORO },
+        { key: "diamante", name: "Nivel Diamante", desc: "Cinco máquinas en la flota —dos del Plan 1— y el nivel máximo de la fundidora.",
+          fleet: [{ plan: 0, connected: true, balance: 180 }, { plan: 0, connected: true, balance: 240 }, { plan: 1, connected: true, balance: 620 }, { plan: 2, connected: true, balance: 1200 }, { plan: 3, connected: true, balance: 3400 }], gold: 2450.00, wallet: 1930.00, energy: 1480, unlocked: true, unlockDone: 2, moves: MOVES_DIAMANTE }
       ];
       function scenarioByKey(k) { for (var i = 0; i < SCENARIOS.length; i++) if (SCENARIOS[i].key === k) return SCENARIOS[i]; return SCENARIOS[3]; }
       var balanceHidden = false;
@@ -1324,23 +1370,13 @@
         doc: '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>'
       };
 
-      /* ============ Render: máquinas ============ */
-      function currentMachines() {
-        return testState.plans.slice().sort(function (a, b) { return a - b; }).map(function (i) { return MACHINES[i]; });
-      }
-      function togglePlan(idx) {
-        var pos = testState.plans.indexOf(idx);
-        if (pos >= 0) { testState.plans.splice(pos, 1); showToast("Plan de prueba retirado: " + PLANS[idx].name); }
-        else { testState.plans.push(idx); showToast("Plan de prueba activo: " + PLANS[idx].name); }
-        persistTest();
-        renderMachines(); renderPlans();
-      }
+      /* ============ Render: máquinas del Inicio (una tarjeta por unidad de la flota) ============ */
       function renderMachines() {
         var wrap = document.getElementById("machineList");
-        var list = currentMachines();
-        wrap.classList.toggle("no-scroll", list.length <= 1);
+        var units = fleet.slice().sort(function (a, b) { return a.plan - b.plan; });
+        wrap.classList.toggle("no-scroll", units.length <= 1);
         wrap.scrollTop = 0;
-        if (!list.length) {
+        if (!units.length) {
           wrap.innerHTML =
             '<div class="empty">' +
               '<span class="eicon">' + ICONS.drill + '</span>' +
@@ -1349,17 +1385,22 @@
               '<button class="btn btn-gold" type="button" data-goto="planes">Ver planes</button>' +
             '</div>';
         } else {
-          wrap.innerHTML = list.map(function (m, i) {
-            return '<button class="machine" type="button" data-machine="' + i + '" aria-label="Ver detalles de ' + m.name + '">' +
+          wrap.innerHTML = units.map(function (u) {
+            var m = MACHINES[u.plan];
+            var total = fleetCount(u.plan), n = unitNumber(u);
+            var s = unitStats(u);
+            var name = total > 1 ? m.name + ' <span class="unit-num">Unidad ' + n + '</span>' : m.name;
+            var label = total > 1 ? m.name + " · Unidad " + n : m.name;
+            return '<button class="machine" type="button" data-unit="' + u.id + '" aria-label="Ver detalles de ' + label + '">' +
               '<span class="bg"><img src="' + m.img + '" alt="" loading="lazy" /></span>' +
               '<span class="machine-top"><span class="plan-pill">' + m.plan + '</span>' +
               '<span class="status-pill"><i></i>Activa</span></span>' +
-              '<h3>' + m.name + '</h3>' +
+              '<h3>' + name + '</h3>' +
               '<span class="machine-stats">' +
-                '<span class="mstat"><b>' + m.oro + '</b><span>' + m.label1 + '</span></span>' +
+                '<span class="mstat"><b>' + s.oro + '</b><span>' + m.label1 + '</span></span>' +
                 '<span class="mstat"><b>' + m.pct + '</b><span>' + m.label2 + '</span></span>' +
               '</span>' +
-              '<span class="progress-row"><span class="progress"><i style="width:' + m.prog + '%"></i></span><b>' + m.prog + '%</b></span>' +
+              '<span class="progress-row"><span class="progress"><i style="width:' + s.prog + '%"></i></span><b>' + s.prog + '%</b></span>' +
             '</button>';
           }).join("");
         }
@@ -1426,11 +1467,11 @@
       /* ============ Render: planes (catálogo) ============ */
       function renderPlans() {
         document.getElementById("planList").innerHTML = PLANS.map(function (p, idx) {
-          var active = testState.plans.indexOf(idx) >= 0;
+          var owned = fleetCount(idx);
           return '<article class="plan-card">' +
             '<div class="pimg"><img src="' + p.img + '" alt="' + p.name + '" loading="lazy" /><span class="plan-pill">' + p.plan + '</span>' +
-            (active
-              ? '<span class="plan-status active"><i></i>Plan activo</span>'
+            (owned > 0
+              ? '<span class="plan-status owned"><i></i>Tienes ' + owned + '</span>'
               : '<span class="plan-status avail"><i></i>Disponible</span>') + '</div>' +
             '<div class="plan-body"><h3>' + p.name + '</h3>' +
               '<div class="plan-price"><b>' + p.price + '</b><span>Precio de la máquina</span></div>' +
@@ -1445,9 +1486,8 @@
       }
 
       /* ============ Ficha del plan ============ */
-      function openPlanSheet(idx) {
-        var p = PLANS[idx], w = planWallets[idx];
-        var active = testState.plans.indexOf(idx) >= 0;
+      function openPlanSheet(idx, justBoughtId) {
+        var p = PLANS[idx];
         var html = "";
         html += '<div class="plan-hero"><img src="' + p.img + '" alt="' + p.name + '" /></div>';
         html += '<div class="plan-hero-name">' + p.name + '</div>';
@@ -1457,10 +1497,12 @@
         html += '<h4 class="sheet-h">Condiciones de activación</h4>' +
           '<ul>' +
             '<li>El precio se paga <b>transfiriendo USDT</b> a la dirección de la plataforma y el pago se <b>verifica en la red</b>.</li>' +
+            '<li>Cada compra crea <b>una máquina nueva</b> en tu flota.</li>' +
             '<li>Cada máquina conecta <b>su propia billetera TRON</b>: una dirección por máquina, sin duplicados.</li>' +
-            '<li>El saldo debe mantenerse <b>dentro del rango del plan</b> y el sistema lo verifica constantemente: si baja del mínimo, la máquina se frena y ese día no paga.</li>' +
+            '<li>El saldo de cada billetera se <b>verifica constantemente</b>: si baja del mínimo del plan, esa máquina se frena y ese día no paga.</li>' +
             '<li>Si el saldo supera el máximo, la ganancia se paga <b>sobre el tope del plan</b>.</li>' +
             '<li>La ganancia se acredita al <b>completar 24 h</b> con el saldo en rango.</li>' +
+            '<li>El <b>mantenimiento semanal</b> se descuenta automáticamente.</li>' +
           '</ul>';
         html += '<h4 class="sheet-h">Pago del plan</h4>' +
           '<div class="pay-box"><div class="pay-flex">' +
@@ -1468,68 +1510,95 @@
             '<div class="pay-info"><small>Dirección de la plataforma · USDT (TRON)</small>' +
               '<div class="pay-addr"><b>' + shortenAddr(PLATFORM_ADDRESS) + '</b>' +
               '<button class="copy-btn" type="button" data-copy="' + PLATFORM_ADDRESS + '">Copiar</button></div>' +
-              (w.paid
+              (planPaid[idx]
                 ? '<span class="state-chip green"><i></i>Pago confirmado</span>'
                 : '<span class="state-chip amber"><i></i>Pago pendiente</span>') +
             '</div>' +
           '</div></div>';
-        html += '<h4 class="sheet-h">Billetera de esta máquina</h4>';
-        if (!w.connected) {
-          html += '<div class="wallet-box">' +
-            '<p style="margin:0 0 10px">Esta máquina aún no tiene una billetera conectada. Conecta su billetera TRON para que el sistema verifique el saldo.</p>' +
-            '<button class="btn btn-gold" type="button" id="planConnectBtn" style="width:100%">Conectar billetera</button>' +
-          '</div>';
-        } else {
-          var rs = walletRangeState(p, w);
-          var chip = rs === "in"
-            ? '<span class="state-chip green"><i></i>En rango</span>'
-            : (rs === "below"
-              ? '<span class="state-chip red"><i></i>Por debajo del mínimo</span>'
-              : '<span class="state-chip amber"><i></i>Sobre el máximo · ganas sobre el tope</span>');
-          html += '<div class="wallet-box">' +
-            '<small class="lbl">Dirección conectada · TRON</small>' +
-            '<div class="wallet-addr">' + shortenAddr(w.address) + '</div>' +
-            '<div class="wallet-bal">Saldo en billetera: <b>' + fmtBal(w.balance) + ' USDT</b></div>' +
-            chip +
-          '</div>';
-        }
-        if (active) {
-          html += '<div class="active-banner"><i></i>PLAN ACTIVO</div>';
+        if (justBoughtId) {
+          html += '<div class="buy-success">¡Máquina agregada a tu flota!</div>' +
+            '<div class="buy-actions">' +
+              '<button class="btn btn-gold" type="button" id="buyConnectBtn">Conectar su billetera</button>' +
+              '<button class="btn btn-dark" type="button" id="buyExploreBtn">Seguir explorando</button>' +
+            '</div>';
         } else {
           html += '<div class="validation-msg" id="planSheetError" role="alert"></div>' +
-            '<button class="btn btn-gold" type="button" id="planConfirmBtn" style="width:100%;margin-top:10px">Confirmar activación</button>';
+            '<button class="btn btn-gold" type="button" id="planBuyBtn" style="width:100%;margin-top:10px">Comprar esta máquina</button>';
         }
         openSheet(p.plan + " · " + p.name, html);
-        var connectBtn = document.getElementById("planConnectBtn");
-        if (connectBtn) connectBtn.addEventListener("click", function () {
-          planWallets[idx].connected = true;
-          onPlanWalletTouched();
-          openPlanSheet(idx);
-          showToast("Billetera conectada: " + shortenAddr(planWallets[idx].address));
-        });
-        var confirmBtn = document.getElementById("planConfirmBtn");
-        if (confirmBtn) confirmBtn.addEventListener("click", function () {
-          var err = document.getElementById("planSheetError");
-          var msg = "";
-          if (!planWallets[idx].paid) msg = "Confirma primero el pago del plan.";
-          else if (!planWallets[idx].connected) msg = "Conecta la billetera de esta máquina.";
-          else if (planWallets[idx].balance < p.min) msg = "El saldo (" + fmtBal(planWallets[idx].balance) + " USDT) está por debajo del mínimo (" + fmtInt(p.min) + " USDT).";
-          if (msg) {
-            err.textContent = msg;
+        var buyBtn = document.getElementById("planBuyBtn");
+        if (buyBtn) buyBtn.addEventListener("click", function () {
+          if (!planPaid[idx]) {
+            var err = document.getElementById("planSheetError");
+            err.textContent = "Confirma primero el pago del plan.";
             err.classList.add("show");
             return;
           }
-          testState.plans.push(idx);
+          var u = createUnit(idx);
+          fleet.push(u);
+          planPaid[idx] = false;
           persistTest();
           renderMachines(); renderPlans();
-          openPlanSheet(idx);
-          showToast("Plan activo: " + p.name);
+          openPlanSheet(idx, u.id);
+          showToast("Máquina agregada a tu flota: " + p.name);
+        });
+        var buyConnectBtn = document.getElementById("buyConnectBtn");
+        if (buyConnectBtn) buyConnectBtn.addEventListener("click", function () {
+          var u = findUnit(justBoughtId);
+          if (u) openMachineSheet(u);
+        });
+        var buyExploreBtn = document.getElementById("buyExploreBtn");
+        if (buyExploreBtn) buyExploreBtn.addEventListener("click", function () { closeSheet(); });
+      }
+
+      /* ============ Billetera de una máquina (bloque del detalle de máquina) ============ */
+      function walletBoxHTML(p, u) {
+        if (!u.connected) {
+          return '<div class="wallet-box">' +
+            '<p style="margin:0 0 10px">Esta máquina aún no tiene una billetera conectada. Conecta su billetera TRON para que el sistema verifique el saldo.</p>' +
+            '<button class="btn btn-gold" type="button" id="unitConnectBtn" style="width:100%">Conectar billetera</button>' +
+          '</div>';
+        }
+        var rs = walletRangeState(p, u);
+        var chip = rs === "in"
+          ? '<span class="state-chip green"><i></i>En rango</span>'
+          : (rs === "below"
+            ? '<span class="state-chip red"><i></i>Por debajo del mínimo</span>'
+            : '<span class="state-chip amber"><i></i>Sobre el máximo · gana sobre el tope</span>');
+        return '<div class="wallet-box">' +
+          '<small class="lbl">Dirección conectada · TRON</small>' +
+          '<div class="wallet-addr">' + shortenAddr(u.address) + '</div>' +
+          '<div class="wallet-bal">Saldo en billetera: <b>' + fmtBal(u.balance) + ' USDT</b></div>' +
+          chip +
+        '</div>';
+      }
+
+      /* ============ Detalle de una máquina de la flota ============ */
+      function openMachineSheet(u) {
+        var p = PLANS[u.plan], m = MACHINES[u.plan];
+        var total = fleetCount(u.plan), n = unitNumber(u);
+        var s = unitStats(u);
+        var title = total > 1 ? m.name + " · Unidad " + n : m.name;
+        var html = '<p><b>' + p.plan + '</b> · Estado: <b>Activa</b></p>' +
+          '<ul><li>Oro recolectado: <b>' + s.oro + '</b></li>' +
+          '<li>Rentabilidad diaria: <b>' + m.pct + '</b></li>' +
+          '<li>Progreso de extracción: <b>' + s.prog + '%</b></li></ul>' +
+          '<h4 class="sheet-h">Billetera de esta máquina</h4>' +
+          walletBoxHTML(p, u) +
+          '<p>Mantenimiento y producción se registran en tu historial.</p>';
+        openSheet(title, html);
+        var cb = document.getElementById("unitConnectBtn");
+        if (cb) cb.addEventListener("click", function () {
+          u.connected = true;
+          onFleetTouched();
+          openMachineSheet(u);
+          showToast("Billetera conectada: " + shortenAddr(u.address));
         });
       }
-      function onPlanWalletTouched() {
+      function onFleetTouched() {
         cancelRunningSmelt();
         persistTest();
-        renderPlans(); renderSmelt();
+        renderPlans(); renderMachines(); renderSmelt();
       }
 
       /* ============ Fundidora: estado y niveles ============ */
@@ -1540,8 +1609,6 @@
       };
       if (!SCENARIOS.some(function (s) { return s.key === testState.scenario; })) testState.scenario = DEFAULT_SCENARIO;
       var _sc0 = scenarioByKey(testState.scenario);
-      testState.plans = lsGet("gm_plans", null);
-      if (!Array.isArray(testState.plans) || !testState.plans.every(function (i) { return MACHINES[i]; })) testState.plans = _sc0.machines.slice();
       var smeltState = {
         energy: lsGet("gm_energy", _sc0.energy),
         goldBase: lsGet("gm_gold", _sc0.gold),
@@ -1549,22 +1616,25 @@
         wallet: lsGet("gm_wallet", _sc0.wallet),
         previewKey: lsGet("gm_preview", null) || levelKeyForEnergy(lsGet("gm_energy", _sc0.energy))
       };
-      var planWallets = lsGet("gm_plan_wallets", null);
-      if (!Array.isArray(planWallets) || planWallets.length !== PLANS.length ||
-          !planWallets.every(function (w) { return w && typeof w.address === "string" && typeof w.balance === "number" && typeof w.paid === "boolean" && typeof w.connected === "boolean"; })) {
-        planWallets = buildPlanWallets(_sc0);
+      var fleet = lsGet("gm_fleet", null);
+      if (!Array.isArray(fleet) || !fleet.every(function (u) { return u && typeof u.id === "string" && PLANS[u.plan] && typeof u.address === "string" && typeof u.balance === "number" && typeof u.connected === "boolean"; })) {
+        fleet = buildFleet(_sc0);
+      }
+      var planPaid = lsGet("gm_plan_paid", null);
+      if (!Array.isArray(planPaid) || planPaid.length !== PLANS.length || !planPaid.every(function (v) { return typeof v === "boolean"; })) {
+        planPaid = [false, false, false, false];
       }
       function levelKeyForEnergy(e) { var cur = LEVELS[0]; LEVELS.forEach(function (l) { if (e >= l.min) cur = l; }); return cur.key; }
       function goldAvailable() { return Math.max(0, smeltState.goldBase - smeltState.goldSpent); }
       function persistTest() {
         lsSet("gm_scenario", testState.scenario);
-        lsSet("gm_plans", testState.plans);
+        lsSet("gm_fleet", fleet);
+        lsSet("gm_plan_paid", planPaid);
         lsSet("gm_energy", smeltState.energy);
         lsSet("gm_gold", smeltState.goldBase);
         lsSet("gm_gold_spent", smeltState.goldSpent);
         lsSet("gm_wallet", smeltState.wallet);
         lsSet("gm_preview", smeltState.previewKey);
-        lsSet("gm_plan_wallets", planWallets);
       }
       function levelByKey(k) { for (var i = 0; i < LEVELS.length; i++) if (LEVELS[i].key === k) return LEVELS[i]; return LEVELS[1]; }
       function operativeLevel() { var e = smeltState.energy, cur = LEVELS[0]; LEVELS.forEach(function (l) { if (e >= l.min) cur = l; }); return cur; }
@@ -1883,13 +1953,13 @@
       function applyScenario(key, silent) {
         var sc = scenarioByKey(key);
         testState.scenario = sc.key;
-        testState.plans = sc.machines.slice();
+        fleet = buildFleet(sc);
+        planPaid = [false, false, false, false];
         smeltState.energy = sc.energy;
         smeltState.goldBase = sc.gold;
         smeltState.goldSpent = 0;
         smeltState.wallet = sc.wallet;
         smeltState.previewKey = levelKeyForEnergy(sc.energy);
-        planWallets = buildPlanWallets(sc);
         chainedPreview = false;
         cancelRunningSmelt();
         persistTest();
@@ -1934,29 +2004,30 @@
             '<span class="sc-info"><b>' + s.name + '</b><small>' + s.desc + '</small></span>' +
             '<span class="sc-check">Activo</span></button>';
         }).join("");
-        var planToggles = PLANS.map(function (p, idx) {
-          var on = testState.plans.indexOf(idx) >= 0;
-          return '<div class="ptoggle' + (on ? ' on' : '') + '">' +
-            '<img src="' + p.img + '" alt="" loading="lazy" />' +
-            '<span class="pt-info"><b>' + p.plan + ' · ' + p.name + '</b><small>' + p.pct + ' · ' + p.price + '</small>' +
-            '<span class="pt-state">' + (on ? 'Plan activo' : 'Sin activar') + '</span></span>' +
-            '<button class="pt-btn" type="button" data-plan-toggle="' + idx + '">' + (on ? 'Quitar' : 'Activar plan de prueba') + '</button></div>';
-        }).join("");
-        var pwBlocks = PLANS.map(function (p, idx) {
-          var w = planWallets[idx];
+        var fleetBlocks = PLANS.map(function (p, idx) {
+          var units = fleet.filter(function (u) { return u.plan === idx; });
+          var unitRows = units.map(function (u) {
+            var n = unitNumber(u);
+            return '<div class="fu-unit">' +
+              '<div class="fu-unit-head"><b>' + p.name + ' · Unidad ' + n + '</b>' +
+              '<button class="fu-remove" type="button" data-fu-remove="' + u.id + '">Quitar</button></div>' +
+              '<input class="pw-addr-input" type="text" data-fu-addr="' + u.id + '" value="' + u.address + '" aria-label="Dirección de billetera de la unidad ' + n + ' del ' + p.plan + '" spellcheck="false" />' +
+              '<div class="pw-bal-row">' +
+                '<button class="adj-btn" type="button" data-fu-bal="' + u.id + ':-25" aria-label="Quitar 25 USDT de la unidad ' + n + ' del ' + p.plan + '">−</button>' +
+                '<input class="adj-num" type="number" data-fu-bal-num="' + u.id + '" min="0" max="1000000" step="1" value="' + u.balance + '" aria-label="Saldo en USDT de la unidad ' + n + ' del ' + p.plan + '" />' +
+                '<span class="adj-unit">USDT</span>' +
+                '<button class="adj-btn" type="button" data-fu-bal="' + u.id + ':25" aria-label="Añadir 25 USDT a la unidad ' + n + ' del ' + p.plan + '">+</button>' +
+              '</div>' +
+              '<button class="pw-toggle' + (u.connected ? ' on' : '') + '" type="button" data-fu-toggle="' + u.id + '" aria-pressed="' + u.connected + '"><span><small>Billetera</small><b>' + (u.connected ? 'Conectada' : 'Sin conectar') + '</b></span><span class="pw-knob" aria-hidden="true"></span></button>' +
+            '</div>';
+          }).join("");
           return '<div class="pw-block">' +
             '<div class="pw-head"><b>' + p.plan + ' · ' + p.name + '</b><span>Rango ' + p.capital + '</span></div>' +
-            '<input class="pw-addr-input" type="text" data-pw-addr="' + idx + '" value="' + w.address + '" aria-label="Dirección de billetera del ' + p.plan + '" spellcheck="false" />' +
-            '<div class="pw-bal-row">' +
-              '<button class="adj-btn" type="button" data-pw-bal="' + idx + ':-25" aria-label="Quitar 25 USDT del ' + p.plan + '">−</button>' +
-              '<input class="adj-num" type="number" data-pw-bal-num="' + idx + '" min="0" max="1000000" step="1" value="' + w.balance + '" aria-label="Saldo en USDT del ' + p.plan + '" />' +
-              '<span class="adj-unit">USDT</span>' +
-              '<button class="adj-btn" type="button" data-pw-bal="' + idx + ':25" aria-label="Añadir 25 USDT al ' + p.plan + '">+</button>' +
+            '<div class="fu-controls">' +
+              '<button class="pw-toggle' + (planPaid[idx] ? ' on' : '') + '" type="button" data-fu-paid="' + idx + '" aria-pressed="' + planPaid[idx] + '"><span><small>Pago próxima compra</small><b>' + (planPaid[idx] ? 'Confirmado' : 'Pendiente') + '</b></span><span class="pw-knob" aria-hidden="true"></span></button>' +
+              '<button class="fu-add" type="button" data-fu-add="' + idx + '">+ Agregar máquina</button>' +
             '</div>' +
-            '<div class="pw-toggles">' +
-              '<button class="pw-toggle' + (w.paid ? ' on' : '') + '" type="button" data-pw-toggle="' + idx + ':paid" aria-pressed="' + w.paid + '"><span><small>Pago</small><b>' + (w.paid ? 'Confirmado' : 'Pendiente') + '</b></span><span class="pw-knob" aria-hidden="true"></span></button>' +
-              '<button class="pw-toggle' + (w.connected ? ' on' : '') + '" type="button" data-pw-toggle="' + idx + ':connected" aria-pressed="' + w.connected + '"><span><small>Billetera</small><b>' + (w.connected ? 'Conectada' : 'Sin conectar') + '</b></span><span class="pw-knob" aria-hidden="true"></span></button>' +
-            '</div>' +
+            (unitRows || '<p class="fu-empty">Sin máquinas de este plan en tu flota.</p>') +
           '</div>';
         }).join("");
         var html =
@@ -1977,12 +2048,9 @@
             '<span style="flex:1;color:var(--muted);font-size:12px">Saldo que la Fundidora muestra y al que se abonan las fundiciones.</span>' +
             '<button class="adj-btn" type="button" data-adj="wallet:50" aria-label="Añadir 50 dólares a la billetera">+</button></div></div>' +
           '<button class="btn btn-gold apply-btn" type="button" id="adjApply">Aplicar</button>' +
-          '<h4 class="editor-h">Planes de prueba</h4>' +
-          '<p class="adj-note" style="margin:0 0 10px">Activa o quita planes al instante, sin pagos: la máquina aparece en Inicio y el catálogo lo marca «Plan activo».</p>' +
-          '<div>' + planToggles + '</div>' +
-          '<h4 class="editor-h">Planes y billetera conectada</h4>' +
-          '<p class="adj-note" style="margin:0 0 10px">La dirección, el saldo, el pago y la conexión que fijes aquí alimentan el catálogo y la ficha de cada plan. Tocar estos controles reinicia cualquier fundición en curso.</p>' +
-          '<div>' + pwBlocks + '</div>' +
+          '<h4 class="editor-h">Mis máquinas (prueba)</h4>' +
+          '<p class="adj-note" style="margin:0 0 10px">Cada compra crea una unidad independiente en la flota. Confirma el pago de la próxima compra de cada plan, agrega o quita máquinas y ajusta la billetera y el saldo de cada unidad: el catálogo, la ficha, el Inicio y el detalle leen siempre de esta flota. Tocar estos controles reinicia cualquier fundición en curso.</p>' +
+          '<div>' + fleetBlocks + '</div>' +
           '<button class="btn btn-dark reset-btn" type="button" id="adjReset" style="margin-top:6px">Restablecer todo · Nivel Hierro</button>';
         openSheet("Modo de prueba", html);
         document.getElementById("sheetTitle").textContent = "Modo de prueba · Escenario del usuario";
@@ -2043,43 +2111,66 @@
           inp.addEventListener("change", applyTyped);
           inp.addEventListener("keydown", function (ev) { if (ev.key === "Enter") { ev.preventDefault(); applyTyped(); } });
         });
-        Array.prototype.forEach.call(sheet.querySelectorAll("[data-plan-toggle]"), function (b) {
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-fu-paid]"), function (b) {
           b.addEventListener("click", function () {
-            togglePlan(Number(b.getAttribute("data-plan-toggle")));
+            var idx = Number(b.getAttribute("data-fu-paid"));
+            planPaid[idx] = !planPaid[idx];
+            onFleetTouched();
             openTestMode();
           });
         });
-        Array.prototype.forEach.call(sheet.querySelectorAll("[data-pw-toggle]"), function (b) {
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-fu-add]"), function (b) {
           b.addEventListener("click", function () {
-            var parts = b.getAttribute("data-pw-toggle").split(":"), idx = Number(parts[0]), field = parts[1];
-            planWallets[idx][field] = !planWallets[idx][field];
-            onPlanWalletTouched();
+            var idx = Number(b.getAttribute("data-fu-add"));
+            fleet.push(createUnit(idx));
+            onFleetTouched();
+            openTestMode();
+            showToast("Máquina agregada: " + PLANS[idx].name);
+          });
+        });
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-fu-remove]"), function (b) {
+          b.addEventListener("click", function () {
+            var id = b.getAttribute("data-fu-remove");
+            var u = findUnit(id);
+            fleet = fleet.filter(function (x) { return x.id !== id; });
+            onFleetTouched();
+            openTestMode();
+            if (u) showToast("Máquina retirada: " + PLANS[u.plan].name);
+          });
+        });
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-fu-toggle]"), function (b) {
+          b.addEventListener("click", function () {
+            var u = findUnit(b.getAttribute("data-fu-toggle"));
+            if (!u) return;
+            u.connected = !u.connected;
+            onFleetTouched();
             openTestMode();
           });
         });
-        Array.prototype.forEach.call(sheet.querySelectorAll("[data-pw-bal]"), function (b) {
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-fu-bal]"), function (b) {
           b.addEventListener("click", function () {
-            var parts = b.getAttribute("data-pw-bal").split(":"), idx = Number(parts[0]), delta = Number(parts[1]);
-            planWallets[idx].balance = Math.max(0, Math.min(1000000, Math.round((planWallets[idx].balance + delta) * 100) / 100));
-            onPlanWalletTouched();
+            var parts = b.getAttribute("data-fu-bal").split(":"), u = findUnit(parts[0]), delta = Number(parts[1]);
+            if (!u) return;
+            u.balance = Math.max(0, Math.min(1000000, Math.round((u.balance + delta) * 100) / 100));
+            onFleetTouched();
             openTestMode();
           });
         });
-        Array.prototype.forEach.call(sheet.querySelectorAll("[data-pw-bal-num]"), function (inp) {
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-fu-bal-num]"), function (inp) {
           inp.addEventListener("change", function () {
-            var idx = Number(inp.getAttribute("data-pw-bal-num"));
+            var u = findUnit(inp.getAttribute("data-fu-bal-num"));
             var v = parseFloat(inp.value);
-            if (!isNaN(v)) planWallets[idx].balance = Math.max(0, Math.min(1000000, Math.round(v * 100) / 100));
-            onPlanWalletTouched();
+            if (u && !isNaN(v)) u.balance = Math.max(0, Math.min(1000000, Math.round(v * 100) / 100));
+            onFleetTouched();
             openTestMode();
           });
         });
-        Array.prototype.forEach.call(sheet.querySelectorAll("[data-pw-addr]"), function (inp) {
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-fu-addr]"), function (inp) {
           inp.addEventListener("change", function () {
-            var idx = Number(inp.getAttribute("data-pw-addr"));
+            var u = findUnit(inp.getAttribute("data-fu-addr"));
             var v = inp.value.replace(/\s+/g, "");
-            planWallets[idx].address = v || PLAN_WALLET_DEFAULTS[idx].address;
-            onPlanWalletTouched();
+            if (u && v) u.address = v;
+            onFleetTouched();
             openTestMode();
           });
         });
@@ -2241,16 +2332,11 @@
 
       /* Detalle de máquina */
       document.getElementById("machineList").addEventListener("click", function (e) {
-        var card = e.target.closest("[data-machine]");
+        var card = e.target.closest("[data-unit]");
         if (!card) return;
-        var m = currentMachines()[Number(card.getAttribute("data-machine"))];
-        if (!m) return;
-        openSheet(m.name,
-          '<p><b>' + m.plan + '</b> · Estado: <b>Activa</b></p>' +
-          '<ul><li>Oro recolectado: <b>' + m.oro + '</b></li>' +
-          '<li>Rentabilidad diaria: <b>' + m.pct + '</b></li>' +
-          '<li>Progreso de extracción: <b>' + m.prog + '%</b></li></ul>' +
-          '<p>Mantenimiento y producción se registran en tu historial.</p>');
+        var u = findUnit(card.getAttribute("data-unit"));
+        if (!u) return;
+        openMachineSheet(u);
       });
 
       /* ============ Toast ============ */
