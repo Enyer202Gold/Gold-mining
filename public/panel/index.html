@@ -353,8 +353,45 @@
       .smelt-heading .view-title{ margin:0 0 2px; }
       .smelt-heading .view-sub{ margin:0; }
       .how-btn{ flex:none; border:1px solid var(--line); border-radius:999px; color:var(--gold-3); background:rgba(212,160,23,.08); min-height:32px; padding:5px 10px; font-size:11.5px; font-weight:700; }
-      .smelt-machine{ position:relative; min-height:310px; border:1px solid var(--line); border-radius:18px; overflow:hidden; background:#070604; box-shadow:inset 0 0 40px rgba(0,0,0,.5); }
-      .smelt-machine-bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 51%; }
+      .smelt-machine{ position:relative; aspect-ratio:1/1; border:1px solid var(--line); border-radius:18px; overflow:hidden; background:#070604; box-shadow:inset 0 0 40px rgba(0,0,0,.5); }
+      .smelt-machine-bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center center; }
+      .smelt-machine-video{ position:absolute; inset:0; z-index:1; width:100%; height:100%; object-fit:cover; object-position:center center; background:#070604; }
+      .smelt-machine.locked .smelt-machine-bg{ filter:brightness(.68) saturate(.75); }
+      .smelt-machine.locked .level-token{ filter:grayscale(.8) brightness(.55) drop-shadow(0 4px 12px rgba(0,0,0,.75)); }
+      .lock-overlay{ position:absolute; inset:0; z-index:2; display:none; pointer-events:none; }
+      .smelt-machine.locked .lock-overlay{ display:block; }
+      .chain-bar{ position:absolute; left:-14%; width:128%; height:27px; top:41%; transform:rotate(-17deg); border-radius:7px; border-top:2px solid #101013; border-bottom:2px solid #101013; background:repeating-linear-gradient(90deg,#83838a 0 9px,#26262b 9px 14px,#b9b9c0 14px 23px,#333338 23px 28px); box-shadow:0 7px 16px rgba(0,0,0,.65), inset 0 2px 3px rgba(255,255,255,.4), inset 0 -4px 6px rgba(0,0,0,.75); }
+      .chain-bar.b2{ top:52%; transform:rotate(16deg); }
+      .lock-badge{ position:absolute; left:50%; top:47%; transform:translate(-50%,-50%); width:66px; height:66px; border-radius:50%; border:2px solid var(--gold); background:rgba(8,6,3,.94); display:grid; place-items:center; color:var(--gold-2); box-shadow:0 10px 26px rgba(0,0,0,.7), 0 0 0 5px rgba(8,6,3,.45); }
+      .energy-reg.locked .level-status b{ color:#ffb02e; }
+      .energy-reg.locked .level-status b::before{ background:var(--amber); box-shadow:0 0 8px var(--amber); }
+      .energy-reg.lower .level-status b{ color:var(--gold-2); }
+      .energy-reg.lower .level-status b::before{ background:var(--gold-2); box-shadow:0 0 8px var(--gold-2); }
+      .energy-reg.risk .level-status b{ color:#ffb02e; }
+      .energy-reg.risk .level-status b::before{ background:var(--amber); box-shadow:0 0 8px var(--amber); }
+      .energy-reg.danger .level-status b{ color:#ff8080; }
+      .energy-reg.danger .level-status b::before{ background:var(--red); box-shadow:0 0 8px var(--red); }
+      .confirm-line{ display:none; align-items:center; gap:7px; margin-top:8px; border:1px solid rgba(61,220,132,.35); border-radius:10px; padding:7px 9px; background:rgba(61,220,132,.06); color:#a9f2c6; font-size:12px; font-weight:600; }
+      .confirm-line.show{ display:flex; }
+      .confirm-line i{ width:7px; height:7px; border-radius:50%; flex:none; background:var(--green); box-shadow:0 0 8px var(--green); }
+      .confirm-line.warn{ border-color:rgba(255,176,46,.5); background:rgba(255,176,46,.07); color:#ffd485; }
+      .confirm-line.warn i{ background:var(--amber); box-shadow:0 0 8px var(--amber); }
+      .smelt-machine.machine-live{ box-shadow:inset 0 0 40px rgba(0,0,0,.5), 0 0 48px rgba(255,140,0,.14); }
+      .chained-code{ display:flex; align-items:center; gap:10px; border:1px dashed rgba(212,160,23,.5); border-radius:14px; padding:11px 13px; background:rgba(212,160,23,.07); margin-top:10px; }
+      .chained-code small{ display:block; color:var(--muted); font-size:10.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; }
+      .chained-code b{ display:block; font-size:18px; letter-spacing:.1em; font-variant-numeric:tabular-nums; margin-top:1px; }
+      .chained-code .copy-btn{ margin-left:auto; }
+      .lock-panel{ margin-top:8px; border:1px solid rgba(255,176,46,.5); border-radius:15px; background:linear-gradient(180deg,#1a1409,#100d09); padding:12px; }
+      .lock-panel-head{ display:flex; gap:10px; align-items:flex-start; }
+      .lock-panel-head .fact-icon{ width:38px; height:38px; color:#ffb02e; border:1px solid rgba(255,176,46,.4); }
+      .lock-panel-head b{ display:block; font-family:"Barlow Condensed"; font-size:20px; font-weight:800; letter-spacing:.02em; color:#ffd485; text-transform:uppercase; line-height:1.05; }
+      .lock-panel-head p{ margin:3px 0 0; color:#d8cfba; font-size:12.5px; line-height:1.45; }
+      .lock-panel-head p b{ display:inline; font-family:"Barlow"; font-size:12.5px; letter-spacing:0; text-transform:none; color:var(--gold-2); }
+      .lock-ways{ display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:10px; }
+      .lock-back{ width:100%; margin-top:8px; min-height:40px; }
+      .level-option.locked .lo-bg{ filter:grayscale(.55) brightness(.55); }
+      .level-option.locked .lo-head img{ filter:grayscale(.75) brightness(.6); }
+      .lo-locked{ color:#ffb02e!important; }
       .smelt-machine::after{ content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(180deg,rgba(0,0,0,.5),transparent 31%,transparent 58%,rgba(4,3,2,.98) 87%); }
       .smelt-machine-head{ position:relative; z-index:2; display:flex; align-items:center; gap:9px; padding:10px; }
       .level-token{ width:58px; height:58px; border-radius:50%; object-fit:cover; flex:none; filter:drop-shadow(0 4px 12px rgba(0,0,0,.75)); }
@@ -438,15 +475,45 @@
       .finish-at{ color:#c7bba3; font-size:10.5px; }
       .run-note{ margin-top:8px; color:#c8bca5; font-size:10.5px; text-align:center; }
       .run-meta{ display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:7px; }
-      .machine-live .furnace-glow{ position:absolute; z-index:2; left:50%; bottom:30%; width:76px; height:76px; transform:translateX(-50%); border-radius:50%; background:radial-gradient(circle,#fff3a7 0,#ff9e00 28%,rgba(255,95,0,.28) 58%,transparent 74%); mix-blend-mode:screen; animation:furnacePulse 1.7s ease-in-out infinite; pointer-events:none; }
-      .machine-live .molten-flow{ position:absolute; z-index:3; left:50%; bottom:18%; width:13px; height:74px; transform:translateX(-50%); border-radius:50% 50% 8px 8px; background:linear-gradient(90deg,#d96b00,#fff2a1,#f5a800); box-shadow:0 0 15px #ff8c00; animation:flowLight 1.05s linear infinite; pointer-events:none; }
-      .spark{ position:absolute; z-index:3; left:50%; top:56%; width:3px; height:3px; border-radius:50%; background:#ffe8a1; box-shadow:0 0 7px #ff9900; animation:sparkFly 1.8s ease-out infinite; pointer-events:none; }
-      .spark.s2{ animation-delay:.55s; margin-left:22px; }.spark.s3{ animation-delay:1.05s; margin-left:-19px; }
-      @keyframes furnacePulse{ 50%{ opacity:.62; transform:translateX(-50%) scale(1.16); } }
-      @keyframes flowLight{ 50%{ filter:brightness(1.45); } }
-      @keyframes sparkFly{ 0%{ opacity:0; transform:translate(0,0) scale(.5)} 20%{opacity:1} 100%{opacity:0; transform:translate(28px,-55px) scale(1.2)} }
-      @media (prefers-reduced-motion:reduce){ .furnace-glow,.molten-flow,.spark{ animation:none!important; } }
-      @media (max-width:350px){ .smelt-machine{ min-height:285px; }.level-token{width:50px;height:50px}.level-name{font-size:22px}.level-selector{grid-template-columns:1fr}.level-option{min-height:135px} }
+      /* El estado «Fundiendo» usa video en bucle: sin capas CSS de chispas/flujo encima. */
+      @media (max-width:350px){ .level-token{width:50px;height:50px}.level-name{font-size:22px}.level-selector{grid-template-columns:1fr}.level-option{min-height:135px} }
+      /* ---------- Fundidora encadenada (sin desbloquear) ---------- */
+      .chained-machine{ aspect-ratio:4/3.1; }
+      .chained-machine .smelt-machine-bg{ filter:brightness(.62) saturate(.72); }
+      .chained-machine .lock-overlay{ display:block; }
+      .chained-title-row{ position:absolute; z-index:5; left:10px; right:10px; bottom:10px; display:flex; align-items:center; gap:10px; border:1px solid rgba(255,176,46,.45); border-radius:13px; padding:9px 11px; background:rgba(8,6,3,.93); backdrop-filter:blur(5px); }
+      .chained-title-row .lock-ic{ flex:none; width:38px; height:38px; border-radius:50%; border:1px solid rgba(255,176,46,.5); display:grid; place-items:center; color:#ffb02e; background:rgba(255,176,46,.08); }
+      .chained-title-row b{ display:block; font-family:"Barlow Condensed"; font-size:21px; font-weight:800; letter-spacing:.02em; text-transform:uppercase; color:#ffd485; line-height:1.05; }
+      .chained-title-row small{ display:block; color:#cbbfa5; font-size:11px; margin-top:1px; }
+      .chained-coins{ display:flex; align-items:center; gap:8px; margin-top:8px; border:1px solid var(--line-soft); border-radius:13px; background:#0d0a06; padding:8px 11px; }
+      .chained-coins img{ width:40px; height:40px; border-radius:50%; object-fit:cover; flex:none; }
+      .chained-coins .cc-names{ margin-left:2px; min-width:0; }
+      .chained-coins .cc-names b{ display:block; font-size:12.5px; color:#f5ead3; line-height:1.2; }
+      .chained-coins .cc-names small{ display:block; color:var(--muted); font-size:10.5px; line-height:1.25; }
+      .chained-explain{ margin-top:8px; border:1px solid var(--line-soft); border-radius:15px; background:linear-gradient(180deg,#18140f,#100d09); padding:11px 12px; }
+      .chained-explain h3{ margin:0 0 5px; font-family:"Barlow Condensed"; font-size:19px; font-weight:800; letter-spacing:.02em; text-transform:uppercase; }
+      .chained-explain p{ margin:0; color:#d8cfba; font-size:12.5px; line-height:1.5; }
+      .chained-explain p b{ color:var(--gold-2); }
+      .chained-progress-head{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin:13px 2px 6px; }
+      .chained-progress-head h3{ margin:0; font-family:"Barlow Condensed"; font-size:18px; font-weight:800; }
+      .chained-progress-head span{ color:#ffb02e; font-size:11.5px; font-weight:700; }
+      .req-slot{ border:1px solid var(--line-soft); border-radius:14px; background:var(--panel); padding:10px 11px; margin-bottom:8px; }
+      .req-slot-head{ display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+      .req-slot-head .slot-num{ width:26px; height:26px; border-radius:50%; flex:none; border:1px solid var(--line); display:grid; place-items:center; font:800 12px "Barlow"; color:var(--gold-3); background:#0d0a06; }
+      .req-slot-head b{ font-size:14.5px; }
+      .req-slot-head span{ margin-left:auto; color:var(--muted-2); font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
+      .req-marks{ display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+      .req-mark{ display:flex; align-items:center; gap:7px; border:1px dashed rgba(246,240,226,.22); border-radius:10px; padding:7px 8px; background:#0d0a06; }
+      .req-mark .req-dot{ width:20px; height:20px; border-radius:50%; flex:none; border:1.5px solid rgba(246,240,226,.35); display:grid; place-items:center; color:transparent; }
+      .req-mark small{ display:block; color:var(--muted); font-size:9px; line-height:1.15; }
+      .req-mark b{ display:block; font-size:11px; line-height:1.2; color:#e9e1cf; }
+      .req-mark em{ display:block; font-style:normal; color:#ffb02e; font-size:9.5px; font-weight:700; }
+      .permanence-note{ display:flex; gap:9px; margin-top:10px; border:1px solid rgba(212,160,23,.4); border-radius:13px; background:rgba(212,160,23,.07); padding:10px 11px; color:#e7ddc7; font-size:12px; line-height:1.5; }
+      .permanence-note svg{ flex:none; color:var(--gold-2); margin-top:1px; }
+      .permanence-note b{ color:var(--gold-2); }
+      .chained-invite{ width:100%; margin-top:10px; min-height:45px; }
+      .chained-back{ width:100%; margin-top:7px; min-height:40px; }
+      @media (max-width:350px){ .req-marks{ grid-template-columns:1fr; } .chained-coins img{ width:34px; height:34px; } }
       /* ---------- Historial ---------- */
       .move{
         display:flex; align-items:center; gap:13px;
@@ -695,26 +762,43 @@
             <button class="how-btn" type="button" id="howSmeltBtn">? ¿Cómo funciona?</button>
           </div>
 
+          <div id="smeltMain">
           <div id="smeltPrep">
             <div class="smelt-machine" id="machineCard">
               <img class="smelt-machine-bg" id="previewMachine" src="assets/maquina-hierro.webp" alt="Máquina fundidora de Hierro" />
+              <div class="lock-overlay" aria-hidden="true">
+                <span class="chain-bar"></span><span class="chain-bar b2"></span>
+                <span class="lock-badge"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2" fill="currentColor" stroke="none"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.2" r="1.7" fill="#0d0a06" stroke="none"/><path d="M12 16.4v1.4" stroke="#0d0a06" stroke-width="1.6"/></svg></span>
+              </div>
               <div class="smelt-machine-head">
                 <img class="level-token" id="previewCoin" src="assets/fun-token-hierro.webp" alt="Moneda oficial del nivel Hierro" />
                 <div><span class="level-kicker" id="previewKicker">Nivel 2</span><span class="level-name" id="previewName">Hierro</span></div>
                 <span class="preview-tag" id="previewTag" hidden>Vista previa</span>
               </div>
-              <div class="energy-reg" aria-label="Regulador de energía">
+              <div class="energy-reg" id="energyReg" aria-label="Regulador de energía">
                 <div class="energy-reg-top">
                   <div class="energy-read"><small>Energía disponible</small><b id="energyNow">320 ⚡</b></div>
                   <div class="level-status"><small>Estado</small><b id="energyState">Estable</b></div>
                 </div>
                 <div class="energy-track" aria-hidden="true"><i id="energyFill" style="width:80%"></i></div>
-                <div class="energy-caption"><span id="energyProgressLabel">320 / 400 hacia Oro</span><span>Sin máximo</span></div>
-                <div class="energy-caption" style="margin-top:3px"><span>ⓘ Mantén la energía por encima del umbral para conservar tu nivel.</span></div>
+                <div class="energy-caption"><span id="energyProgressLabel">320 / 400 hacia Oro</span><span id="energyRegRight">Sin máximo</span></div>
+                <div class="energy-caption" style="margin-top:3px"><span id="energyNote">ⓘ Mantén la energía por encima del umbral para conservar tu nivel.</span></div>
               </div>
             </div>
 
-            <div class="smelt-panel">
+            <div class="lock-panel" id="lockPanel" hidden>
+              <div class="lock-panel-head">
+                <span class="fact-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.2" r="1.6"/></svg></span>
+                <div><b id="lockTitle">Nivel bloqueado</b><p id="lockText">Te faltan 80 ⚡ para desbloquear este nivel.</p></div>
+              </div>
+              <div class="lock-ways" id="lockWays">
+                <button class="energy-link" type="button" id="lockInvite"><span class="fact-icon">♟</span><span><b>Invitar amigos</b><small>Gana energía con referidos</small></span><span class="chev">›</span></button>
+                <button class="energy-link" type="button" id="lockShop"><span class="fact-icon">▣</span><span><b>Tienda de energía</b><small>Comprar energía</small></span><span class="chev">›</span></button>
+              </div>
+              <button class="btn btn-dark lock-back" type="button" id="lockBack">Volver a mi nivel</button>
+            </div>
+
+            <div class="smelt-panel" id="smeltPanel">
               <div class="gold-available">
                 <img class="level-token" src="assets/fun-token-oro.webp" alt="Moneda de oro" />
                 <div><small>Tu oro disponible</small><b id="goldNow">125.50 g</b></div>
@@ -732,6 +816,7 @@
                   <div class="smelt-fact"><span class="fact-icon">◷</span><span><small>Tiempo estimado</small><b id="smeltDuration">12 horas</b></span></div>
                 </div>
                 <div class="validation-msg" id="smeltValidation" role="alert"></div>
+                <p class="confirm-line" id="smeltConfirmLine"><i aria-hidden="true"></i><span id="smeltConfirmText"></span></p>
                 <button class="btn btn-gold smelt-start" type="button" id="smeltBtn">♨ Iniciar fundición</button>
               </div>
             </div>
@@ -740,7 +825,7 @@
           <div id="smeltRunning" hidden>
             <div class="smelt-machine machine-live" id="runMachineCard">
               <img class="smelt-machine-bg" id="runMachine" src="assets/maquina-hierro.webp" alt="Máquina fundidora trabajando" />
-              <span class="furnace-glow" aria-hidden="true"></span><span class="molten-flow" aria-hidden="true"></span><span class="spark" aria-hidden="true"></span><span class="spark s2" aria-hidden="true"></span><span class="spark s3" aria-hidden="true"></span>
+              <video class="smelt-machine-video" id="runVideo" autoplay muted loop playsinline preload="none" poster="assets/maquina-hierro.webp" aria-hidden="true"></video>
               <div class="smelt-machine-head">
                 <img class="level-token" id="runCoin" src="assets/fun-token-hierro.webp" alt="Moneda oficial del nivel activo" />
                 <div><span class="level-kicker" id="runKicker">Nivel 2</span><span class="level-name" id="runName">Hierro</span></div>
@@ -771,6 +856,64 @@
           <h3 class="level-selector-title">Niveles de la fundidora</h3>
           <div class="level-selector" id="levelSelector"></div>
           <div class="note-box">La energía sube con referidos: <b>+50 ⚡</b> por cada directo a partir del tercero y <b>+15 ⚡</b> por cada referido de segundo nivel activo. También puedes adquirirla en la tienda. Al fundir gastas energía fija por operación; si bajas del umbral, desciendes automáticamente al nivel correspondiente.</div>
+          </div>
+
+          <div id="smeltChained" hidden>
+            <div class="smelt-machine chained-machine">
+              <img class="smelt-machine-bg" src="assets/maquina-hierro.webp" alt="Máquina fundidora encadenada" />
+              <div class="lock-overlay" aria-hidden="true">
+                <span class="chain-bar"></span><span class="chain-bar b2"></span>
+                <span class="lock-badge"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2" fill="currentColor" stroke="none"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.2" r="1.7" fill="#0d0a06" stroke="none"/><path d="M12 16.4v1.4" stroke="#0d0a06" stroke-width="1.6"/></svg></span>
+              </div>
+              <div class="chained-title-row">
+                <span class="lock-ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.2" r="1.6"/></svg></span>
+                <div><b>Fundidora bloqueada</b><small>Aún no cumples la condición de desbloqueo</small></div>
+              </div>
+            </div>
+
+            <div class="chained-coins" aria-label="Monedas oficiales de los niveles de la fundidora">
+              <img src="assets/fun-token-carbon.webp" alt="Moneda del nivel Carbón" />
+              <img src="assets/fun-token-hierro.webp" alt="Moneda del nivel Hierro" />
+              <img src="assets/fun-token-oro.webp" alt="Moneda del nivel Oro" />
+              <img src="assets/fun-token-diamante.webp" alt="Moneda del nivel Diamante" />
+              <div class="cc-names"><b>Los 4 niveles te esperan</b><small>Carbón · Hierro · Oro · Diamante, cada uno con su moneda oficial.</small></div>
+            </div>
+
+            <div class="chained-explain">
+              <h3>¿Cómo se desbloquea?</h3>
+              <p>Necesitas <b>2 referidos directos activos</b>. Un referido <b>activo</b> es quien <b>compra al menos un plan</b>. Y cada uno de esos 2 directos debe <b>invitar a 1 persona que también active un plan</b>: así sumas además <b>2 referidos de segundo nivel activos</b>.</p>
+            </div>
+
+            <div class="chained-progress-head"><h3>Tu progreso de desbloqueo</h3><span>0 de 2 directos completos</span></div>
+
+            <div class="req-slot">
+              <div class="req-slot-head"><span class="slot-num">1</span><b>Directo 1</b><span>Pendiente</span></div>
+              <div class="req-marks">
+                <div class="req-mark"><span class="req-dot"></span><span><small>Directo activo</small><b>Compró un plan</b><em>Pendiente</em></span></div>
+                <div class="req-mark"><span class="req-dot"></span><span><small>Su invitado activo</small><b>Compró un plan</b><em>Pendiente</em></span></div>
+              </div>
+            </div>
+            <div class="req-slot">
+              <div class="req-slot-head"><span class="slot-num">2</span><b>Directo 2</b><span>Pendiente</span></div>
+              <div class="req-marks">
+                <div class="req-mark"><span class="req-dot"></span><span><small>Directo activo</small><b>Compró un plan</b><em>Pendiente</em></span></div>
+                <div class="req-mark"><span class="req-dot"></span><span><small>Su invitado activo</small><b>Compró un plan</b><em>Pendiente</em></span></div>
+              </div>
+            </div>
+
+            <div class="permanence-note">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 1-7-7c0-2.4 1.2-4.3 2.7-6C9.2 7.1 10.6 5.3 10.8 2.2c0-.9 1.2-1.2 1.7-.5 2 2.4 2.6 5.6 2.1 8.2.6-.5 1-1.2 1.3-2 .3-.7 1.4-.7 1.7 0 .7 1.5 1.4 3 1.4 4.6a7 7 0 0 1-7 7Z"/></svg>
+              <span><b>El desbloqueo es permanente:</b> una vez cumplida la condición, tu fundidora queda activa para siempre. Después solo necesitas energía para subir de nivel.</span>
+            </div>
+
+            <div class="chained-code">
+              <div><small>Tu código de referido</small><b>GM8KX42P</b></div>
+              <button class="copy-btn" type="button" data-copy="GM8KX42P">Copiar</button>
+            </div>
+
+            <button class="btn btn-gold chained-invite" type="button" id="chainedInvite">Invitar amigos</button>
+            <button class="btn btn-dark chained-back" type="button" id="chainedBack">Volver a la fundidora</button>
+          </div>
         </section>
 
         <!-- ================= VISTA: HISTORIAL ================= -->
@@ -876,10 +1019,10 @@
       ];
 
       var LEVELS = [
-        { key: "carbon", num: 1, name: "Carbón", desc: "Estructura básica", machine: "assets/maquina-carbon.webp", coin: "assets/fun-token-carbon.webp", min: 0, max: 149, cost: 120, limit: 50, hours: 24, durationLabel: "24 horas" },
-        { key: "hierro", num: 2, name: "Hierro", desc: "Estructura reforzada", machine: "assets/maquina-hierro.webp", coin: "assets/fun-token-hierro.webp", min: 150, max: 399, cost: 80, limit: 150, hours: 12, durationLabel: "12 horas" },
-        { key: "oro", num: 3, name: "Oro", desc: "Mayor eficiencia", machine: "assets/maquina-oro.webp", coin: "assets/fun-token-oro.webp", min: 400, max: 999, cost: 45, limit: 500, hours: 6, durationLabel: "6 horas" },
-        { key: "diamante", num: 4, name: "Diamante", desc: "Máxima eficiencia", machine: "assets/maquina-diamante.webp", coin: "assets/fun-token-diamante.webp", min: 1000, max: null, cost: 15, limit: null, hours: 3, durationLabel: "3 horas" }
+        { key: "carbon", num: 1, name: "Carbón", desc: "Estructura básica", machine: "assets/maquina-carbon.webp", video: "assets/video-carbon.mp4", coin: "assets/fun-token-carbon.webp", min: 0, max: 149, cost: 120, limit: 50, hours: 24, durationLabel: "24 horas" },
+        { key: "hierro", num: 2, name: "Hierro", desc: "Estructura reforzada", machine: "assets/maquina-hierro.webp", video: "assets/video-hierro.mp4", coin: "assets/fun-token-hierro.webp", min: 150, max: 399, cost: 80, limit: 150, hours: 12, durationLabel: "12 horas" },
+        { key: "oro", num: 3, name: "Oro", desc: "Mayor eficiencia", machine: "assets/maquina-oro.webp", video: "assets/video-oro.mp4", coin: "assets/fun-token-oro.webp", min: 400, max: 999, cost: 45, limit: 500, hours: 6, durationLabel: "6 horas" },
+        { key: "diamante", num: 4, name: "Diamante", desc: "Máxima eficiencia", machine: "assets/maquina-diamante.webp", video: "assets/video-diamante.mp4", coin: "assets/fun-token-diamante.webp", min: 1000, max: null, cost: 15, limit: null, hours: 3, durationLabel: "3 horas" }
       ];
 
       var MOVES_FULL = [
@@ -984,10 +1127,12 @@
       function renderLevelSelector() {
         var op = operativeLevel();
         document.getElementById("levelSelector").innerHTML = LEVELS.map(function (l) {
-          return '<button class="level-option' + (l.key === smeltState.previewKey ? ' active' : '') + '" type="button" data-level="' + l.key + '" aria-pressed="' + (l.key === smeltState.previewKey) + '">' +
+          var isLocked = smeltState.energy < l.min;
+          var missing = l.min - smeltState.energy;
+          return '<button class="level-option' + (l.key === smeltState.previewKey ? ' active' : '') + (isLocked ? ' locked' : '') + '" type="button" data-level="' + l.key + '" aria-pressed="' + (l.key === smeltState.previewKey) + '">' +
             '<img class="lo-bg" src="' + l.machine + '" alt="" loading="lazy" />' +
             '<span class="lo-head"><img src="' + l.coin + '" alt="Moneda ' + l.name + '" /><span><small>Nivel ' + l.num + (l.key === op.key ? ' · Tu nivel' : '') + '</small><b>' + l.name + '</b></span></span>' +
-            '<span class="lo-data"><strong>' + l.desc + '</strong><br>Costo <strong>' + l.cost + ' ⚡</strong> · Límite <strong>' + (l.limit ? 'US$' + l.limit : 'Ilimitado') + '</strong><br>Duración <strong>' + l.hours + ' h</strong> · Desde <strong>' + fmtInt(l.min) + ' ⚡</strong></span>' +
+            '<span class="lo-data"><strong>' + l.desc + '</strong><br>Costo <strong>' + l.cost + ' ⚡</strong> · Límite <strong>' + (l.limit ? 'US$' + l.limit : 'Ilimitado') + '</strong><br>Duración <strong>' + l.hours + ' h</strong> · Desde <strong>' + fmtInt(l.min) + ' ⚡</strong>' + (isLocked ? '<br><strong class="lo-locked">Bloqueado · Te faltan ' + fmtInt(missing) + ' ⚡</strong>' : '') + '</span>' +
           '</button>';
         }).join("");
         Array.prototype.forEach.call(document.querySelectorAll("[data-level]"), function (b) {
@@ -998,42 +1143,89 @@
       function renderSmelt() {
         var lv = levelByKey(smeltState.previewKey), op = operativeLevel();
         var isOp = lv.key === op.key;
+        var locked = smeltState.energy < lv.min;
+        var lower = !isOp && !locked;
+        var missing = lv.min - smeltState.energy;
         document.getElementById("previewMachine").src = lv.machine;
         document.getElementById("previewMachine").alt = "Máquina fundidora de " + lv.name;
         document.getElementById("previewCoin").src = lv.coin;
         document.getElementById("previewCoin").alt = "Moneda oficial del nivel " + lv.name;
         document.getElementById("previewKicker").textContent = "Nivel " + lv.num;
         document.getElementById("previewName").textContent = lv.name;
-        document.getElementById("previewTag").hidden = isOp;
+        var tag = document.getElementById("previewTag");
+        tag.hidden = isOp;
+        tag.textContent = locked ? "Bloqueado" : "Vista previa";
+        document.getElementById("machineCard").classList.toggle("locked", locked);
         document.getElementById("energyNow").textContent = fmtInt(smeltState.energy) + " ⚡";
-        var next = LEVELS[lv.num] || null;
-        var after = smeltState.energy - lv.cost;
-        var degrades = after < lv.min;
+        var reg = document.getElementById("energyReg");
+        reg.classList.toggle("locked", locked);
+        reg.classList.toggle("lower", lower);
+        reg.classList.remove("risk", "danger");
         var stateEl = document.getElementById("energyState");
-        if (smeltState.energy < lv.cost) { stateEl.textContent = "Insuficiente"; }
-        else if (degrades) { stateEl.textContent = "Riesgo de bajar"; }
-        else { stateEl.textContent = "Estable"; }
-        var pct = next ? Math.min(100, (smeltState.energy / next.min) * 100) : 100;
-        document.getElementById("energyFill").style.width = pct + "%";
-        document.getElementById("energyProgressLabel").textContent = next ? (fmtInt(smeltState.energy) + " / " + fmtInt(next.min) + " hacia " + next.name) : "Nivel máximo alcanzado";
+        var labelEl = document.getElementById("energyProgressLabel");
+        var rightEl = document.getElementById("energyRegRight");
+        var noteEl = document.getElementById("energyNote");
+        var fillEl = document.getElementById("energyFill");
+        if (locked) {
+          stateEl.textContent = "Bloqueado";
+          fillEl.style.width = Math.min(100, (smeltState.energy / lv.min) * 100) + "%";
+          labelEl.textContent = fmtInt(smeltState.energy) + " ⚡ de " + fmtInt(lv.min) + " ⚡ para " + lv.name;
+          rightEl.textContent = "Te faltan " + fmtInt(missing) + " ⚡";
+          noteEl.textContent = "ⓘ Este nivel se desbloquea al acumular " + fmtInt(lv.min) + " ⚡ de energía.";
+        } else if (lower) {
+          var nxL = LEVELS[op.num] || null;
+          stateEl.textContent = "Tu nivel: " + op.name;
+          fillEl.style.width = (nxL ? Math.min(100, (smeltState.energy / nxL.min) * 100) : 100) + "%";
+          labelEl.textContent = nxL ? ("Te faltan " + fmtInt(nxL.min - smeltState.energy) + " ⚡ para Nivel " + nxL.name) : "Nivel máximo alcanzado";
+          rightEl.textContent = nxL ? (fmtInt(smeltState.energy) + " / " + fmtInt(nxL.min) + " ⚡") : "Sin máximo";
+          noteEl.textContent = "ⓘ Estás viendo un nivel inferior: tu fundición opera en " + op.name + ".";
+        } else {
+          var after = smeltState.energy - op.cost;
+          var degrades = after < op.min;
+          if (smeltState.energy < op.cost) { stateEl.textContent = "Insuficiente"; reg.classList.add("danger"); }
+          else if (degrades) { stateEl.textContent = "Riesgo de bajar"; reg.classList.add("risk"); }
+          else { stateEl.textContent = "Estable"; }
+          var nx = LEVELS[op.num] || null;
+          fillEl.style.width = (nx ? Math.min(100, (smeltState.energy / nx.min) * 100) : 100) + "%";
+          labelEl.textContent = nx ? ("Te faltan " + fmtInt(nx.min - smeltState.energy) + " ⚡ para Nivel " + nx.name) : "Nivel máximo alcanzado";
+          rightEl.textContent = nx ? (fmtInt(smeltState.energy) + " / " + fmtInt(nx.min) + " ⚡") : "Sin máximo";
+          noteEl.textContent = "ⓘ Mantén la energía por encima del umbral para conservar tu nivel.";
+        }
         document.getElementById("goldNow").textContent = fmt(goldAvailable(), 2) + " g";
         document.getElementById("walletBalance").textContent = "US$" + fmt(smeltState.wallet, 2);
         document.getElementById("referralEnergy").textContent = fmtInt(smeltState.energy) + " unidades";
-        document.getElementById("smeltCost").textContent = lv.cost + " unidades";
-        document.getElementById("smeltDuration").textContent = lv.durationLabel;
+        document.getElementById("smeltCost").textContent = op.cost + " unidades";
+        document.getElementById("smeltDuration").textContent = op.durationLabel;
+        document.getElementById("smeltPanel").hidden = !isOp;
+        var lp = document.getElementById("lockPanel");
+        lp.hidden = isOp;
+        if (!isOp) {
+          if (locked) {
+            document.getElementById("lockTitle").textContent = "Nivel bloqueado";
+            document.getElementById("lockText").innerHTML = "Te faltan <b>" + fmtInt(missing) + " ⚡</b> para desbloquear <b>" + lv.name + "</b>. La fundición opera siempre en tu nivel actual: <b>" + op.name + "</b>.";
+            document.getElementById("lockWays").style.display = "";
+          } else {
+            document.getElementById("lockTitle").textContent = "Vista previa · Nivel inferior";
+            document.getElementById("lockText").innerHTML = "Tu nivel actual es <b>" + op.name + "</b>. Esta es solo una vista previa: la fundición siempre opera en tu nivel actual según tu energía.";
+            document.getElementById("lockWays").style.display = "none";
+          }
+          document.getElementById("lockBack").textContent = "Volver a mi nivel (" + op.name + ")";
+        }
         renderLevelSelector();
-        validateSmelt();
+        if (isOp) validateSmelt();
       }
 
       function validateSmelt() {
-        var lv = levelByKey(smeltState.previewKey);
+        var lv = operativeLevel();
         var input = document.getElementById("smeltAmount");
         var amt = parseFloat(input.value);
         if (isNaN(amt)) amt = 0;
         document.getElementById("smeltReceive").textContent = "US$" + fmt(Math.max(0, amt), 2);
         var msg = document.getElementById("smeltValidation"), btn = document.getElementById("smeltBtn");
+        var line = document.getElementById("smeltConfirmLine"), lineText = document.getElementById("smeltConfirmText");
         var text = "", ok = amt > 0;
-        if (amt <= 0) { text = "Escribe la cantidad de oro que deseas fundir."; ok = false; }
+        if (levelByKey(smeltState.previewKey).key !== lv.key) { ok = false; }
+        else if (amt <= 0) { text = "Escribe la cantidad de oro que deseas fundir."; ok = false; }
         else if (amt > goldAvailable() + 1e-9) { text = "Oro insuficiente: tienes " + fmt(goldAvailable(), 2) + " g disponibles. Reduce la cantidad o espera a que tus máquinas produzcan más oro."; ok = false; }
         else if (lv.limit && amt > lv.limit) { text = "Supera el límite del nivel " + lv.name + ": máximo US$" + lv.limit + " por operación. Baja la cantidad o sube de nivel con más energía."; ok = false; }
         else if (smeltState.energy < lv.cost) { text = "Energía insuficiente: fundir en " + lv.name + " cuesta " + lv.cost + " ⚡ y tienes " + fmtInt(smeltState.energy) + " ⚡. Gana energía invitando amigos o en la tienda de energía."; ok = false; }
@@ -1044,6 +1236,19 @@
         msg.textContent = text;
         msg.classList.toggle("show", !!text);
         btn.disabled = !ok;
+        var showLine = ok && smeltState.energy >= lv.cost;
+        line.classList.toggle("show", showLine);
+        line.classList.remove("warn");
+        if (showLine) {
+          var remaining = smeltState.energy - lv.cost;
+          var resulting = levelForEnergy(remaining);
+          if (resulting.key === lv.key) {
+            lineText.textContent = "Tras fundir: " + fmtInt(remaining) + " ⚡ · Sigues en Nivel " + lv.name;
+          } else {
+            line.classList.add("warn");
+            lineText.textContent = "Tras fundir: " + fmtInt(remaining) + " ⚡ · Bajas a Nivel " + resulting.name;
+          }
+        }
         return ok;
       }
 
@@ -1055,7 +1260,8 @@
         return pad2(h) + ":" + pad2(d.getMinutes()) + " " + ap;
       }
       function startSmelt() {
-        var lv = levelByKey(smeltState.previewKey);
+        var lv = operativeLevel();
+        smeltState.previewKey = lv.key;
         var amt = parseFloat(document.getElementById("smeltAmount").value) || 0;
         if (!validateSmelt()) return;
         var now = Date.now();
@@ -1071,6 +1277,11 @@
         document.getElementById("smeltPrep").hidden = true;
         document.getElementById("smeltRunning").hidden = false;
         document.getElementById("runMachine").src = lv.machine;
+        var runVid = document.getElementById("runVideo");
+        runVid.poster = lv.machine;
+        runVid.hidden = false;
+        if (runVid.getAttribute("src") !== lv.video) runVid.src = lv.video;
+        var playP = runVid.play(); if (playP && playP.catch) playP.catch(function () {});
         document.getElementById("runCoin").src = lv.coin;
         document.getElementById("runKicker").textContent = "Nivel " + lv.num;
         document.getElementById("runName").textContent = lv.name;
@@ -1103,6 +1314,8 @@
       }
       function completeSmelt(op) {
         clearInterval(smeltTimer);
+        var doneVid = document.getElementById("runVideo");
+        if (doneVid) { doneVid.pause(); doneVid.hidden = true; }
         if (!op.credited) {
           op.credited = true; lsSet("gm_smelt_op", op);
           smeltState.wallet += op.usd; lsSet("gm_wallet", smeltState.wallet);
@@ -1119,6 +1332,8 @@
         var nb = document.getElementById("newSmeltBtn");
         if (nb) nb.addEventListener("click", function () {
           localStorage.removeItem("gm_smelt_op");
+          var nv = document.getElementById("runVideo");
+          if (nv) { nv.pause(); nv.removeAttribute("src"); nv.load(); nv.hidden = true; }
           document.getElementById("smeltRunning").hidden = true;
           document.getElementById("smeltPrep").hidden = false;
           renderSmelt();
@@ -1178,6 +1393,11 @@
         });
         var ml = document.getElementById("machineList");
         if (ml && view === "inicio") ml.scrollTop = 0;
+        var rv = document.getElementById("runVideo");
+        if (rv) {
+          if (view !== "fundir") rv.pause();
+          else if (!rv.hidden && rv.getAttribute("src") && !document.getElementById("smeltRunning").hidden) { var rp = rv.play(); if (rp && rp.catch) rp.catch(function () {}); }
+        }
         Array.prototype.forEach.call(document.querySelectorAll(".tab[data-goto]"), function (t) {
           t.classList.toggle("active", t.getAttribute("data-goto") === view);
         });
@@ -1216,6 +1436,24 @@
         Array.prototype.forEach.call(sheet.querySelectorAll("[data-sheet-goto]"), function (b) {
           b.addEventListener("click", function () { go(b.getAttribute("data-sheet-goto")); });
         });
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-show-chained]"), function (b) {
+          b.addEventListener("click", function () { showChained(); });
+        });
+      }
+
+      /* ============ Fundidora encadenada (vista de revisión) ============ */
+      function showChained() {
+        closeSheet();
+        document.getElementById("smeltMain").hidden = true;
+        document.getElementById("smeltChained").hidden = false;
+        var v = document.getElementById("view-fundir");
+        if (v) v.scrollTop = 0;
+      }
+      function hideChained() {
+        document.getElementById("smeltChained").hidden = true;
+        document.getElementById("smeltMain").hidden = false;
+        var v = document.getElementById("view-fundir");
+        if (v) v.scrollTop = 0;
       }
 
       var SHEETS = {
@@ -1250,7 +1488,9 @@
             '<li><b>Hierro</b> · 150–399 ⚡ · Costo 80 ⚡ · Límite $150 · 12 h</li>' +
             '<li><b>Oro</b> · 400–999 ⚡ · Costo 45 ⚡ · Límite $500 · 6 h</li>' +
             '<li><b>Diamante</b> · 1,000+ ⚡ · Costo 15 ⚡ · Ilimitado · 3 h</li></ul>' +
-            '<p>Si al pagar el costo tu energía baja del umbral, <b>desciendes automáticamente</b> al nivel que corresponda. Una fundición iniciada <b>no se puede cancelar</b> y sigue su curso aunque salgas de la app.</p>'
+            '<p>Si al pagar el costo tu energía baja del umbral, <b>desciendes automáticamente</b> al nivel que corresponda. Una fundición iniciada <b>no se puede cancelar</b> y sigue su curso aunque salgas de la app.</p>' +
+            '<p><b>Si aún no la desbloqueas:</b> la fundidora se desbloquea con <b>2 referidos directos activos</b> (que compren un plan) y que <b>cada uno invite a 1 persona</b> que también active un plan. El desbloqueo es <b>permanente</b>.</p>' +
+            '<button class="btn btn-dark" type="button" data-show-chained style="width:100%">Ver la fundidora bloqueada</button>'
         },
         tienda: {
           title: "Tienda de energía",
@@ -1327,9 +1567,10 @@
         renderBalance();
       });
       document.getElementById("smeltBtn").addEventListener("click", startSmelt);
+      document.getElementById("runVideo").addEventListener("error", function () { this.hidden = true; }, true);
       document.getElementById("smeltAmount").addEventListener("input", validateSmelt);
       document.getElementById("smeltMax").addEventListener("click", function () {
-        var lv = levelByKey(smeltState.previewKey);
+        var lv = operativeLevel();
         var max = lv.limit ? Math.min(goldAvailable(), lv.limit) : goldAvailable();
         document.getElementById("smeltAmount").value = fmt(max, 2);
         validateSmelt();
@@ -1338,6 +1579,11 @@
       document.getElementById("shopAction").addEventListener("click", function () { openSheet(SHEETS.tienda.title, SHEETS.tienda.body); });
       document.getElementById("inviteAction").addEventListener("click", function () { openSheet(SHEETS.referidos.title, SHEETS.referidos.body); });
       document.getElementById("walletPanel").addEventListener("click", function () { openSheet(SHEETS.retiros.title, SHEETS.retiros.body); });
+      document.getElementById("lockInvite").addEventListener("click", function () { openSheet(SHEETS.referidos.title, SHEETS.referidos.body); });
+      document.getElementById("lockShop").addEventListener("click", function () { openSheet(SHEETS.tienda.title, SHEETS.tienda.body); });
+      document.getElementById("lockBack").addEventListener("click", function () { smeltState.previewKey = operativeLevel().key; renderSmelt(); var v = document.getElementById("view-fundir"); if (v) v.scrollTop = 0; });
+      document.getElementById("chainedInvite").addEventListener("click", function () { openSheet(SHEETS.referidos.title, SHEETS.referidos.body); });
+      document.getElementById("chainedBack").addEventListener("click", hideChained);
       document.getElementById("logoutBtn").addEventListener("click", function () {
         showToast("Sesión activa de Carlos Méndez");
       });
