@@ -336,14 +336,133 @@
       .plan-card .pimg .plan-pill{ position:absolute; top:12px; left:12px; z-index:1; }
       .plan-body{ padding:6px 18px 18px; }
       .plan-body h3{ margin:0 0 2px; font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:29px; letter-spacing:.01em; }
-      .plan-price{ display:flex; align-items:baseline; gap:8px; margin:6px 0 12px; }
-      .plan-price b{ font-size:34px; font-weight:800; color:var(--gold-2); font-variant-numeric:tabular-nums; }
+      .plan-price{ display:flex; align-items:baseline; gap:8px; margin:6px 0 12px; flex-wrap:nowrap; }
+      .plan-price b{ font-size:32px; font-weight:800; color:var(--gold-2); font-variant-numeric:tabular-nums; white-space:nowrap; flex:none; }
       .plan-price span{ color:var(--muted); font-size:13.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; }
       .plan-rows{ border-top:1px solid var(--line-soft); }
       .plan-rows div{ display:flex; justify-content:space-between; gap:12px; padding:9px 0; border-bottom:1px solid rgba(212,160,23,.08); font-size:15px; }
       .plan-rows div span{ color:var(--muted); }
       .plan-rows div b{ font-weight:700; font-variant-numeric:tabular-nums; text-align:right; }
       .plan-body .btn{ width:100%; margin-top:14px; }
+
+      /* ---------- Catálogo definitivo de planes ---------- */
+      .plans-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin:10px 2px 3px; }
+      .plans-head .view-title{ margin:0; }
+      .how-pill{
+        flex:none; display:inline-flex; align-items:center; gap:6px;
+        border:1px solid var(--line); border-radius:999px; min-height:34px; padding:5px 12px;
+        background:rgba(212,160,23,.08); color:var(--gold-3);
+        font-size:12.5px; font-weight:700; white-space:nowrap;
+      }
+      .how-pill svg{ color:var(--gold-2); flex:none; }
+      .plan-card .pimg{ position:relative; height:auto; aspect-ratio:16/9; }
+      .plan-card .pimg::after{ background:linear-gradient(0deg, var(--panel) 1%, transparent 42%); }
+      .plan-status{
+        position:absolute; top:12px; right:12px; z-index:1;
+        display:inline-flex; align-items:center; gap:6px;
+        border-radius:999px; padding:4px 10px; font-size:11.5px; font-weight:700; white-space:nowrap;
+      }
+      .plan-status i{ width:7px; height:7px; border-radius:50%; flex:none; }
+      .plan-status.avail{ background:rgba(6,26,15,.86); border:1px solid rgba(61,220,132,.55); color:#7bf0ae; }
+      .plan-status.avail i{ background:var(--green); box-shadow:0 0 7px var(--green); }
+      .plan-status.active{ background:linear-gradient(180deg,#ffe9a8,var(--gold-2) 55%,var(--gold)); border:1px solid #ffedb5; color:#241a02; }
+      .plan-status.active i{ background:#241a02; }
+      .process-strip{
+        display:flex; align-items:flex-start; justify-content:space-between; gap:2px;
+        border:1px solid var(--line-soft); border-radius:12px; background:#0d0a06;
+        padding:9px 8px 7px; margin-bottom:10px;
+      }
+      .process-strip .pstep{ flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; gap:4px; color:var(--gold-2); }
+      .process-strip .pstep svg{ width:19px; height:19px; }
+      .process-strip .pstep span{ font-size:10px; font-weight:600; color:#d8cfba; text-align:center; line-height:1.1; }
+      .process-strip .psep{ flex:none; color:var(--gold-deep); margin-top:3px; }
+      .process-strip .psep svg{ width:11px; height:11px; }
+      .plan-data{ border:1px solid var(--line-soft); border-radius:14px; background:#0d0a06; padding:2px 12px; }
+      .plan-data .drow{ display:flex; align-items:center; gap:10px; padding:9px 0; }
+      .plan-data .drow + .drow{ border-top:1px solid rgba(212,160,23,.08); }
+      .plan-data .dicon-sm{
+        width:31px; height:31px; border-radius:50%; flex:none;
+        border:1px solid var(--line-soft); background:rgba(212,160,23,.08);
+        display:grid; place-items:center; color:var(--gold-2);
+      }
+      .plan-data .dicon-sm svg{ width:16px; height:16px; }
+      .plan-data .dlabel{ flex:1; min-width:0; color:var(--muted); font-size:13px; font-weight:500; line-height:1.25; }
+      .plan-data .dval{ flex:none; font-size:14.5px; font-weight:800; color:#f5ead3; font-variant-numeric:tabular-nums; text-align:right; }
+      .plan-data .dval.gold{ color:var(--gold-2); }
+      .plan-body .btn svg{ flex:none; }
+
+      /* ---------- Ficha del plan ---------- */
+      .sheet .plan-hero{ border-radius:16px; overflow:hidden; border:1px solid var(--line-soft); margin-bottom:12px; }
+      .sheet .plan-hero img{ width:100%; aspect-ratio:16/9; object-fit:cover; }
+      .sheet .plan-hero-name{ font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:26px; letter-spacing:.01em; line-height:1.05; }
+      .sheet .plan-hero-price{ display:flex; align-items:baseline; gap:8px; margin:4px 0 12px; }
+      .sheet .plan-hero-price b{ font-size:30px; font-weight:800; color:var(--gold-2); font-variant-numeric:tabular-nums; white-space:nowrap; flex:none; }
+      .sheet .plan-hero-price span{ color:var(--muted); font-size:13px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; }
+      .sheet h4.sheet-h{ margin:16px 0 8px; font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:19px; letter-spacing:.03em; text-transform:uppercase; color:#fdfaf2; }
+      .sheet ol.steps{ margin:0 0 6px; padding:0; list-style:none; counter-reset:st; }
+      .sheet ol.steps li{ counter-increment:st; position:relative; padding:0 0 10px 38px; color:var(--muted); font-size:14.5px; line-height:1.5; }
+      .sheet ol.steps li::before{
+        content:counter(st); position:absolute; left:0; top:0;
+        width:26px; height:26px; border-radius:50%; border:1px solid var(--gold);
+        display:grid; place-items:center; font:800 13px "Barlow"; color:var(--gold-3); background:rgba(212,160,23,.10);
+      }
+      .sheet ol.steps li b{ color:var(--text); }
+      .pay-box,.wallet-box{ border:1px solid var(--line-soft); border-radius:14px; background:#0d0a06; padding:12px; margin-bottom:12px; }
+      .pay-flex{ display:flex; gap:12px; align-items:center; }
+      .qr-frame{ flex:none; width:92px; height:92px; border:1.5px solid var(--gold); border-radius:12px; background:#0a0805; display:grid; place-items:center; padding:7px; }
+      .qr-frame svg{ width:100%; height:100%; }
+      .pay-info{ flex:1; min-width:0; }
+      .pay-info small,.wallet-box small.lbl{ display:block; color:var(--muted); font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; margin-bottom:3px; }
+      .pay-addr{ display:flex; align-items:center; gap:8px; }
+      .pay-addr b{ font-size:16.5px; letter-spacing:.06em; font-variant-numeric:tabular-nums; }
+      .state-chip{ display:inline-flex; align-items:center; gap:6px; border-radius:999px; padding:3px 10px; font-size:11.5px; font-weight:800; margin-top:7px; }
+      .state-chip i{ width:7px; height:7px; border-radius:50%; flex:none; }
+      .state-chip.green{ background:rgba(61,220,132,.10); border:1px solid rgba(61,220,132,.55); color:#7bf0ae; }
+      .state-chip.green i{ background:var(--green); box-shadow:0 0 7px var(--green); }
+      .state-chip.amber{ background:rgba(255,176,46,.09); border:1px solid rgba(255,176,46,.55); color:#ffd485; }
+      .state-chip.amber i{ background:var(--amber); box-shadow:0 0 7px var(--amber); }
+      .state-chip.red{ background:rgba(255,93,93,.09); border:1px solid rgba(255,93,93,.55); color:#ff9c9c; }
+      .state-chip.red i{ background:var(--red); box-shadow:0 0 7px var(--red); }
+      .wallet-addr{ font-size:16.5px; font-weight:700; letter-spacing:.04em; font-variant-numeric:tabular-nums; }
+      .wallet-bal{ margin-top:5px; font-size:14.5px; color:#e7ddc7; }
+      .wallet-bal b{ color:var(--gold-2); font-variant-numeric:tabular-nums; }
+      .active-banner{
+        display:flex; align-items:center; justify-content:center; gap:8px;
+        border:1px solid var(--gold); border-radius:12px; padding:12px;
+        background:linear-gradient(180deg,rgba(255,233,168,.16),rgba(212,160,23,.10));
+        color:var(--gold-3); font-family:"Barlow Condensed",sans-serif; font-weight:800;
+        font-size:19px; letter-spacing:.1em; margin-top:4px;
+      }
+      .active-banner i{ width:8px; height:8px; border-radius:50%; background:var(--gold-2); box-shadow:0 0 9px var(--gold-2); }
+
+      /* ---------- Modo de prueba: planes y billetera ---------- */
+      .pw-block{ border:1px solid var(--line-soft); border-radius:14px; background:var(--panel); padding:12px; margin-bottom:10px; }
+      .pw-head{ display:flex; align-items:baseline; justify-content:space-between; gap:8px; margin-bottom:9px; }
+      .pw-head b{ font-size:14.5px; }
+      .pw-head span{ color:var(--muted); font-size:11.5px; font-weight:600; }
+      .pw-addr-input{
+        width:100%; height:38px; border:1px solid rgba(240,194,75,.35); border-radius:9px;
+        padding:0 10px; background:#080705; color:#f5ead3; font:600 13.5px "Barlow";
+        letter-spacing:.03em; outline:none; margin-bottom:9px;
+      }
+      .pw-addr-input:focus{ border-color:var(--gold-2); box-shadow:0 0 0 2px rgba(212,160,23,.12); }
+      .pw-bal-row{ display:flex; align-items:center; gap:8px; margin-bottom:9px; }
+      .pw-bal-row .adj-num{ flex:1; width:auto; text-align:right; }
+      .pw-bal-row .adj-btn{ width:38px; height:38px; border-radius:10px; font-size:19px; }
+      .pw-toggles{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+      .pw-toggle{
+        display:flex; align-items:center; justify-content:space-between; gap:8px;
+        border:1px solid var(--line-soft); border-radius:11px; background:#0d0a06;
+        padding:9px 10px; color:var(--text); text-align:left; min-height:44px;
+      }
+      .pw-toggle small{ display:block; color:var(--muted); font-size:10px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; }
+      .pw-toggle b{ display:block; font-size:13px; margin-top:1px; color:#ff9c9c; }
+      .pw-toggle .pw-knob{ flex:none; width:34px; height:19px; border-radius:99px; background:rgba(246,240,226,.16); position:relative; transition:background .15s ease; }
+      .pw-toggle .pw-knob::after{ content:""; position:absolute; top:2.5px; left:3px; width:14px; height:14px; border-radius:50%; background:#f6f0e2; transition:left .15s ease; }
+      .pw-toggle.on{ border-color:rgba(61,220,132,.5); }
+      .pw-toggle.on b{ color:#7bf0ae; }
+      .pw-toggle.on .pw-knob{ background:var(--green); }
+      .pw-toggle.on .pw-knob::after{ left:17px; }
 
       .note-box{ border:1px solid var(--line-soft); border-radius:16px; padding:14px 16px; color:var(--muted); font-size:14px; line-height:1.55; background:var(--panel); margin:14px 0; }
       .note-box b{ color:var(--gold-2); }
@@ -829,8 +948,14 @@
 
         <!-- ================= VISTA: PLANES ================= -->
         <section class="view" id="view-planes" aria-label="Planes">
-          <h2 class="view-title">Planes</h2>
-          <p class="view-sub">Elige tu máquina y empieza a extraer oro. Además del precio de la máquina, cada plan requiere mantener un capital mínimo en tu billetera.</p>
+          <div class="plans-head">
+            <h2 class="view-title">Planes</h2>
+            <button class="how-pill" type="button" id="howPlansBtn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+              ¿Cómo funcionan?
+            </button>
+          </div>
+          <p class="view-sub">Selecciona tu maquinaria y comienza a extraer oro. Cada plan requiere mantener un capital mínimo en tu billetera conectada de la plataforma.</p>
           <div id="planList"></div>
         </section>
 
@@ -1089,14 +1214,38 @@
 
       var PLANS = [
         { plan: "PLAN 01", name: "Mini Perforadora", img: "assets/plan-1.webp", price: "$25 USD",
-          capital: "50 – 249 USDT", pct: "2.5% diario", maint: "$5 USD" },
+          capital: "50 – 249 USDT", pct: "2.5% diario", maint: "$5 USD", min: 50, max: 249 },
         { plan: "PLAN 02", name: "Perforadora Triple", img: "assets/plan-2.webp", price: "$75 USD",
-          capital: "250 – 749 USDT", pct: "3.5% diario", maint: "$12 USD" },
+          capital: "250 – 749 USDT", pct: "3.5% diario", maint: "$12 USD", min: 250, max: 749 },
         { plan: "PLAN 03", name: "Planta Minera", img: "assets/plan-3.webp", price: "$200 USD",
-          capital: "750 – 1,999 USDT", pct: "4.5% diario", maint: "$25 USD" },
+          capital: "750 – 1,999 USDT", pct: "4.5% diario", maint: "$25 USD", min: 750, max: 1999 },
         { plan: "PLAN 04", name: "Planta Minera Avanzada", img: "assets/plan-4.webp", price: "$500 USD",
-          capital: "2,000 USDT en adelante", pct: "5.5% diario", maint: "$45 USD" }
+          capital: "2,000 USDT o más", pct: "5.5% diario", maint: "$45 USD", min: 2000, max: null }
       ];
+
+      /* Dirección de la plataforma para pagar el precio de cada plan (dato de ejemplo) */
+      var PLATFORM_ADDRESS = "TGm9xKpL2sQw7rTnY4hJkF6d8xQa";
+
+      /* Billetera conectada de cada máquina: una dirección de ejemplo distinta por plan */
+      var PLAN_WALLET_DEFAULTS = [
+        { address: "TXk3m9RvLpQw8sTnY2hJkF9fQa", balance: 0, paid: false, connected: false },
+        { address: "TMp7qL2sHdRw9xVcB4nKjF6eZa", balance: 0, paid: false, connected: false },
+        { address: "TRd5wN8kPqLs3vXyA7mHcJ2bNe", balance: 0, paid: false, connected: false },
+        { address: "TFs9zQ4hBnMk6wPxD1rVtY8gLc", balance: 0, paid: false, connected: false }
+      ];
+      function buildPlanWallets(sc) {
+        return PLAN_WALLET_DEFAULTS.map(function (d, i) {
+          var w = { address: d.address, balance: d.balance, paid: d.paid, connected: d.connected };
+          var o = sc && sc.wallets ? sc.wallets[i] : null;
+          if (o) {
+            if (typeof o.address === "string" && o.address) w.address = o.address;
+            if (typeof o.balance === "number") w.balance = o.balance;
+            if (typeof o.paid === "boolean") w.paid = o.paid;
+            if (typeof o.connected === "boolean") w.connected = o.connected;
+          }
+          return w;
+        });
+      }
 
       var LEVELS = [
         { key: "carbon", num: 1, name: "Carbón", desc: "Estructura básica", machine: "assets/maquina-carbon.webp", video: "assets/video-carbon.mp4", coin: "assets/fun-token-carbon.webp", min: 0, max: 149, cost: 120, limit: 50, hours: 24, durationLabel: "24 horas" },
@@ -1143,17 +1292,22 @@
       var DEFAULT_SCENARIO = "hierro";
       var SCENARIOS = [
         { key: "nuevo", name: "Usuario nuevo", desc: "Recién registrado: sin planes, sin oro y sin referidos.",
-          machines: [], gold: 0, wallet: 0, energy: 0, unlocked: false, unlockDone: 0, moves: [] },
+          machines: [], gold: 0, wallet: 0, energy: 0, unlocked: false, unlockDone: 0, moves: [], wallets: {} },
         { key: "sinref", name: "Sin referidos", desc: "Plan 1 activo produciendo, pero sin ningún referido.",
-          machines: [0], gold: 45.20, wallet: 0, energy: 0, unlocked: false, unlockDone: 0, moves: MOVES_SINREF },
+          machines: [0], gold: 45.20, wallet: 0, energy: 0, unlocked: false, unlockDone: 0, moves: MOVES_SINREF,
+          wallets: { 0: { paid: true, connected: true, balance: 180 } } },
         { key: "mitad", name: "Desbloqueo a mitad", desc: "Plan 2 activo y 1 de 2 directos completos para desbloquear.",
-          machines: [1], gold: 80.00, wallet: 0, energy: 0, unlocked: false, unlockDone: 1, moves: MOVES_MITAD },
+          machines: [1], gold: 80.00, wallet: 0, energy: 0, unlocked: false, unlockDone: 1, moves: MOVES_MITAD,
+          wallets: { 1: { paid: true, connected: true, balance: 300 } } },
         { key: "hierro", name: "Nivel Hierro", desc: "El estado aprobado: 2 planes, fundidora desbloqueada en Hierro.",
-          machines: [0, 1], gold: 125.50, wallet: 125.50, energy: 320, unlocked: true, unlockDone: 2, moves: MOVES_FULL },
+          machines: [0, 1], gold: 125.50, wallet: 125.50, energy: 320, unlocked: true, unlockDone: 2, moves: MOVES_FULL,
+          wallets: { 0: { paid: true, connected: true, balance: 180 }, 1: { paid: true, connected: true, balance: 620 } } },
         { key: "oro", name: "Nivel Oro", desc: "3 planes activos y energía para operar en Nivel Oro.",
-          machines: [0, 1, 2], gold: 640.75, wallet: 480.20, energy: 720, unlocked: true, unlockDone: 2, moves: MOVES_ORO },
+          machines: [0, 1, 2], gold: 640.75, wallet: 480.20, energy: 720, unlocked: true, unlockDone: 2, moves: MOVES_ORO,
+          wallets: { 0: { paid: true, connected: true, balance: 180 }, 1: { paid: true, connected: true, balance: 620 }, 2: { paid: true, connected: true, balance: 1200 } } },
         { key: "diamante", name: "Nivel Diamante", desc: "Los 4 planes activos y el nivel máximo de la fundidora.",
-          machines: [0, 1, 2, 3], gold: 2450.00, wallet: 1930.00, energy: 1480, unlocked: true, unlockDone: 2, moves: MOVES_DIAMANTE }
+          machines: [0, 1, 2, 3], gold: 2450.00, wallet: 1930.00, energy: 1480, unlocked: true, unlockDone: 2, moves: MOVES_DIAMANTE,
+          wallets: { 0: { paid: true, connected: true, balance: 180 }, 1: { paid: true, connected: true, balance: 620 }, 2: { paid: true, connected: true, balance: 1200 }, 3: { paid: true, connected: true, balance: 3400 } } }
       ];
       function scenarioByKey(k) { for (var i = 0; i < SCENARIOS.length; i++) if (SCENARIOS[i].key === k) return SCENARIOS[i]; return SCENARIOS[3]; }
       var balanceHidden = false;
@@ -1212,35 +1366,170 @@
         bindGoto(wrap);
       }
 
-      /* ============ Render: planes ============ */
+      /* ============ Catálogo de planes: iconos y piezas ============ */
+      var PLAN_ICONS = {
+        wallet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>',
+        chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2" opacity="0"/><path d="M21 20V9"/></svg>',
+        wrench: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4.5 4.5 0 0 0-6 6L3 18l3 3 5.7-5.7a4.5 4.5 0 0 0 6-6L14 13l-3-3 3.7-3.7Z"/></svg>',
+        arrow: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>',
+        chev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>'
+      };
+      var PROCESS_STEPS = [
+        { label: "Perfora", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v13"/><path d="M8.5 5h7M9.2 8.5h5.6M9.9 12h4.2"/><path d="m9 19 3 3 3-3"/></svg>' },
+        { label: "Extrae", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 12.5 5 22"/><path d="M19.6 4.4a9.4 9.4 0 0 0-12.9 12L3 13a11.5 11.5 0 0 1 16.6-8.6Z"/></svg>' },
+        { label: "Tritura", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v3M12 18.2v3M2.8 12h3M18.2 12h3M5.5 5.5l2.1 2.1M16.4 16.4l2.1 2.1M18.5 5.5l-2.1 2.1M7.6 16.4l-2.1 2.1"/></svg>' },
+        { label: "Separa", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 9.5h.01M12 9.5h.01M16 9.5h.01M8 13.5h.01M12 13.5h.01M16 13.5h.01" stroke-width="2.6"/><path d="M8 21h8"/></svg>' },
+        { label: "Transporta", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7h11v9H2z"/><path d="M13 10h4.5L21 13.5V16h-8"/><circle cx="6.5" cy="18" r="1.8"/><circle cx="16.5" cy="18" r="1.8"/></svg>' }
+      ];
+      function processStripHTML() {
+        var parts = [];
+        PROCESS_STEPS.forEach(function (s, i) {
+          if (i > 0) parts.push('<span class="psep">' + PLAN_ICONS.chev + '</span>');
+          parts.push('<span class="pstep">' + s.icon + '<span>' + s.label + '</span></span>');
+        });
+        return '<div class="process-strip" aria-label="Proceso: Perfora, Extrae, Tritura, Separa, Transporta">' + parts.join("") + '</div>';
+      }
+      function planDataHTML(p) {
+        return '<div class="plan-data">' +
+          '<div class="drow"><span class="dicon-sm">' + PLAN_ICONS.wallet + '</span><span class="dlabel">Capital requerido en billetera conectada</span><span class="dval">' + p.capital + '</span></div>' +
+          '<div class="drow"><span class="dicon-sm">' + PLAN_ICONS.chart + '</span><span class="dlabel">Rentabilidad indicada</span><span class="dval gold">' + p.pct + '</span></div>' +
+          '<div class="drow"><span class="dicon-sm">' + PLAN_ICONS.wrench + '</span><span class="dlabel">Mantenimiento semanal</span><span class="dval">' + p.maint + '</span></div>' +
+        '</div>';
+      }
+      function shortenAddr(a) {
+        if (!a) return "—";
+        return a.length > 10 ? a.slice(0, 4) + "…" + a.slice(-4) : a;
+      }
+      function fmtBal(n) {
+        return (Math.round(n * 100) % 100 === 0) ? fmtInt(Math.round(n)) : fmt(n, 2);
+      }
+      function walletRangeState(p, w) {
+        if (w.balance < p.min) return "below";
+        if (p.max !== null && w.balance > p.max) return "above";
+        return "in";
+      }
+      /* SVG decorativo tipo QR para el bloque de pago */
+      function qrSVG() {
+        var seed = 42, cells = "";
+        function rnd() { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; }
+        function finder(x, y) {
+          return '<rect x="' + x + '" y="' + y + '" width="7" height="7" fill="none" stroke="#f0c24b" stroke-width="1.4"/>' +
+                 '<rect x="' + (x + 2) + '" y="' + (y + 2) + '" width="3" height="3" fill="#f0c24b"/>';
+        }
+        for (var y = 0; y < 21; y++) for (var x = 0; x < 21; x++) {
+          var inFinder = (x < 8 && y < 8) || (x > 12 && y < 8) || (x < 8 && y > 12);
+          if (!inFinder && rnd() > 0.52) cells += '<rect x="' + x + '" y="' + y + '" width="1" height="1" fill="#f0c24b"/>';
+        }
+        return '<svg viewBox="0 0 21 21" aria-hidden="true">' + cells + finder(0, 0) + finder(14, 0) + finder(0, 14) + '</svg>';
+      }
+
+      /* ============ Render: planes (catálogo) ============ */
       function renderPlans() {
         document.getElementById("planList").innerHTML = PLANS.map(function (p, idx) {
           var active = testState.plans.indexOf(idx) >= 0;
           return '<article class="plan-card">' +
             '<div class="pimg"><img src="' + p.img + '" alt="' + p.name + '" loading="lazy" /><span class="plan-pill">' + p.plan + '</span>' +
-            (active ? '<span class="plan-active-pill">Plan activo</span>' : '') + '</div>' +
+            (active
+              ? '<span class="plan-status active"><i></i>Plan activo</span>'
+              : '<span class="plan-status avail"><i></i>Disponible</span>') + '</div>' +
             '<div class="plan-body"><h3>' + p.name + '</h3>' +
               '<div class="plan-price"><b>' + p.price + '</b><span>Precio de la máquina</span></div>' +
-              '<div class="plan-rows">' +
-                '<div><span>Capital en billetera</span><b>' + p.capital + '</b></div>' +
-                '<div><span>Rentabilidad</span><b>' + p.pct + '</b></div>' +
-                '<div><span>Mantenimiento semanal</span><b>' + p.maint + '</b></div>' +
-              '</div>' +
-              (active
-                ? '<button class="btn btn-dark" type="button" data-active-plan="' + p.name + '">Plan activo</button>'
-                : '<button class="btn btn-gold" type="button" data-activate="' + p.name + '">Activar plan</button>') +
+              (idx >= 2 ? processStripHTML() : '') +
+              planDataHTML(p) +
+              '<button class="btn btn-gold" type="button" data-plan-open="' + idx + '">Ver plan y activar ' + PLAN_ICONS.arrow + '</button>' +
             '</div></article>';
         }).join("");
-        Array.prototype.forEach.call(document.querySelectorAll("[data-activate]"), function (b) {
-          b.addEventListener("click", function () {
-            showToast("Plan seleccionado: " + b.getAttribute("data-activate"));
-          });
+        Array.prototype.forEach.call(document.querySelectorAll("[data-plan-open]"), function (b) {
+          b.addEventListener("click", function () { openPlanSheet(Number(b.getAttribute("data-plan-open"))); });
         });
-        Array.prototype.forEach.call(document.querySelectorAll("[data-active-plan]"), function (b) {
-          b.addEventListener("click", function () {
-            showToast("Ya tienes activo el " + b.getAttribute("data-active-plan"));
-          });
+      }
+
+      /* ============ Ficha del plan ============ */
+      function openPlanSheet(idx) {
+        var p = PLANS[idx], w = planWallets[idx];
+        var active = testState.plans.indexOf(idx) >= 0;
+        var html = "";
+        html += '<div class="plan-hero"><img src="' + p.img + '" alt="' + p.name + '" /></div>';
+        html += '<div class="plan-hero-name">' + p.name + '</div>';
+        html += '<div class="plan-hero-price"><b>' + p.price + '</b><span>Precio de la máquina</span></div>';
+        if (idx >= 2) html += processStripHTML();
+        html += planDataHTML(p);
+        html += '<h4 class="sheet-h">Condiciones de activación</h4>' +
+          '<ul>' +
+            '<li>El precio se paga <b>transfiriendo USDT</b> a la dirección de la plataforma y el pago se <b>verifica en la red</b>.</li>' +
+            '<li>Cada máquina conecta <b>su propia billetera TRON</b>: una dirección por máquina, sin duplicados.</li>' +
+            '<li>El saldo debe mantenerse <b>dentro del rango del plan</b> y el sistema lo verifica constantemente: si baja del mínimo, la máquina se frena y ese día no paga.</li>' +
+            '<li>Si el saldo supera el máximo, la ganancia se paga <b>sobre el tope del plan</b>.</li>' +
+            '<li>La ganancia se acredita al <b>completar 24 h</b> con el saldo en rango.</li>' +
+          '</ul>';
+        html += '<h4 class="sheet-h">Pago del plan</h4>' +
+          '<div class="pay-box"><div class="pay-flex">' +
+            '<span class="qr-frame">' + qrSVG() + '</span>' +
+            '<div class="pay-info"><small>Dirección de la plataforma · USDT (TRON)</small>' +
+              '<div class="pay-addr"><b>' + shortenAddr(PLATFORM_ADDRESS) + '</b>' +
+              '<button class="copy-btn" type="button" data-copy="' + PLATFORM_ADDRESS + '">Copiar</button></div>' +
+              (w.paid
+                ? '<span class="state-chip green"><i></i>Pago confirmado</span>'
+                : '<span class="state-chip amber"><i></i>Pago pendiente</span>') +
+            '</div>' +
+          '</div></div>';
+        html += '<h4 class="sheet-h">Billetera de esta máquina</h4>';
+        if (!w.connected) {
+          html += '<div class="wallet-box">' +
+            '<p style="margin:0 0 10px">Esta máquina aún no tiene una billetera conectada. Conecta su billetera TRON para que el sistema verifique el saldo.</p>' +
+            '<button class="btn btn-gold" type="button" id="planConnectBtn" style="width:100%">Conectar billetera</button>' +
+          '</div>';
+        } else {
+          var rs = walletRangeState(p, w);
+          var chip = rs === "in"
+            ? '<span class="state-chip green"><i></i>En rango</span>'
+            : (rs === "below"
+              ? '<span class="state-chip red"><i></i>Por debajo del mínimo</span>'
+              : '<span class="state-chip amber"><i></i>Sobre el máximo · ganas sobre el tope</span>');
+          html += '<div class="wallet-box">' +
+            '<small class="lbl">Dirección conectada · TRON</small>' +
+            '<div class="wallet-addr">' + shortenAddr(w.address) + '</div>' +
+            '<div class="wallet-bal">Saldo en billetera: <b>' + fmtBal(w.balance) + ' USDT</b></div>' +
+            chip +
+          '</div>';
+        }
+        if (active) {
+          html += '<div class="active-banner"><i></i>PLAN ACTIVO</div>';
+        } else {
+          html += '<div class="validation-msg" id="planSheetError" role="alert"></div>' +
+            '<button class="btn btn-gold" type="button" id="planConfirmBtn" style="width:100%;margin-top:10px">Confirmar activación</button>';
+        }
+        openSheet(p.plan + " · " + p.name, html);
+        var connectBtn = document.getElementById("planConnectBtn");
+        if (connectBtn) connectBtn.addEventListener("click", function () {
+          planWallets[idx].connected = true;
+          onPlanWalletTouched();
+          openPlanSheet(idx);
+          showToast("Billetera conectada: " + shortenAddr(planWallets[idx].address));
         });
+        var confirmBtn = document.getElementById("planConfirmBtn");
+        if (confirmBtn) confirmBtn.addEventListener("click", function () {
+          var err = document.getElementById("planSheetError");
+          var msg = "";
+          if (!planWallets[idx].paid) msg = "Confirma primero el pago del plan.";
+          else if (!planWallets[idx].connected) msg = "Conecta la billetera de esta máquina.";
+          else if (planWallets[idx].balance < p.min) msg = "El saldo (" + fmtBal(planWallets[idx].balance) + " USDT) está por debajo del mínimo (" + fmtInt(p.min) + " USDT).";
+          if (msg) {
+            err.textContent = msg;
+            err.classList.add("show");
+            return;
+          }
+          testState.plans.push(idx);
+          persistTest();
+          renderMachines(); renderPlans();
+          openPlanSheet(idx);
+          showToast("Plan activo: " + p.name);
+        });
+      }
+      function onPlanWalletTouched() {
+        cancelRunningSmelt();
+        persistTest();
+        renderPlans(); renderSmelt();
       }
 
       /* ============ Fundidora: estado y niveles ============ */
@@ -1260,6 +1549,11 @@
         wallet: lsGet("gm_wallet", _sc0.wallet),
         previewKey: lsGet("gm_preview", null) || levelKeyForEnergy(lsGet("gm_energy", _sc0.energy))
       };
+      var planWallets = lsGet("gm_plan_wallets", null);
+      if (!Array.isArray(planWallets) || planWallets.length !== PLANS.length ||
+          !planWallets.every(function (w) { return w && typeof w.address === "string" && typeof w.balance === "number" && typeof w.paid === "boolean" && typeof w.connected === "boolean"; })) {
+        planWallets = buildPlanWallets(_sc0);
+      }
       function levelKeyForEnergy(e) { var cur = LEVELS[0]; LEVELS.forEach(function (l) { if (e >= l.min) cur = l; }); return cur.key; }
       function goldAvailable() { return Math.max(0, smeltState.goldBase - smeltState.goldSpent); }
       function persistTest() {
@@ -1270,6 +1564,7 @@
         lsSet("gm_gold_spent", smeltState.goldSpent);
         lsSet("gm_wallet", smeltState.wallet);
         lsSet("gm_preview", smeltState.previewKey);
+        lsSet("gm_plan_wallets", planWallets);
       }
       function levelByKey(k) { for (var i = 0; i < LEVELS.length; i++) if (LEVELS[i].key === k) return LEVELS[i]; return LEVELS[1]; }
       function operativeLevel() { var e = smeltState.energy, cur = LEVELS[0]; LEVELS.forEach(function (l) { if (e >= l.min) cur = l; }); return cur; }
@@ -1594,6 +1889,7 @@
         smeltState.goldSpent = 0;
         smeltState.wallet = sc.wallet;
         smeltState.previewKey = levelKeyForEnergy(sc.energy);
+        planWallets = buildPlanWallets(sc);
         chainedPreview = false;
         cancelRunningSmelt();
         persistTest();
@@ -1646,6 +1942,23 @@
             '<span class="pt-state">' + (on ? 'Plan activo' : 'Sin activar') + '</span></span>' +
             '<button class="pt-btn" type="button" data-plan-toggle="' + idx + '">' + (on ? 'Quitar' : 'Activar plan de prueba') + '</button></div>';
         }).join("");
+        var pwBlocks = PLANS.map(function (p, idx) {
+          var w = planWallets[idx];
+          return '<div class="pw-block">' +
+            '<div class="pw-head"><b>' + p.plan + ' · ' + p.name + '</b><span>Rango ' + p.capital + '</span></div>' +
+            '<input class="pw-addr-input" type="text" data-pw-addr="' + idx + '" value="' + w.address + '" aria-label="Dirección de billetera del ' + p.plan + '" spellcheck="false" />' +
+            '<div class="pw-bal-row">' +
+              '<button class="adj-btn" type="button" data-pw-bal="' + idx + ':-25" aria-label="Quitar 25 USDT del ' + p.plan + '">−</button>' +
+              '<input class="adj-num" type="number" data-pw-bal-num="' + idx + '" min="0" max="1000000" step="1" value="' + w.balance + '" aria-label="Saldo en USDT del ' + p.plan + '" />' +
+              '<span class="adj-unit">USDT</span>' +
+              '<button class="adj-btn" type="button" data-pw-bal="' + idx + ':25" aria-label="Añadir 25 USDT al ' + p.plan + '">+</button>' +
+            '</div>' +
+            '<div class="pw-toggles">' +
+              '<button class="pw-toggle' + (w.paid ? ' on' : '') + '" type="button" data-pw-toggle="' + idx + ':paid" aria-pressed="' + w.paid + '"><span><small>Pago</small><b>' + (w.paid ? 'Confirmado' : 'Pendiente') + '</b></span><span class="pw-knob" aria-hidden="true"></span></button>' +
+              '<button class="pw-toggle' + (w.connected ? ' on' : '') + '" type="button" data-pw-toggle="' + idx + ':connected" aria-pressed="' + w.connected + '"><span><small>Billetera</small><b>' + (w.connected ? 'Conectada' : 'Sin conectar') + '</b></span><span class="pw-knob" aria-hidden="true"></span></button>' +
+            '</div>' +
+          '</div>';
+        }).join("");
         var html =
           '<p>Elige un escenario para ver el panel tal como lo vive ese usuario. Cambiar de escenario reinicia cualquier fundición en curso.</p>' +
           '<div class="scenario-list">' + cards + '</div>' +
@@ -1667,6 +1980,9 @@
           '<h4 class="editor-h">Planes de prueba</h4>' +
           '<p class="adj-note" style="margin:0 0 10px">Activa o quita planes al instante, sin pagos: la máquina aparece en Inicio y el catálogo lo marca «Plan activo».</p>' +
           '<div>' + planToggles + '</div>' +
+          '<h4 class="editor-h">Planes y billetera conectada</h4>' +
+          '<p class="adj-note" style="margin:0 0 10px">La dirección, el saldo, el pago y la conexión que fijes aquí alimentan el catálogo y la ficha de cada plan. Tocar estos controles reinicia cualquier fundición en curso.</p>' +
+          '<div>' + pwBlocks + '</div>' +
           '<button class="btn btn-dark reset-btn" type="button" id="adjReset" style="margin-top:6px">Restablecer todo · Nivel Hierro</button>';
         openSheet("Modo de prueba", html);
         document.getElementById("sheetTitle").textContent = "Modo de prueba · Escenario del usuario";
@@ -1730,6 +2046,40 @@
         Array.prototype.forEach.call(sheet.querySelectorAll("[data-plan-toggle]"), function (b) {
           b.addEventListener("click", function () {
             togglePlan(Number(b.getAttribute("data-plan-toggle")));
+            openTestMode();
+          });
+        });
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-pw-toggle]"), function (b) {
+          b.addEventListener("click", function () {
+            var parts = b.getAttribute("data-pw-toggle").split(":"), idx = Number(parts[0]), field = parts[1];
+            planWallets[idx][field] = !planWallets[idx][field];
+            onPlanWalletTouched();
+            openTestMode();
+          });
+        });
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-pw-bal]"), function (b) {
+          b.addEventListener("click", function () {
+            var parts = b.getAttribute("data-pw-bal").split(":"), idx = Number(parts[0]), delta = Number(parts[1]);
+            planWallets[idx].balance = Math.max(0, Math.min(1000000, Math.round((planWallets[idx].balance + delta) * 100) / 100));
+            onPlanWalletTouched();
+            openTestMode();
+          });
+        });
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-pw-bal-num]"), function (inp) {
+          inp.addEventListener("change", function () {
+            var idx = Number(inp.getAttribute("data-pw-bal-num"));
+            var v = parseFloat(inp.value);
+            if (!isNaN(v)) planWallets[idx].balance = Math.max(0, Math.min(1000000, Math.round(v * 100) / 100));
+            onPlanWalletTouched();
+            openTestMode();
+          });
+        });
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-pw-addr]"), function (inp) {
+          inp.addEventListener("change", function () {
+            var idx = Number(inp.getAttribute("data-pw-addr"));
+            var v = inp.value.replace(/\s+/g, "");
+            planWallets[idx].address = v || PLAN_WALLET_DEFAULTS[idx].address;
+            onPlanWalletTouched();
             openTestMode();
           });
         });
@@ -1854,6 +2204,16 @@
             '<p><b>Si aún no la desbloqueas:</b> la fundidora se desbloquea con <b>2 referidos directos activos</b> (que compren un plan) y que <b>cada uno invite a 1 persona</b> que también active un plan. El desbloqueo es <b>permanente</b>.</p>' +
             '<button class="btn btn-dark" type="button" data-show-chained style="width:100%">Ver la fundidora bloqueada</button>'
         },
+        planesHow: {
+          title: "¿Cómo funcionan los planes?",
+          body: '<ol class="steps">' +
+            '<li><b>Compra tu plan:</b> paga el precio de la máquina transfiriendo USDT a la dirección de la plataforma.</li>' +
+            '<li><b>Conecta tu billetera:</b> cada máquina conecta su propia billetera TRON, una dirección por máquina.</li>' +
+            '<li><b>Mantén el saldo en rango:</b> el sistema verifica el saldo constantemente; si baja del mínimo, la máquina se frena y ese día no paga.</li>' +
+            '<li><b>Activa cada día:</b> activa la máquina y cobra tu ganancia al completar 24 h, calculada sobre tu saldo con el tope del plan.</li>' +
+            '<li><b>Mantenimiento semanal:</b> se descuenta automáticamente cada semana.</li>' +
+          '</ol>'
+        },
         tienda: {
           title: "Tienda de energía",
           body: '<p>Paquetes de energía para tu fundidora. La energía también se gana con referidos: <b>+50 ⚡</b> por directo a partir del tercero y <b>+15 ⚡</b> por referido de segundo nivel activo.</p>' +
@@ -1939,6 +2299,7 @@
         validateSmelt();
       });
       document.getElementById("howSmeltBtn").addEventListener("click", function () { openSheet(SHEETS.fundidora.title, SHEETS.fundidora.body); });
+      document.getElementById("howPlansBtn").addEventListener("click", function () { openSheet(SHEETS.planesHow.title, SHEETS.planesHow.body); });
       document.getElementById("shopAction").addEventListener("click", function () { openSheet(SHEETS.tienda.title, SHEETS.tienda.body); });
       document.getElementById("inviteAction").addEventListener("click", function () { openSheet(SHEETS.referidos.title, SHEETS.referidos.body); });
       document.getElementById("walletPanel").addEventListener("click", function () { openSheet(SHEETS.retiros.title, SHEETS.retiros.body); });
