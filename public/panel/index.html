@@ -356,6 +356,9 @@
       .smelt-machine{ position:relative; aspect-ratio:1/1; border:1px solid var(--line); border-radius:18px; overflow:hidden; background:#070604; box-shadow:inset 0 0 40px rgba(0,0,0,.5); }
       .smelt-machine-bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center center; }
       .smelt-machine-video{ position:absolute; inset:0; z-index:1; width:100%; height:100%; object-fit:cover; object-position:center center; background:#070604; }
+      .video-play-btn{ position:absolute; z-index:3; left:50%; top:54%; transform:translate(-50%,-50%); display:inline-flex; align-items:center; gap:8px; border:1px solid var(--gold); border-radius:999px; background:rgba(8,6,3,.92); color:var(--gold-2); padding:11px 17px; font:700 13.5px "Barlow"; letter-spacing:.01em; box-shadow:0 10px 26px rgba(0,0,0,.65), 0 0 18px rgba(212,160,23,.28); cursor:pointer; white-space:nowrap; }
+      .video-play-btn[hidden]{ display:none; }
+      .video-play-btn svg{ flex:none; }
       .smelt-machine.locked .smelt-machine-bg{ filter:brightness(.68) saturate(.75); }
       .smelt-machine.locked .level-token{ filter:grayscale(.8) brightness(.55) drop-shadow(0 4px 12px rgba(0,0,0,.75)); }
       .lock-overlay{ position:absolute; inset:0; z-index:2; display:none; pointer-events:none; }
@@ -895,6 +898,7 @@
             <div class="smelt-machine machine-live" id="runMachineCard">
               <img class="smelt-machine-bg" id="runMachine" src="assets/maquina-hierro.webp" alt="Máquina fundidora trabajando" />
               <video class="smelt-machine-video" id="runVideo" autoplay muted loop playsinline preload="none" poster="assets/maquina-hierro.webp" aria-hidden="true"></video>
+              <button class="video-play-btn" id="videoPlayBtn" type="button" hidden><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.8v14.4c0 .9 1 1.5 1.8 1L20 13a1.2 1.2 0 0 0 0-2L8.8 3.9C8 3.4 7 4 7 4.8Z"/></svg><span>Tocar para ver la fundición</span></button>
               <div class="smelt-machine-head">
                 <img class="level-token" id="runCoin" src="assets/fun-token-hierro.webp" alt="Moneda oficial del nivel activo" />
                 <div><span class="level-kicker" id="runKicker">Nivel 2</span><span class="level-name" id="runName">Hierro</span></div>
@@ -1392,6 +1396,46 @@
         return ok;
       }
 
+      /* ============ Video de fundición: arranque robusto ============ */
+      var runVidEl = document.getElementById("runVideo");
+      var videoPlayBtn = document.getElementById("videoPlayBtn");
+      var videoFileOk = true;
+      function hideVideoPlayBtn() { if (videoPlayBtn) videoPlayBtn.hidden = true; }
+      function updateVideoPlayBtn() {
+        if (!videoPlayBtn || !runVidEl) return;
+        var show = videoFileOk && !runVidEl.hidden && runVidEl.paused &&
+          !document.getElementById("smeltRunning").hidden &&
+          document.getElementById("runState").textContent !== "Fundición completada";
+        videoPlayBtn.hidden = !show;
+      }
+      function prepareRunVideo(lv) {
+        runVidEl.muted = true;
+        runVidEl.playsInline = true;
+        runVidEl.poster = lv.machine;
+        runVidEl.hidden = false;
+        if (runVidEl.getAttribute("src") !== lv.video) {
+          videoFileOk = true;
+          hideVideoPlayBtn();
+          runVidEl.src = lv.video;
+        }
+      }
+      function tryPlayRunVideo() {
+        if (!runVidEl || runVidEl.hidden || !videoFileOk || !runVidEl.getAttribute("src")) return;
+        runVidEl.muted = true;
+        runVidEl.playsInline = true;
+        var p = runVidEl.play();
+        if (p && p.catch) p.catch(function () { updateVideoPlayBtn(); });
+      }
+      runVidEl.addEventListener("playing", hideVideoPlayBtn);
+      runVidEl.addEventListener("play", hideVideoPlayBtn);
+      runVidEl.addEventListener("pause", updateVideoPlayBtn);
+      videoPlayBtn.addEventListener("click", function () {
+        runVidEl.muted = true;
+        runVidEl.playsInline = true;
+        var p = runVidEl.play();
+        if (p && p.catch) p.catch(function () { updateVideoPlayBtn(); });
+      });
+
       /* ============ Fundición en curso ============ */
       var smeltTimer = null;
       function pad2(n) { return (n < 10 ? "0" : "") + n; }
@@ -1417,11 +1461,8 @@
         document.getElementById("smeltPrep").hidden = true;
         document.getElementById("smeltRunning").hidden = false;
         document.getElementById("runMachine").src = lv.machine;
-        var runVid = document.getElementById("runVideo");
-        runVid.poster = lv.machine;
-        runVid.hidden = false;
-        if (runVid.getAttribute("src") !== lv.video) runVid.src = lv.video;
-        var playP = runVid.play(); if (playP && playP.catch) playP.catch(function () {});
+        prepareRunVideo(lv);
+        tryPlayRunVideo();
         document.getElementById("runCoin").src = lv.coin;
         document.getElementById("runKicker").textContent = "Nivel " + lv.num;
         document.getElementById("runName").textContent = lv.name;
@@ -1441,6 +1482,7 @@
         var remain = Math.max(0, end - now);
         var pct = Math.min(100, ((now - op.start) / op.durationMs) * 100);
         if (remain <= 0) { completeSmelt(op); return; }
+        updateVideoPlayBtn();
         document.getElementById("runState").textContent = "Fundiendo";
         document.getElementById("runBar").style.width = pct + "%";
         document.getElementById("runPct").textContent = Math.floor(pct) + "%";
@@ -1456,6 +1498,7 @@
         clearInterval(smeltTimer);
         var doneVid = document.getElementById("runVideo");
         if (doneVid) { doneVid.pause(); doneVid.hidden = true; }
+        hideVideoPlayBtn();
         if (!op.credited) {
           op.credited = true; lsSet("gm_smelt_op", op);
           smeltState.wallet += op.usd; persistTest();
@@ -1474,6 +1517,7 @@
           localStorage.removeItem("gm_smelt_op");
           var nv = document.getElementById("runVideo");
           if (nv) { nv.pause(); nv.removeAttribute("src"); nv.load(); nv.hidden = true; }
+          hideVideoPlayBtn();
           document.getElementById("smeltRunning").hidden = true;
           document.getElementById("smeltPrep").hidden = false;
           renderSmelt();
@@ -1527,6 +1571,7 @@
         try { localStorage.removeItem("gm_smelt_op"); } catch (e) {}
         var rv = document.getElementById("runVideo");
         if (rv) { rv.pause(); rv.removeAttribute("src"); rv.load(); rv.hidden = true; }
+        hideVideoPlayBtn();
         document.getElementById("smeltRunning").hidden = true;
         document.getElementById("smeltPrep").hidden = false;
       }
@@ -1703,7 +1748,7 @@
         var rv = document.getElementById("runVideo");
         if (rv) {
           if (view !== "fundir") rv.pause();
-          else if (!rv.hidden && rv.getAttribute("src") && !document.getElementById("smeltRunning").hidden) { var rp = rv.play(); if (rp && rp.catch) rp.catch(function () {}); }
+          else if (!rv.hidden && rv.getAttribute("src") && !document.getElementById("smeltRunning").hidden) { tryPlayRunVideo(); }
         }
         Array.prototype.forEach.call(document.querySelectorAll(".tab[data-goto]"), function (t) {
           t.classList.toggle("active", t.getAttribute("data-goto") === view);
@@ -1875,7 +1920,7 @@
         renderBalance();
       });
       document.getElementById("smeltBtn").addEventListener("click", startSmelt);
-      document.getElementById("runVideo").addEventListener("error", function () { this.hidden = true; }, true);
+      document.getElementById("runVideo").addEventListener("error", function () { videoFileOk = false; this.hidden = true; hideVideoPlayBtn(); }, true);
       document.getElementById("smeltAmount").addEventListener("input", validateSmelt);
       document.getElementById("smeltMax").addEventListener("click", function () {
         var lv = operativeLevel();
