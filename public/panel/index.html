@@ -1,0 +1,1074 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="data:," />
+    <title>Panel principal · Gold Mining 2.0</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        color-scheme: dark;
+        --bg:#060504;
+        --app:#0a0806;
+        --panel:#12100c;
+        --panel-2:#181410;
+        --panel-3:#1f1a14;
+        --line:rgba(212,160,23,.30);
+        --line-soft:rgba(212,160,23,.16);
+        --gold:#d4a017;
+        --gold-2:#f0c24b;
+        --gold-3:#ffe9a8;
+        --gold-deep:#8a5f06;
+        --text:#f6f0e2;
+        --muted:#ab9d83;
+        --muted-2:#7e7360;
+        --green:#3ddc84;
+        --amber:#ffb02e;
+        --red:#ff5d5d;
+        --radius:18px;
+        --nav-h:76px;
+      }
+      *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+      html,body{ margin:0; padding:0; }
+      body{
+        background:#030202;
+        color:var(--text);
+        font-family:"Barlow",system-ui,-apple-system,sans-serif;
+        height:100dvh;
+        overflow:hidden;
+      }
+      /* Fondo ambiental de escritorio: mina oscura difuminada a los lados */
+      .ambient{
+        position:fixed; inset:0; z-index:0; pointer-events:none;
+        background:
+          radial-gradient(60% 45% at 50% 0%, rgba(212,160,23,.10), transparent 70%),
+          radial-gradient(40% 60% at 8% 80%, rgba(212,160,23,.05), transparent 70%),
+          radial-gradient(40% 60% at 92% 80%, rgba(212,160,23,.05), transparent 70%),
+          #030202;
+      }
+      .ambient img{
+        width:100%; height:100%; object-fit:cover; opacity:.14;
+        filter:blur(6px) saturate(.8) brightness(.6);
+      }
+      button{ font-family:inherit; cursor:pointer; }
+      img{ display:block; max-width:100%; }
+      svg{ display:block; }
+
+      /* ---------- Columna de aplicación ---------- */
+      .app{
+        position:relative; z-index:1;
+        max-width:430px; margin:0 auto;
+        height:100dvh; max-height:100dvh;
+        overflow:hidden;
+        background:linear-gradient(180deg,#0b0906 0%, var(--app) 240px);
+        box-shadow:0 0 0 1px rgba(212,160,23,.14), 0 0 90px rgba(0,0,0,.9);
+        display:flex; flex-direction:column;
+      }
+
+      .sim-banner{
+        flex:none; z-index:60;
+        display:flex; align-items:center; justify-content:center; gap:8px;
+        padding:6px 12px;
+        padding-top:calc(6px + env(safe-area-inset-top, 0px));
+        background:linear-gradient(90deg,#3a2a05,#54400a,#3a2a05);
+        border-bottom:1px solid rgba(255,214,90,.45);
+        color:#ffe9a8; font-size:11px; font-weight:700;
+        letter-spacing:.14em; text-transform:uppercase; text-align:center;
+      }
+      .sim-banner .dot{ width:7px; height:7px; border-radius:50%; background:#ffd65a; box-shadow:0 0 8px #ffd65a; flex:none; }
+
+      /* ---------- Selector de estados (herramienta de evaluación) ---------- */
+      .state-bar{
+        flex:none;
+        display:flex; align-items:center; gap:8px; flex-wrap:nowrap;
+        padding:6px 16px 0;
+      }
+      .state-bar span{ font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--muted-2); flex:none; }
+      .state-chips{ display:flex; gap:6px; flex-wrap:nowrap; }
+      .chip{
+        flex:none; border:1px solid var(--line-soft); background:var(--panel);
+        color:var(--muted); border-radius:999px; padding:4px 10px; min-height:28px;
+        font-size:11.5px; font-weight:600;
+      }
+      .chip[aria-pressed="true"]{ background:rgba(212,160,23,.16); border-color:var(--gold); color:var(--gold-3); }
+
+      /* ---------- Cabecera ---------- */
+      .app-header{
+        flex:none;
+        display:flex; align-items:center; justify-content:space-between;
+        padding:8px 16px 2px;
+      }
+      .brand{ display:flex; align-items:center; gap:8px; min-width:0; }
+      .brand .brand-mark{ flex:none; color:#f0d48a; }
+      .brand-name{
+        font-family:"Barlow Condensed",sans-serif; font-weight:800;
+        font-size:19px; letter-spacing:.05em; color:#f0d48a;
+        text-transform:uppercase; line-height:1; white-space:nowrap;
+      }
+      .icon-btn{
+        position:relative; width:34px; height:34px; border-radius:50%;
+        border:1px solid var(--line-soft); background:var(--panel);
+        display:grid; place-items:center; color:var(--gold-2);
+      }
+      .icon-btn .badge{
+        position:absolute; top:8px; right:9px; width:9px; height:9px;
+        border-radius:50%; background:var(--red); border:2px solid var(--app);
+      }
+
+      /* ---------- Saludo ---------- */
+      .greeting{
+        flex:none;
+        margin:5px 0 0; width:100%; text-align:left;
+        display:flex; align-items:center; gap:9px;
+        background:linear-gradient(180deg,var(--panel-2),var(--panel));
+        border:1px solid var(--line-soft); border-radius:12px;
+        padding:5px 10px; color:var(--text); min-height:44px;
+      }
+      .avatar{
+        width:32px; height:32px; border-radius:50%; flex:none;
+        border:2px solid var(--gold);
+        background:radial-gradient(circle at 32% 28%, #3d3520, #221a10);
+        display:grid; place-items:center;
+        font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:13px; color:var(--gold-3);
+      }
+      .greeting small{ display:block; color:var(--muted); font-size:11px; font-weight:500; line-height:1.15; }
+      .greeting strong{ display:block; font-size:16px; font-weight:700; line-height:1.15; }
+      .greeting .chev{ margin-left:auto; color:var(--gold-2); flex:none; }
+
+      main{ flex:1; min-height:0; padding:0 16px 8px; display:flex; flex-direction:column; overflow:hidden; }
+      .view{ display:none; animation:viewIn .28s ease both; }
+      .view.active{ display:block; flex:1; min-height:0; overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; }
+      #view-inicio.active{ display:flex; flex-direction:column; overflow:hidden; }
+      #machineList{ flex:1; min-height:0; overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; scrollbar-width:thin; scrollbar-color:rgba(212,160,23,.4) transparent; padding-bottom:2px; }
+      #machineList.no-scroll{ overflow-y:hidden; }
+      @keyframes viewIn{ from{ opacity:0; transform:translateY(6px);} to{ opacity:1; transform:none;} }
+      @media (prefers-reduced-motion: reduce){ .view{ animation:none; } *{ transition:none !important; } }
+
+      /* ---------- Tarjeta de saldo ---------- */
+      .balance{
+        flex:none;
+        position:relative; margin-top:7px; border-radius:16px; overflow:hidden;
+        border:1px solid var(--line);
+        background:#0d0a06;
+        height:130px;
+        display:flex; flex-direction:column; justify-content:flex-end;
+        padding:9px 12px;
+      }
+      .balance .bg{ position:absolute; inset:0; }
+      .balance .bg img{ width:100%; height:100%; object-fit:cover; object-position:78% 50%; }
+      .balance .bg::after{
+        content:""; position:absolute; inset:0;
+        background:linear-gradient(90deg, rgba(5,4,2,.94) 30%, rgba(5,4,2,.55) 62%, rgba(5,4,2,.18) 100%),
+                   linear-gradient(0deg, rgba(5,4,2,.88), transparent 55%);
+      }
+      .balance .sheen{
+        position:absolute; inset:0; pointer-events:none;
+        background:linear-gradient(115deg, transparent 40%, rgba(255,233,168,.10) 50%, transparent 60%);
+        background-size:250% 100%; animation:sheen 7s ease-in-out infinite;
+      }
+      @keyframes sheen{ 0%,55%{ background-position:120% 0;} 85%,100%{ background-position:-40% 0;} }
+      @media (prefers-reduced-motion: reduce){ .balance .sheen{ animation:none; } }
+      .balance > *:not(.bg):not(.sheen){ position:relative; z-index:1; }
+      .balance-top{ display:flex; align-items:center; gap:10px; margin-bottom:auto; }
+      .balance-coin{
+        width:26px; height:26px; border-radius:50%; flex:none;
+        border:1px solid var(--line); background:rgba(10,8,5,.72);
+        display:grid; place-items:center; color:var(--gold-2);
+      }
+      .balance-coin svg{ width:16px; height:16px; }
+      .balance-label{
+        font-family:"Barlow Condensed",sans-serif; font-weight:700;
+        font-size:15px; letter-spacing:.14em; color:#fdf6df; text-transform:uppercase;
+      }
+      .eye-btn{
+        margin-left:auto; width:40px; height:40px; border-radius:50%;
+        border:1px solid var(--line-soft); background:rgba(10,8,5,.72);
+        display:grid; place-items:center; color:var(--gold-2);
+      }
+      .balance-amount{
+        font-weight:800; font-size:clamp(38px, 11.5vw, 44px); line-height:1;
+        color:var(--gold-3); letter-spacing:.01em; margin:3px 0 5px;
+        font-variant-numeric:tabular-nums; text-shadow:0 2px 22px rgba(0,0,0,.65);
+      }
+      .balance-amount .unit{ font-size:.52em; font-weight:700; margin-left:4px; }
+      .balance-meta{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+      .equiv-pill{
+        display:inline-flex; align-items:center; gap:6px; align-self:flex-start;
+        border:1px solid var(--gold); border-radius:999px;
+        background:rgba(10,8,5,.78); padding:3px 10px; min-height:25px;
+        font-weight:800; font-size:13.5px; color:#fff3cf; letter-spacing:.02em;
+      }
+      .equiv-pill svg{ color:var(--gold-2); }
+      .balance-note{ margin:0; color:#cfc4ab; font-size:11.5px; font-weight:500; }
+
+      /* ---------- Acciones principales ---------- */
+      .actions{ flex:none; display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-top:7px; }
+      .btn{
+        border-radius:12px; padding:9px 6px; min-height:42px;
+        display:flex; align-items:center; justify-content:center; gap:7px;
+        font-family:"Barlow Condensed",sans-serif; font-weight:800;
+        font-size:17px; letter-spacing:.06em; text-transform:uppercase;
+        white-space:nowrap;
+      }
+      .actions .btn svg{ width:18px; height:18px; }
+      button, .machine, .plan-card, .section-head{ scroll-margin-top:64px; scroll-margin-bottom:132px; }
+      .btn-gold{
+        border:1px solid #ffedb5; color:#241a02;
+        background:linear-gradient(180deg,#ffe9a8 0%, var(--gold-2) 45%, var(--gold) 100%);
+        box-shadow:0 8px 24px rgba(212,160,23,.28), inset 0 1px 0 rgba(255,255,255,.55);
+      }
+      .btn-dark{
+        border:1px solid var(--gold); color:var(--gold-2);
+        background:linear-gradient(180deg,#1b160f,#100d09);
+      }
+      .btn:active{ transform:scale(.985); }
+      .btn{ transition:transform .12s ease; }
+
+      /* ---------- Accesos rápidos ---------- */
+      .quick{ flex:none; display:grid; grid-template-columns:repeat(4,1fr); gap:7px; margin-top:7px; }
+      .quick a, .quick button{
+        border:1px solid var(--line-soft); background:linear-gradient(180deg,var(--panel-2),var(--panel));
+        border-radius:12px; padding:5px 2px; color:var(--text); min-height:54px;
+        display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+        font-size:11px; font-weight:600; text-decoration:none; width:100%;
+      }
+      .quick .qicon{
+        width:28px; height:28px; border-radius:50%;
+        border:1px solid var(--line-soft); background:#0d0a07;
+        display:grid; place-items:center; color:var(--gold-2);
+      }
+      .quick .qicon svg{ width:16px; height:16px; }
+
+      /* ---------- Secciones ---------- */
+      .section-head{ flex:none; display:flex; align-items:baseline; justify-content:space-between; margin:8px 2px 5px; }
+      .section-head h2{
+        margin:0; font-family:"Barlow Condensed",sans-serif; font-weight:800;
+        font-size:19px; letter-spacing:.02em; text-transform:none; color:#fdfaf2; line-height:1.1;
+      }
+      .section-head button{
+        background:none; border:none; color:var(--gold-2); font-size:12px; font-weight:600;
+        display:flex; align-items:center; gap:4px; padding:2px 0; min-height:28px;
+      }
+      .section-head button svg{ width:14px; height:14px; }
+
+      /* ---------- Tarjetas de máquina ---------- */
+      .machine{
+        position:relative; border-radius:14px; overflow:hidden;
+        border:1px solid var(--line-soft); background:#0d0a06;
+        height:142px; min-height:142px; margin-bottom:9px;
+        display:flex; flex-direction:column; justify-content:flex-end;
+        padding:8px 10px; text-align:left; width:100%; color:var(--text);
+      }
+      .machine .bg{ position:absolute; inset:0; }
+      .machine .bg img{ width:100%; height:100%; object-fit:cover; }
+      .machine .bg::after{
+        content:""; position:absolute; inset:0;
+        background:linear-gradient(0deg, rgba(5,4,2,.96) 26%, rgba(5,4,2,.45) 62%, rgba(5,4,2,.35) 100%);
+      }
+      .machine > *:not(.bg){ position:relative; z-index:1; }
+      .machine-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:auto; }
+      .plan-pill{
+        border:1px solid var(--gold); border-radius:6px; padding:2px 7px;
+        background:rgba(8,6,3,.78); color:var(--gold-3);
+        font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:11.5px; letter-spacing:.12em;
+      }
+      .status-pill{
+        display:inline-flex; align-items:center; gap:5px;
+        border-radius:999px; padding:2px 8px; font-size:11px; font-weight:700;
+        background:rgba(6,26,15,.82); border:1px solid rgba(61,220,132,.55); color:#7bf0ae;
+      }
+      .status-pill i{ width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 7px var(--green); }
+      .machine h3{
+        margin:4px 0 4px; font-family:"Barlow Condensed",sans-serif; font-weight:800;
+        font-size:20px; letter-spacing:.01em; color:#fffdf6; line-height:1;
+        text-shadow:0 2px 14px rgba(0,0,0,.8);
+      }
+      .machine-stats{ display:flex; align-items:stretch; gap:0; }
+      .mstat{ flex:1; }
+      .mstat + .mstat{ border-left:1px solid rgba(246,240,226,.18); padding-left:10px; margin-left:10px; }
+      .mstat b{ display:block; font-size:17px; font-weight:800; color:var(--gold-2); font-variant-numeric:tabular-nums; line-height:1.05; }
+      .mstat span{ display:block; color:#d8cfba; font-size:11px; font-weight:500; margin-top:1px; }
+      .progress-row{ display:flex; align-items:center; gap:8px; margin-top:6px; }
+      .progress{ flex:1; height:6px; border-radius:99px; background:rgba(255,255,255,.14); overflow:hidden; }
+      .progress i{
+        display:block; height:100%; border-radius:99px;
+        background:linear-gradient(90deg,var(--gold-deep),var(--gold) 55%,var(--gold-2));
+        box-shadow:0 0 10px rgba(212,160,23,.45);
+      }
+      .progress-row b{ font-size:12.5px; font-weight:800; font-variant-numeric:tabular-nums; }
+
+      /* ---------- Estado vacío ---------- */
+      .empty{
+        border:1px dashed rgba(212,160,23,.4); border-radius:16px;
+        background:linear-gradient(180deg,var(--panel-2),var(--panel));
+        padding:16px 16px; text-align:center;
+      }
+      #view-inicio .empty{ padding:14px 16px; }
+      .empty .eicon{
+        width:44px; height:44px; margin:0 auto 8px; border-radius:50%;
+        border:1px solid var(--line); background:#0d0a07;
+        display:grid; place-items:center; color:var(--gold-2);
+      }
+      .empty .eicon svg{ width:22px; height:22px; }
+      .empty h3{ margin:0 0 4px; font-family:"Barlow Condensed",sans-serif; font-size:21px; font-weight:800; letter-spacing:.02em; }
+      .empty p{ margin:0 0 12px; color:var(--muted); font-size:13.5px; line-height:1.4; }
+      .empty .btn{ width:100%; }
+
+      /* ---------- Vistas secundarias: encabezados ---------- */
+      .view-title{
+        margin:10px 2px 3px; font-family:"Barlow Condensed",sans-serif; font-weight:800;
+        font-size:25px; letter-spacing:.02em; text-transform:uppercase; color:#fdfaf2; line-height:1;
+      }
+      .view-sub{ margin:0 2px 14px; color:var(--muted); font-size:14px; }
+
+      /* ---------- Planes ---------- */
+      .plan-card{
+        border:1px solid var(--line-soft); border-radius:20px; overflow:hidden;
+        background:var(--panel); margin-bottom:16px;
+      }
+      .plan-card .pimg{ position:relative; height:158px; }
+      .plan-card .pimg img{ width:100%; height:100%; object-fit:cover; }
+      .plan-card .pimg::after{ content:""; position:absolute; inset:0; background:linear-gradient(0deg, var(--panel) 2%, transparent 55%); }
+      .plan-card .pimg .plan-pill{ position:absolute; top:12px; left:12px; z-index:1; }
+      .plan-body{ padding:6px 18px 18px; }
+      .plan-body h3{ margin:0 0 2px; font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:29px; letter-spacing:.01em; }
+      .plan-price{ display:flex; align-items:baseline; gap:8px; margin:6px 0 12px; }
+      .plan-price b{ font-size:34px; font-weight:800; color:var(--gold-2); font-variant-numeric:tabular-nums; }
+      .plan-price span{ color:var(--muted); font-size:13.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; }
+      .plan-rows{ border-top:1px solid var(--line-soft); }
+      .plan-rows div{ display:flex; justify-content:space-between; gap:12px; padding:9px 0; border-bottom:1px solid rgba(212,160,23,.08); font-size:15px; }
+      .plan-rows div span{ color:var(--muted); }
+      .plan-rows div b{ font-weight:700; font-variant-numeric:tabular-nums; text-align:right; }
+      .plan-body .btn{ width:100%; margin-top:14px; }
+
+      /* ---------- Fundidora ---------- */
+      .smelt-hero{ position:relative; border-radius:20px; overflow:hidden; border:1px solid var(--line-soft); height:150px; margin-bottom:14px; }
+      .smelt-hero img{ width:100%; height:100%; object-fit:cover; }
+      .smelt-hero::after{ content:""; position:absolute; inset:0; background:linear-gradient(0deg, rgba(6,5,3,.92), transparent 60%); }
+      .smelt-hero figcaption{
+        position:absolute; left:16px; bottom:12px; z-index:1; right:16px;
+        font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:24px; letter-spacing:.03em; text-transform:uppercase;
+      }
+      .energy-card{
+        border:1px solid var(--line); border-radius:20px; padding:18px;
+        background:linear-gradient(180deg,var(--panel-3),var(--panel));
+        margin-bottom:14px;
+      }
+      .energy-top{ display:flex; align-items:flex-end; justify-content:space-between; gap:10px; }
+      .energy-top small{ display:block; color:var(--muted); font-size:12.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; }
+      .energy-value{ display:flex; align-items:center; gap:7px; font-size:40px; font-weight:800; color:var(--gold-3); line-height:1; font-variant-numeric:tabular-nums; }
+      .energy-value svg{ color:var(--gold-2); }
+      .energy-level{ text-align:right; }
+      .energy-level b{ display:block; font-family:"Barlow Condensed",sans-serif; font-size:23px; font-weight:800; letter-spacing:.05em; color:var(--gold-2); text-transform:uppercase; }
+      .energy-level span{ color:var(--muted); font-size:13px; }
+      .energy-bar{ height:14px; border-radius:99px; background:rgba(255,255,255,.10); margin:14px 0 8px; position:relative; overflow:hidden; }
+      .energy-bar i{ display:block; height:100%; width:80%; border-radius:99px; background:linear-gradient(90deg,var(--gold-deep),var(--gold) 60%,var(--gold-2)); box-shadow:0 0 12px rgba(212,160,23,.5); }
+      .energy-scale{ display:flex; justify-content:space-between; color:var(--muted-2); font-size:11.5px; font-weight:600; font-variant-numeric:tabular-nums; }
+      .level-card{
+        display:flex; gap:14px; align-items:center;
+        border:1px solid var(--line-soft); border-radius:16px; padding:14px 16px;
+        background:var(--panel); margin-bottom:10px;
+      }
+      .level-card.current{ border-color:var(--gold); background:linear-gradient(180deg,rgba(212,160,23,.12),var(--panel)); }
+      .coin{
+        width:48px; height:48px; border-radius:50%; flex:none; display:grid; place-items:center;
+        font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:19px;
+        border:2px solid; background:#0d0a07;
+      }
+      .coin.carbon{ color:#c9c2b4; border-color:#8d8574; }
+      .coin.hierro{ color:#d9dee6; border-color:#9fb2c8; }
+      .coin.oro{ color:var(--gold-3); border-color:var(--gold); }
+      .coin.diamante{ color:#bdefff; border-color:#7fd4f2; }
+      .level-info{ flex:1; min-width:0; }
+      .level-info h4{ margin:0; font-family:"Barlow Condensed",sans-serif; font-size:22px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+      .now-tag{ font-family:"Barlow",sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.08em; background:var(--gold); color:#241a02; border-radius:99px; padding:2px 8px; }
+      .level-info p{ margin:3px 0 0; color:var(--muted); font-size:13.5px; line-height:1.5; }
+      .level-info p b{ color:var(--text); font-weight:700; font-variant-numeric:tabular-nums; }
+      .note-box{
+        border:1px solid var(--line-soft); border-radius:16px; padding:14px 16px;
+        color:var(--muted); font-size:14px; line-height:1.55; background:var(--panel);
+        margin:14px 0;
+      }
+      .note-box b{ color:var(--gold-2); }
+
+      /* ---------- Historial ---------- */
+      .move{
+        display:flex; align-items:center; gap:13px;
+        border:1px solid var(--line-soft); border-radius:16px; background:var(--panel);
+        padding:13px 15px; margin-bottom:10px;
+      }
+      .move .micon{ width:44px; height:44px; border-radius:50%; flex:none; border:1px solid var(--line-soft); background:#0d0a07; display:grid; place-items:center; color:var(--gold-2); }
+      .move .minfo{ flex:1; min-width:0; }
+      .move .minfo b{ display:block; font-size:16px; font-weight:700; }
+      .move .minfo span{ display:block; color:var(--muted); font-size:13px; margin-top:1px; }
+      .move .mamt{ text-align:right; flex:none; }
+      .move .mamt b{ font-size:17px; font-weight:800; font-variant-numeric:tabular-nums; }
+      .move .mamt b.pos{ color:var(--green); }
+      .move .mamt b.neg{ color:#ffb1b1; }
+      .move .mamt span{ display:block; font-size:10.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted-2); margin-top:2px; }
+
+      /* ---------- Perfil ---------- */
+      .profile-card{
+        border:1px solid var(--line-soft); border-radius:20px; background:linear-gradient(180deg,var(--panel-2),var(--panel));
+        padding:22px 18px; text-align:center; margin-bottom:14px;
+      }
+      .profile-card .avatar{ margin:0 auto 10px; width:60px; height:60px; font-size:23px; }
+      .profile-card h3{ margin:0; font-size:23px; font-weight:700; }
+      .profile-card p{ margin:4px 0 0; color:var(--muted); font-size:15px; }
+      .data-row{
+        display:flex; align-items:center; gap:12px;
+        border:1px solid var(--line-soft); border-radius:16px; background:var(--panel);
+        padding:14px 16px; margin-bottom:10px; width:100%; text-align:left; color:var(--text);
+      }
+      .data-row .dicon{ width:42px; height:42px; border-radius:50%; flex:none; border:1px solid var(--line-soft); background:#0d0a07; display:grid; place-items:center; color:var(--gold-2); }
+      .data-row .dinfo{ flex:1; min-width:0; }
+      .data-row .dinfo small{ display:block; color:var(--muted); font-size:12.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; }
+      .data-row .dinfo b{ display:block; font-size:16.5px; font-weight:700; margin-top:1px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-variant-numeric:tabular-nums; }
+      .copy-btn{ flex:none; border:1px solid var(--line); background:rgba(212,160,23,.10); color:var(--gold-2); border-radius:10px; padding:8px 12px; font-size:13px; font-weight:700; }
+      .logout{
+        width:100%; margin-top:8px; border:1px solid rgba(255,93,93,.45); background:rgba(255,93,93,.06);
+        color:#ff9c9c; border-radius:16px; padding:15px; font-size:16px; font-weight:700;
+        display:flex; align-items:center; justify-content:center; gap:9px;
+      }
+
+      /* ---------- Navegación inferior ---------- */
+      .tabbar{
+        position:relative; flex:none; z-index:50;
+        width:100%;
+        background:rgba(10,8,6,.96); backdrop-filter:blur(14px);
+        border-top:1px solid var(--line-soft);
+        padding:6px 10px calc(7px + env(safe-area-inset-bottom, 0px));
+        display:grid; grid-template-columns:repeat(5,1fr); align-items:end;
+      }
+      .tab{
+        background:none; border:none; color:#9a8f7a; min-height:42px;
+        display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:2px;
+        font-size:11px; font-weight:600; padding:2px 0 0; text-decoration:none;
+      }
+      .tab svg{ width:20px; height:20px; }
+      .tab.active{ color:var(--gold-2); }
+      .tab.center{ position:relative; }
+      .tab .fab{
+        width:44px; height:44px; border-radius:50%; margin-top:-22px;
+        border:2px solid #ffedb5;
+        background:linear-gradient(180deg,#ffe9a8, var(--gold-2) 55%, var(--gold));
+        display:grid; place-items:center; color:#241a02;
+        box-shadow:0 10px 26px rgba(212,160,23,.45), 0 0 0 5px rgba(10,8,6,.96);
+      }
+      .tab .fab svg{ width:21px; height:21px; }
+      .tab.center.active{ color:var(--gold-2); }
+
+      /* ---------- Hoja inferior (sheets) y toast ---------- */
+      .sheet-veil{
+        position:fixed; inset:0; z-index:80; background:rgba(0,0,0,.66);
+        opacity:0; pointer-events:none; transition:opacity .22s ease;
+      }
+      .sheet-veil.open{ opacity:1; pointer-events:auto; }
+      .sheet{
+        position:fixed; left:50%; bottom:0; z-index:81;
+        width:min(430px,100%); transform:translate(-50%,105%);
+        transition:transform .28s cubic-bezier(.32,.9,.35,1);
+        background:linear-gradient(180deg,var(--panel-3),var(--panel));
+        border:1px solid var(--line); border-bottom:none;
+        border-radius:24px 24px 0 0; padding:14px 20px calc(22px + env(safe-area-inset-bottom, 0px));
+        max-height:82dvh; overflow-y:auto;
+      }
+      .sheet.open{ transform:translate(-50%,0); }
+      .sheet .grab{ width:44px; height:5px; border-radius:99px; background:rgba(246,240,226,.25); margin:0 auto 14px; }
+      .sheet h3{ margin:0 0 6px; font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:27px; letter-spacing:.03em; text-transform:uppercase; }
+      .sheet p{ margin:0 0 12px; color:var(--muted); font-size:15px; line-height:1.55; }
+      .sheet p b{ color:var(--text); }
+      .sheet .code-box{
+        display:flex; align-items:center; gap:10px; border:1px dashed rgba(212,160,23,.5);
+        border-radius:14px; padding:13px 15px; background:rgba(212,160,23,.07); margin-bottom:14px;
+      }
+      .sheet .code-box b{ flex:1; font-size:19px; letter-spacing:.1em; font-variant-numeric:tabular-nums; }
+      .sheet ul{ margin:0 0 14px; padding-left:18px; color:var(--muted); font-size:15px; line-height:1.6; }
+      .sheet ul b{ color:var(--gold-2); }
+      .toast{
+        position:fixed; left:50%; bottom:calc(var(--nav-h) + 26px + env(safe-area-inset-bottom, 0px));
+        transform:translate(-50%, 16px); z-index:90;
+        width:max-content; max-width:min(400px, calc(100% - 32px));
+        background:#221b10; border:1px solid var(--gold); color:var(--gold-3);
+        border-radius:999px; padding:11px 20px; font-size:14.5px; font-weight:600; text-align:center;
+        opacity:0; pointer-events:none; transition:opacity .22s ease, transform .22s ease;
+        box-shadow:0 14px 34px rgba(0,0,0,.6);
+      }
+      .toast.show{ opacity:1; transform:translate(-50%,0); }
+
+      @media (max-width:360px){
+        .brand-name{ font-size:17px; }
+        .brand .brand-mark{ width:36px; height:auto; }
+        .brand{ gap:6px; }
+        .app-header{ padding-left:12px; padding-right:12px; }
+        .greeting{ margin-left:0; margin-right:0; width:100%; }
+        main{ padding-left:12px; padding-right:12px; }
+        .balance{ height:126px; padding:8px 10px; }
+        .balance-note{ font-size:11px; }
+        .machine{ height:138px; min-height:138px; }
+        .machine h3{ font-size:19px; }
+        .mstat b{ font-size:16px; }
+        .btn{ font-size:15px; }
+        .quick a, .quick button{ font-size:11px; }
+        .greeting strong{ font-size:15px; }
+      }
+      @media (max-width:340px){
+        .balance-meta{ gap:6px; }
+        .equiv-pill{ font-size:12px; padding:3px 8px; }
+        .section-head h2{ font-size:17px; }
+      }
+      /* Pantallas altas (≥820px): un poco más de aire, sin romper la pantalla única */
+      @media (min-height:820px){
+        .balance{ height:146px; }
+        .machine{ height:160px; min-height:160px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ambient" aria-hidden="true"><img src="assets/fundicion.webp" alt="" /></div>
+
+    <div class="app">
+      <!-- Cabecera -->
+      <header class="app-header">
+        <div class="brand">
+          <svg class="brand-mark" width="40" height="23" viewBox="0 0 60 34" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 27 L19 8 L27.5 18.5 L35.5 4.5 L56 27"/>
+            <path d="M15.5 27 H46.5"/>
+          </svg>
+          <div class="brand-name">Gold Mining 2.0</div>
+        </div>
+        <button class="icon-btn" type="button" id="bellBtn" aria-label="Notificaciones">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 20a2 2 0 0 1-3.4 0"/></svg>
+          <span class="badge" aria-hidden="true"></span>
+        </button>
+      </header>
+
+      <main>
+        <!-- ================= VISTA: INICIO ================= -->
+        <section class="view active" id="view-inicio" aria-label="Inicio">
+          <!-- Saludo / usuario (solo en Inicio) -->
+          <button class="greeting" type="button" data-goto="perfil" aria-label="Ir a mi perfil">
+            <span class="avatar" aria-hidden="true">CM</span>
+            <span>
+              <small>Hola de nuevo</small>
+              <strong>Carlos Méndez</strong>
+            </span>
+            <svg class="chev" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/></svg>
+          </button>
+
+          <!-- Tarjeta de saldo -->
+          <div class="balance">
+            <div class="bg"><img src="assets/lingotes.webp" alt="" /></div>
+            <div class="sheen" aria-hidden="true"></div>
+            <div class="balance-top">
+              <span class="balance-coin" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 15.5 8h-7L12 3Z"/><path d="M7.2 10.5 10.7 16H3.7L7.2 10.5Z"/><path d="M16.8 10.5 20.3 16h-7l3.5-5.5Z"/><path d="M12 12.2 15 17.5H9L12 12.2Z" opacity=".0"/><path d="M8.6 18h6.8l1.8 3H6.8l1.8-3Z"/></svg>
+              </span>
+              <span class="balance-label">Saldo de oro</span>
+              <button class="eye-btn" type="button" id="eyeBtn" aria-label="Ocultar saldo" aria-pressed="false">
+                <svg id="eyeOpen" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg id="eyeOff" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M9.9 5.1A9.8 9.8 0 0 1 12 5c6.5 0 10 7 10 7a17.6 17.6 0 0 1-2.9 3.7M6.6 6.9A16.9 16.9 0 0 0 2 12s3.5 7 10 7c1.5 0 2.9-.4 4.1-1"/><path d="m2 2 20 20"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+              </button>
+            </div>
+            <div class="balance-amount"><span id="balanceValue">125.50</span><span class="unit">g</span></div>
+            <div class="balance-meta">
+              <span class="equiv-pill">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3 15.5 8h-7L12 3Z"/><path d="M7.2 10.5 10.7 16H3.7L7.2 10.5Z"/><path d="M16.8 10.5 20.3 16h-7l3.5-5.5Z"/><path d="M8.6 18h6.8l1.8 3H6.8l1.8-3Z"/></svg>
+                1 g = US$1
+              </span>
+              <p class="balance-note">Equivalencia interna de Gold Mining</p>
+            </div>
+          </div>
+
+          <!-- Acciones principales -->
+          <div class="actions">
+            <button class="btn btn-gold" type="button" data-goto="fundir">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 22a7 7 0 0 1-7-7c0-2.4 1.2-4.3 2.7-6C9.2 7.1 10.6 5.3 10.8 2.2c0-.9 1.2-1.2 1.7-.5 2 2.4 2.6 5.6 2.1 8.2.6-.5 1-1.2 1.3-2 .3-.7 1.4-.7 1.7 0 .7 1.5 1.4 3 1.4 4.6a7 7 0 0 1-7 7Z"/></svg>
+              Fundir
+            </button>
+            <button class="btn btn-dark" type="button" data-goto="planes">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 18.5 14 10"/><path d="M10.5 3.5c3.8.3 7 2.5 9 6-2.7-1.8-5.7-2.7-9.5-2.8"/><path d="M18.5 18.5 10 10"/><path d="M13.5 3.5c-3.8.3-7 2.5-9 6 2.7-1.8 5.7-2.7 9.5-2.8"/></svg>
+              Ver planes
+            </button>
+          </div>
+
+          <!-- Accesos rápidos -->
+          <nav class="quick" aria-label="Accesos rápidos">
+            <button type="button" data-sheet="referidos">
+              <span class="qicon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+              Referidos
+            </button>
+            <button type="button" data-goto="historial">
+              <span class="qicon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg></span>
+              Movimientos
+            </button>
+            <button type="button" data-sheet="retiros">
+              <span class="qicon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></span>
+              Retiros
+            </button>
+            <button type="button" data-sheet="soporte">
+              <span class="qicon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-2a9 9 0 0 1 18 0v2"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3v5ZM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3v5Z"/></svg></span>
+              Soporte
+            </button>
+          </nav>
+
+          <!-- Mis máquinas activas -->
+          <div class="section-head">
+            <h2>Mis máquinas activas</h2>
+            <button type="button" data-goto="planes">Ver todas
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+            </button>
+          </div>
+          <div id="machineList"></div>
+        </section>
+
+        <!-- ================= VISTA: PLANES ================= -->
+        <section class="view" id="view-planes" aria-label="Planes">
+          <h2 class="view-title">Planes</h2>
+          <p class="view-sub">Elige tu máquina y empieza a extraer oro. Además del precio de la máquina, cada plan requiere mantener un capital mínimo en tu billetera.</p>
+          <div id="planList"></div>
+        </section>
+
+        <!-- ================= VISTA: FUNDIR ================= -->
+        <section class="view" id="view-fundir" aria-label="Fundidora">
+          <h2 class="view-title">Fundidora</h2>
+          <p class="view-sub">Convierte tu oro extraído en saldo de tu billetera interna de retiros. Fundir no cobra tarifa.</p>
+
+          <figure class="smelt-hero" style="margin:0 0 14px">
+            <img src="assets/fundicion.webp" alt="Fundición de oro en curso" />
+            <figcaption>Del crisol a tu billetera</figcaption>
+          </figure>
+
+          <div class="energy-card">
+            <div class="energy-top">
+              <div>
+                <small>Energía acumulada</small>
+                <div class="energy-value">
+                  <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4.5 13.5H11L9.8 22 19 10h-6.5L13 2Z"/></svg>
+                  320
+                </div>
+              </div>
+              <div class="energy-level">
+                <small>Nivel actual</small>
+                <b>Hierro</b>
+                <span>Faltan 80 para Oro</span>
+              </div>
+            </div>
+            <div class="energy-bar" role="img" aria-label="Energía 320 de 400 para el nivel Oro"><i></i></div>
+            <div class="energy-scale"><span>Carbón · 0</span><span>Hierro · 150</span><span>Oro · 400</span><span>Diamante · 1,000</span></div>
+          </div>
+
+          <div id="levelList"></div>
+
+          <div class="note-box">
+            La energía sube con tus referidos: <b>+50</b> por cada referido directo a partir del tercero y <b>+15</b> por cada referido de segundo nivel activo. También puedes adquirirla en la tienda. Al fundir gastas energía; si tu acumulado baja del umbral, la fundidora desciende automáticamente al nivel que corresponda.
+          </div>
+
+          <button class="btn btn-gold" type="button" id="smeltBtn" style="width:100%">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 22a7 7 0 0 1-7-7c0-2.4 1.2-4.3 2.7-6C9.2 7.1 10.6 5.3 10.8 2.2c0-.9 1.2-1.2 1.7-.5 2 2.4 2.6 5.6 2.1 8.2.6-.5 1-1.2 1.3-2 .3-.7 1.4-.7 1.7 0 .7 1.5 1.4 3 1.4 4.6a7 7 0 0 1-7 7Z"/></svg>
+            Fundir ahora
+          </button>
+        </section>
+
+        <!-- ================= VISTA: HISTORIAL ================= -->
+        <section class="view" id="view-historial" aria-label="Historial">
+          <h2 class="view-title">Historial</h2>
+          <p class="view-sub">Movimientos de tu operación minera.</p>
+          <div id="moveList"></div>
+        </section>
+
+        <!-- ================= VISTA: PERFIL ================= -->
+        <section class="view" id="view-perfil" aria-label="Perfil">
+          <h2 class="view-title">Perfil</h2>
+          <p class="view-sub">Tu cuenta de inversionista.</p>
+
+          <div class="profile-card">
+            <span class="avatar" aria-hidden="true">CM</span>
+            <h3>Carlos Méndez</h3>
+            <p>carlos.mendez@mail.com</p>
+          </div>
+
+          <div class="data-row">
+            <span class="dicon"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+            <span class="dinfo"><small>Mi código de referido</small><b>GM8KX42P</b></span>
+            <button class="copy-btn" type="button" data-copy="GM8KX42P">Copiar</button>
+          </div>
+
+          <div class="data-row">
+            <span class="dicon"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></span>
+            <span class="dinfo"><small>Billetera de retiros · TRC-20</small><b>TXk3…9fQa</b></span>
+            <button class="copy-btn" type="button" data-copy="TXk3m9RvLpQw8sTnY2hJkF9fQa">Copiar</button>
+          </div>
+
+          <div class="data-row">
+            <span class="dicon"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+            <span class="dinfo"><small>Seguridad</small><b>Contraseña y verificación</b></span>
+          </div>
+
+          <button class="logout" type="button" id="logoutBtn">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
+            Cerrar sesión
+          </button>
+        </section>
+      </main>
+
+      <!-- Navegación inferior -->
+      <nav class="tabbar" aria-label="Navegación principal">
+        <button class="tab active" type="button" data-goto="inicio">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22v-8h6v8"/></svg>
+          Inicio
+        </button>
+        <button class="tab" type="button" data-goto="planes">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2" opacity="0"/><path d="M21 20v-11"/></svg>
+          Planes
+        </button>
+        <button class="tab center" type="button" data-goto="fundir" aria-label="Fundir">
+          <span class="fab"><svg width="27" height="27" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 22a7 7 0 0 1-7-7c0-2.4 1.2-4.3 2.7-6C9.2 7.1 10.6 5.3 10.8 2.2c0-.9 1.2-1.2 1.7-.5 2 2.4 2.6 5.6 2.1 8.2.6-.5 1-1.2 1.3-2 .3-.7 1.4-.7 1.7 0 .7 1.5 1.4 3 1.4 4.6a7 7 0 0 1-7 7Z"/></svg></span>
+          Fundir
+        </button>
+        <button class="tab" type="button" data-goto="historial">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>
+          Historial
+        </button>
+        <button class="tab" type="button" data-goto="perfil">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg>
+          Perfil
+        </button>
+      </nav>
+    </div>
+
+    <!-- Hoja inferior reutilizable -->
+    <div class="sheet-veil" id="sheetVeil"></div>
+    <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+      <div class="grab" aria-hidden="true"></div>
+      <h3 id="sheetTitle"></h3>
+      <div id="sheetBody"></div>
+      <button class="btn btn-dark" type="button" id="sheetClose" style="width:100%">Entendido</button>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      "use strict";
+
+      /* ============ Datos del panel ============ */
+      var USER = { name: "Carlos Méndez", initials: "CM" };
+
+      var MACHINES = [
+        { plan: "PLAN 01", name: "Mini Perforadora", img: "assets/plan-1.webp",
+          oro: "12.35 g", label1: "Oro recolectado", pct: "2.5%", label2: "Rentabilidad diaria", prog: 42 },
+        { plan: "PLAN 02", name: "Perforadora Triple", img: "assets/plan-2.webp",
+          oro: "5.80 g", label1: "Oro recolectado", pct: "3.5%", label2: "Rentabilidad diaria", prog: 28 }
+      ];
+
+      var PLANS = [
+        { plan: "PLAN 01", name: "Mini Perforadora", img: "assets/plan-1.webp", price: "$25 USD",
+          capital: "50 – 249 USDT", pct: "2.5% diario", maint: "$5 USD" },
+        { plan: "PLAN 02", name: "Perforadora Triple", img: "assets/plan-2.webp", price: "$75 USD",
+          capital: "250 – 749 USDT", pct: "3.5% diario", maint: "$12 USD" },
+        { plan: "PLAN 03", name: "Planta Minera", img: "assets/plan-3.webp", price: "$200 USD",
+          capital: "750 – 1,999 USDT", pct: "4.5% diario", maint: "$25 USD" },
+        { plan: "PLAN 04", name: "Planta Minera Avanzada", img: "assets/plan-4.webp", price: "$500 USD",
+          capital: "2,000 USDT en adelante", pct: "5.5% diario", maint: "$45 USD" }
+      ];
+
+      var LEVELS = [
+        { key: "carbon", letter: "C", name: "Carbón", umbral: "0", cost: 120, limit: "$50 USD", cool: "24 h", current: false },
+        { key: "hierro", letter: "H", name: "Hierro", umbral: "150", cost: 80, limit: "$150 USD", cool: "12 h", current: true },
+        { key: "oro", letter: "O", name: "Oro", umbral: "400", cost: 45, limit: "$500 USD", cool: "6 h", current: false },
+        { key: "diamante", letter: "D", name: "Diamante", umbral: "1,000", cost: 15, limit: "Ilimitado", cool: "3 h", current: false }
+      ];
+
+      var MOVES_FULL = [
+        { icon: "flame", title: "Fundición completada", date: "Hoy · Nivel Hierro", amt: "+18.15 g", cls: "pos" },
+        { icon: "bolt", title: "Energía por referido directo", date: "Ayer", amt: "+50 ⚡", cls: "pos", raw: true },
+        { icon: "users", title: "Comisión de referido · Nivel 1", date: "Ayer", amt: "+2.25 g", cls: "pos" },
+        { icon: "pick", title: "Producción diaria · Perforadora Triple", date: "Hace 2 días", amt: "+1.40 g", cls: "pos" },
+        { icon: "wallet", title: "Retiro solicitado", date: "Hace 4 días", amt: "−20.00 g", cls: "neg" },
+        { icon: "check", title: "Activación · Plan 02", date: "Hace 9 días", amt: "Completada", cls: "" }
+      ];
+
+      var STATES = {
+        completo: { balance: "125.50", machines: MACHINES, moves: MOVES_FULL },
+        nuevo:    { balance: "0.00",   machines: [],       moves: [] },
+        sinsaldo: { balance: "125.50", machines: [],       moves: [ MOVES_FULL[0] ] }
+      };
+      var currentState = "completo";
+      var balanceHidden = false;
+
+      /* ============ Iconos reutilizables ============ */
+      var ICONS = {
+        flame: '<svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22a7 7 0 0 1-7-7c0-2.4 1.2-4.3 2.7-6C9.2 7.1 10.6 5.3 10.8 2.2c0-.9 1.2-1.2 1.7-.5 2 2.4 2.6 5.6 2.1 8.2.6-.5 1-1.2 1.3-2 .3-.7 1.4-.7 1.7 0 .7 1.5 1.4 3 1.4 4.6a7 7 0 0 1-7 7Z"/></svg>',
+        bolt: '<svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4.5 13.5H11L9.8 22 19 10h-6.5L13 2Z"/></svg>',
+        users: '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+        pick: '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 12.5 5 22"/><path d="M19.6 4.4a9.4 9.4 0 0 0-12.9 12L3 13a11.5 11.5 0 0 1 16.6-8.6Z"/></svg>',
+        wallet: '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>',
+        check: '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.2 2.4 2.4 4.6-5"/></svg>',
+        drill: '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 12.5 5 22"/><path d="M19.6 4.4a9.4 9.4 0 0 0-12.9 12L3 13a11.5 11.5 0 0 1 16.6-8.6Z"/></svg>',
+        doc: '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>'
+      };
+
+      /* ============ Render: máquinas ============ */
+      function renderMachines() {
+        var wrap = document.getElementById("machineList");
+        var st = STATES[currentState];
+        wrap.classList.toggle("no-scroll", st.machines.length <= 1);
+        wrap.scrollTop = 0;
+        if (!st.machines.length) {
+          wrap.innerHTML =
+            '<div class="empty">' +
+              '<span class="eicon">' + ICONS.drill + '</span>' +
+              '<h3>Aún no tienes máquinas activas</h3>' +
+              '<p>Activa tu primer plan y tu máquina empezará a extraer oro para ti, todos los días.</p>' +
+              '<button class="btn btn-gold" type="button" data-goto="planes">Ver planes</button>' +
+            '</div>';
+        } else {
+          wrap.innerHTML = st.machines.map(function (m, i) {
+            return '<button class="machine" type="button" data-machine="' + i + '" aria-label="Ver detalles de ' + m.name + '">' +
+              '<span class="bg"><img src="' + m.img + '" alt="" loading="lazy" /></span>' +
+              '<span class="machine-top"><span class="plan-pill">' + m.plan + '</span>' +
+              '<span class="status-pill"><i></i>Activa</span></span>' +
+              '<h3>' + m.name + '</h3>' +
+              '<span class="machine-stats">' +
+                '<span class="mstat"><b>' + m.oro + '</b><span>' + m.label1 + '</span></span>' +
+                '<span class="mstat"><b>' + m.pct + '</b><span>' + m.label2 + '</span></span>' +
+              '</span>' +
+              '<span class="progress-row"><span class="progress"><i style="width:' + m.prog + '%"></i></span><b>' + m.prog + '%</b></span>' +
+            '</button>';
+          }).join("");
+        }
+        bindGoto(wrap);
+      }
+
+      /* ============ Render: planes ============ */
+      function renderPlans() {
+        document.getElementById("planList").innerHTML = PLANS.map(function (p) {
+          return '<article class="plan-card">' +
+            '<div class="pimg"><img src="' + p.img + '" alt="' + p.name + '" loading="lazy" /><span class="plan-pill">' + p.plan + '</span></div>' +
+            '<div class="plan-body"><h3>' + p.name + '</h3>' +
+              '<div class="plan-price"><b>' + p.price + '</b><span>Precio de la máquina</span></div>' +
+              '<div class="plan-rows">' +
+                '<div><span>Capital en billetera</span><b>' + p.capital + '</b></div>' +
+                '<div><span>Rentabilidad</span><b>' + p.pct + '</b></div>' +
+                '<div><span>Mantenimiento semanal</span><b>' + p.maint + '</b></div>' +
+              '</div>' +
+              '<button class="btn btn-gold" type="button" data-activate="' + p.name + '">Activar plan</button>' +
+            '</div></article>';
+        }).join("");
+        Array.prototype.forEach.call(document.querySelectorAll("[data-activate]"), function (b) {
+          b.addEventListener("click", function () {
+            showToast("Plan seleccionado: " + b.getAttribute("data-activate"));
+          });
+        });
+      }
+
+      /* ============ Render: niveles de fundidora ============ */
+      function renderLevels() {
+        document.getElementById("levelList").innerHTML = LEVELS.map(function (l) {
+          return '<div class="level-card' + (l.current ? " current" : "") + '">' +
+            '<span class="coin ' + l.key + '">' + l.letter + '</span>' +
+            '<div class="level-info"><h4>' + l.name + (l.current ? '<span class="now-tag">Nivel actual</span>' : "") + '</h4>' +
+            '<p>Desde <b>' + l.umbral + '</b> de energía · Fundir cuesta <b>' + l.cost + '</b> de energía · Límite por operación <b>' + l.limit + '</b> · Enfriamiento <b>' + l.cool + '</b></p></div>' +
+          '</div>';
+        }).join("");
+      }
+
+      /* ============ Render: historial ============ */
+      function renderMoves() {
+        var wrap = document.getElementById("moveList");
+        var moves = STATES[currentState].moves;
+        if (!moves.length) {
+          wrap.innerHTML =
+            '<div class="empty">' +
+              '<span class="eicon">' + ICONS.doc + '</span>' +
+              '<h3>Sin movimientos todavía</h3>' +
+              '<p>Cuando tu operación empiece a moverse — producción, fundiciones, referidos y retiros — todo quedará registrado aquí.</p>' +
+            '</div>';
+          return;
+        }
+        wrap.innerHTML = moves.map(function (m) {
+          return '<div class="move"><span class="micon">' + ICONS[m.icon] + '</span>' +
+            '<span class="minfo"><b>' + m.title + '</b><span>' + m.date + '</span></span>' +
+            '<span class="mamt"><b class="' + m.cls + '">' + m.amt + '</b></span></div>';
+        }).join("");
+      }
+
+      /* ============ Saldo y estados ============ */
+      function renderBalance() {
+        var el = document.getElementById("balanceValue");
+        el.textContent = balanceHidden ? "•••••" : STATES[currentState].balance;
+      }
+      function setState(key) {
+        currentState = key;
+        Array.prototype.forEach.call(document.querySelectorAll(".chip[data-state]"), function (c) {
+          c.setAttribute("aria-pressed", c.getAttribute("data-state") === key ? "true" : "false");
+        });
+        renderBalance(); renderMachines(); renderMoves();
+      }
+
+      /* ============ Navegación SPA por hash ============ */
+      var VIEWS = ["inicio", "planes", "fundir", "historial", "perfil"];
+      function go(view) {
+        if (VIEWS.indexOf(view) === -1) view = "inicio";
+        if (location.hash !== "#/" + view) { location.hash = "#/" + view; return; }
+        activate(view);
+      }
+      function activate(view) {
+        VIEWS.forEach(function (v) {
+          var el = document.getElementById("view-" + v);
+          el.classList.toggle("active", v === view);
+          if (v === view) el.scrollTop = 0;
+        });
+        var ml = document.getElementById("machineList");
+        if (ml && view === "inicio") ml.scrollTop = 0;
+        Array.prototype.forEach.call(document.querySelectorAll(".tab[data-goto]"), function (t) {
+          t.classList.toggle("active", t.getAttribute("data-goto") === view);
+        });
+        closeSheet();
+      }
+      function route() {
+        var h = (location.hash || "#/inicio").replace("#/", "");
+        activate(VIEWS.indexOf(h) >= 0 ? h : "inicio");
+      }
+      function bindGoto(scope) {
+        Array.prototype.forEach.call((scope || document).querySelectorAll("[data-goto]"), function (el) {
+          if (el.__bound) return; el.__bound = true;
+          el.addEventListener("click", function () { go(el.getAttribute("data-goto")); });
+        });
+      }
+      window.addEventListener("hashchange", route);
+
+      /* ============ Hoja inferior ============ */
+      var sheet = document.getElementById("sheet");
+      var veil = document.getElementById("sheetVeil");
+      function openSheet(title, html) {
+        document.getElementById("sheetTitle").textContent = title;
+        document.getElementById("sheetBody").innerHTML = html;
+        sheet.classList.add("open"); veil.classList.add("open");
+        bindSheetButtons();
+      }
+      function closeSheet() { sheet.classList.remove("open"); veil.classList.remove("open"); }
+      veil.addEventListener("click", closeSheet);
+      document.getElementById("sheetClose").addEventListener("click", closeSheet);
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeSheet(); });
+
+      function bindSheetButtons() {
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-copy]"), function (b) {
+          b.addEventListener("click", function () { copyText(b.getAttribute("data-copy")); });
+        });
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-sheet-goto]"), function (b) {
+          b.addEventListener("click", function () { go(b.getAttribute("data-sheet-goto")); });
+        });
+      }
+
+      var SHEETS = {
+        referidos: {
+          title: "Referidos",
+          body: '<p>Comparte tu código y gana por cada plan que compren tus invitados:</p>' +
+            '<ul><li><b>30%</b> del plan comprado por tus referidos directos (nivel 1).</li>' +
+            '<li><b>10%</b> del plan comprado por el segundo nivel.</li>' +
+            '<li>Cada referido activo también suma <b>energía</b> para tu fundidora.</li></ul>' +
+            '<div class="code-box"><b>GM8KX42P</b><button class="copy-btn" type="button" data-copy="GM8KX42P">Copiar</button></div>'
+        },
+        retiros: {
+          title: "Retiros",
+          body: '<p>Tu saldo disponible para retirar proviene de tus <b>fundiciones completadas</b> y se acredita en tu billetera interna de retiros.</p>' +
+            '<ul><li>Retiro mínimo: <b>$20 USD</b>.</li>' +
+            '<li>Comisión de retiro: <b>12%</b>.</li>' +
+            '<li>Máximo <b>2 retiros por semana</b>.</li>' +
+            '<li>Tiempo estimado de procesamiento: <b>~24 horas</b>.</li>' +
+            '<li>Destino: tu wallet <b>TRC-20</b> conectada.</li></ul>' +
+            '<p>El retiro se acredita en tu wallet TRC-20 conectada.</p>'
+        },
+        soporte: {
+          title: "Soporte",
+          body: '<p>¿Necesitas ayuda con tu operación? El equipo de Gold Mining te atiende por los canales oficiales de la plataforma.</p>' +
+            '<ul><li>Respuesta habitual en <b>menos de 24 horas</b>.</li>' +
+            '<li>Ten a mano tu <b>correo de registro</b> y tu código de referido.</li></ul>'
+        },
+        notificaciones: {
+          title: "Notificaciones",
+          body: '<ul><li><b>Fundición completada</b> — tu oro fundido ya está en tu billetera de retiros.</li>' +
+            '<li><b>Nuevo referido</b> — un referido directo activó su primer plan.</li></ul>'
+        }
+      };
+
+      Array.prototype.forEach.call(document.querySelectorAll("[data-sheet]"), function (b) {
+        b.addEventListener("click", function () {
+          var s = SHEETS[b.getAttribute("data-sheet")];
+          if (s) openSheet(s.title, s.body);
+        });
+      });
+      document.getElementById("bellBtn").addEventListener("click", function () {
+        openSheet(SHEETS.notificaciones.title, SHEETS.notificaciones.body);
+      });
+
+      /* Detalle de máquina */
+      document.getElementById("machineList").addEventListener("click", function (e) {
+        var card = e.target.closest("[data-machine]");
+        if (!card) return;
+        var m = MACHINES[Number(card.getAttribute("data-machine"))];
+        openSheet(m.name,
+          '<p><b>' + m.plan + '</b> · Estado: <b>Activa</b></p>' +
+          '<ul><li>Oro recolectado: <b>' + m.oro + '</b></li>' +
+          '<li>Rentabilidad diaria: <b>' + m.pct + '</b></li>' +
+          '<li>Progreso de extracción: <b>' + m.prog + '%</b></li></ul>' +
+          '<p>Mantenimiento y producción se registran en tu historial.</p>');
+      });
+
+      /* ============ Toast ============ */
+      var toast = document.getElementById("toast"), toastTimer = null;
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toast.classList.remove("show"); }, 3200);
+      }
+
+      /* ============ Copiar ============ */
+      function copyText(text) {
+        function done() { showToast("Copiado: " + text); }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done, function () { fallback(); });
+        } else { fallback(); }
+        function fallback() {
+          var ta = document.createElement("textarea");
+          ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand("copy"); done(); } catch (e) { showToast(text); }
+          document.body.removeChild(ta);
+        }
+      }
+      Array.prototype.forEach.call(document.querySelectorAll("[data-copy]"), function (b) {
+        b.addEventListener("click", function () { copyText(b.getAttribute("data-copy")); });
+      });
+
+      /* ============ Controles varios ============ */
+      document.getElementById("eyeBtn").addEventListener("click", function () {
+        balanceHidden = !balanceHidden;
+        this.setAttribute("aria-pressed", balanceHidden ? "true" : "false");
+        this.setAttribute("aria-label", balanceHidden ? "Mostrar saldo" : "Ocultar saldo");
+        document.getElementById("eyeOpen").style.display = balanceHidden ? "none" : "";
+        document.getElementById("eyeOff").style.display = balanceHidden ? "" : "none";
+        renderBalance();
+      });
+      document.getElementById("smeltBtn").addEventListener("click", function () {
+        showToast("Revisa tu nivel de fundidora y tu energía acumulada");
+      });
+      document.getElementById("logoutBtn").addEventListener("click", function () {
+        showToast("Sesión activa de Carlos Méndez");
+      });
+
+      /* ============ Arranque ============ */
+      renderPlans();
+      renderLevels();
+      setState("completo");
+      bindGoto(document);
+      route();
+    </script>
+  </body>
+</html>
