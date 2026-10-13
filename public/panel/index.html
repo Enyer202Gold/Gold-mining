@@ -1789,6 +1789,12 @@
             '<span class="ob-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span>' +
             '<span><b>Compra en verificación</b><small>' + op.plan + ' · ' + order.amount + ' USDT</small></span>' +
             '<span class="ob-go">Ver estado →</span></button>';
+        } else if (typeof order !== "undefined" && walletPendingOrder()) {
+          var wpPlan = PLANS[walletPendingOrder().planId];
+          banner = '<button class="order-banner" type="button" id="walletBanner">' +
+            '<span class="ob-ic">' + PLAN_ICONS.wallet + '</span>' +
+            '<span><b>Máquina adquirida</b><small>' + wpPlan.plan + ' · Conecta tu billetera</small></span>' +
+            '<span class="ob-go">Conectar →</span></button>';
         }
         document.getElementById("planList").innerHTML = banner + PLANS.map(function (p, idx) {
           var owned = fleetCount(idx);
@@ -1809,6 +1815,8 @@
         });
         var ob = document.getElementById("orderBanner");
         if (ob) ob.addEventListener("click", function () { if (orderActive()) openBuyFlow(order.planId); });
+        var wb = document.getElementById("walletBanner");
+        if (wb) wb.addEventListener("click", function () { openWalletPendingOrder(); });
       }
 
       /* ============ Ficha del plan (hoja a pantalla completa) ============ */
@@ -2052,6 +2060,7 @@
       function renderBuyConfirm() {
         var idx = buyState.idx, p = PLANS[idx];
         var otherPending = orderActive() && order.planId !== idx;
+        var wpOrder = walletPendingOrder();
         var html = buyHeadHTML();
         html += '<div class="buy-scroll"><div class="buy-body">';
         html += buyProgressHTML(1, false);
@@ -2063,6 +2072,14 @@
             '<b>Tienes una orden en curso del ' + op.plan + '</b>' +
             '<p>' + op.name + ' · ' + order.amount + ' USDT · Orden ' + order.id + '. Resuélvela antes de crear otra orden.</p>' +
             '<button class="btn btn-dark" type="button" id="buySeeOrderBtn">Ver orden en curso</button>' +
+          '</div></div>';
+        }
+        if (wpOrder) {
+          var wpp = PLANS[wpOrder.planId];
+          html += '<div class="pending-box">' + '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>' + '<div>' +
+            '<b>Primero conecta la billetera de tu máquina adquirida.</b>' +
+            '<p>' + wpp.plan + ' · ' + wpp.name + ' · Tu máquina ya está registrada, pero aún no tiene una billetera conectada.</p>' +
+            '<button class="btn btn-dark" type="button" id="buyWalletNowBtn">Conectar ahora</button>' +
           '</div></div>';
         }
         html += '<div class="buy-card">' +
@@ -2080,7 +2097,16 @@
         if (otherPending) {
           document.getElementById("buySeeOrderBtn").addEventListener("click", function () { openBuyFlow(order.planId); });
         }
+        if (wpOrder) {
+          document.getElementById("buyWalletNowBtn").addEventListener("click", function () { openWalletPendingOrder(); });
+        }
         document.getElementById("buyContinueBtn").addEventListener("click", function () {
+          if (walletPendingOrder()) {
+            var werr = document.getElementById("buyConfirmError");
+            werr.textContent = "Primero conecta la billetera de tu máquina adquirida.";
+            werr.classList.add("show");
+            return;
+          }
           var o = ensureOrder(idx);
           if (!o) {
             var err = document.getElementById("buyConfirmError");
@@ -2434,6 +2460,22 @@
       var orderSeq = lsGet("gm_order_seq", 0);
       if (typeof orderSeq !== "number" || orderSeq < 0 || isNaN(orderSeq)) orderSeq = 0;
       function orderActive() { return !!(order && order.status !== "confirmada"); }
+      /* Unidad nacida de una orden CONFIRMADA que aún no tiene billetera conectada.
+         Solo esa unidad dispara el banner y el bloqueo de compra: las unidades de
+         escenario o del atajo de prueba no están ligadas a ninguna orden. */
+      function walletPendingOrder() {
+        if (!order || order.status !== "confirmada" || !order.unitCreated || !order.unitId) return null;
+        var u = findUnit(order.unitId);
+        return (u && !u.connected) ? order : null;
+      }
+      function openWalletPendingOrder() {
+        var o = walletPendingOrder();
+        if (!o) return;
+        buyState.idx = o.planId;
+        buyState.step = "done";
+        renderBuySheet();
+        buySheetEl.classList.add("open");
+      }
       function persistOrder() { lsSet("gm_order", order); lsSet("gm_order_seq", orderSeq); }
       function priceNum(p) { return parseInt(String(p.price).replace(/[^0-9]/g, ""), 10) || 0; }
       function ensureOrder(idx) {
@@ -2916,11 +2958,18 @@
           '</div>';
         }).join("");
         var orderStatusLabels = { pago: "Pago pendiente", esperando: "Esperando confirmación", confirmando: "Confirmando en la red", confirmada: "Confirmada", error: "Error en la verificación" };
+        var acquiredWalletState = "—";
+        if (order && order.status === "confirmada") {
+          var aUnit = order.unitId ? findUnit(order.unitId) : null;
+          acquiredWalletState = (aUnit && aUnit.connected) ? "Conectada" : "Pendiente";
+        }
+        var acquiredWalletLine = '<p class="fu-empty" style="margin:6px 0 0">Billetera de la unidad adquirida: <b style="color:var(--gold-2)">' + acquiredWalletState + '</b></p>';
         var orderBlock;
         if (!order) {
           orderBlock = '<div class="pw-block">' +
             '<div class="pw-head"><b>Orden de compra</b><span>Sin orden</span></div>' +
             '<p class="fu-empty" style="margin:0">Sin orden en curso</p>' +
+            acquiredWalletLine +
             '<div class="order-test-btns">' +
               '<button class="ot-btn" type="button" disabled>Marcar transferido</button>' +
               '<button class="ot-btn" type="button" disabled>Red confirmando</button>' +
@@ -2935,6 +2984,7 @@
             '<div class="pw-head"><b>' + order.id + ' · ' + op2.plan + '</b><span>' + orderStatusLabels[order.status] + '</span></div>' +
             '<p class="fu-empty" style="margin:0">' + op2.name + ' · ' + order.amount + ' USDT · Estado: <b style="color:var(--gold-2)">' + orderStatusLabels[order.status] + '</b>' + (order.unitCreated ? ' · Unidad creada en la flota' : '') + '</p>' +
             '<p class="fu-empty" style="margin:6px 0 0">TxID: <b style="color:var(--gold-2)">' + (order.txid ? shortenAddr(order.txid) : 'Sin adjuntar') + '</b> · Comprobante: <b style="color:var(--gold-2)">' + (orderHasReceipt() ? 'Adjunto' : 'Sin adjuntar') + '</b></p>' +
+            acquiredWalletLine +
             '<div class="order-test-btns">' +
               '<button class="ot-btn" type="button" data-order-act="transferred"' + (order.status === "pago" ? '' : ' disabled') + '>Marcar transferido</button>' +
               '<button class="ot-btn" type="button" data-order-act="confirming"' + (order.status === "esperando" ? '' : ' disabled') + '>Red confirmando</button>' +
