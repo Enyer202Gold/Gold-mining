@@ -514,6 +514,75 @@
       .chained-invite{ width:100%; margin-top:10px; min-height:45px; }
       .chained-back{ width:100%; margin-top:7px; min-height:40px; }
       @media (max-width:350px){ .req-marks{ grid-template-columns:1fr; } .chained-coins img{ width:34px; height:34px; } }
+      /* ---------- Modo de prueba ---------- */
+      .test-card{ border-color:rgba(212,160,23,.45); background:linear-gradient(180deg,#1d170d,var(--panel)); }
+      .req-mark.done{ border:1px solid rgba(61,220,132,.45); background:rgba(61,220,132,.06); }
+      .req-mark.done .req-dot{ border-color:var(--green); background:var(--green); color:#062b16; }
+      .req-mark.done em{ color:#7bf0ae; }
+      .req-slot-head span.done{ color:#7bf0ae; }
+      .scenario-list{ display:grid; gap:8px; margin-bottom:16px; }
+      .scenario-card{
+        display:flex; align-items:center; gap:11px; width:100%; text-align:left;
+        border:1px solid var(--line-soft); border-radius:14px; background:var(--panel);
+        padding:11px 12px; color:var(--text);
+      }
+      .scenario-card .sc-info{ flex:1; min-width:0; }
+      .scenario-card .sc-info b{ display:block; font-size:15.5px; font-weight:700; line-height:1.2; }
+      .scenario-card .sc-info small{ display:block; color:var(--muted); font-size:12px; line-height:1.35; margin-top:2px; }
+      .scenario-card .sc-check{
+        flex:none; display:none; align-items:center; gap:5px;
+        border:1px solid rgba(61,220,132,.55); background:rgba(61,220,132,.10); color:#7bf0ae;
+        border-radius:999px; padding:3px 9px; font-size:11px; font-weight:800; letter-spacing:.04em; text-transform:uppercase;
+      }
+      .scenario-card.active{ border-color:var(--gold); background:rgba(212,160,23,.08); }
+      .scenario-card.active .sc-check{ display:inline-flex; }
+      .adj-block{ border:1px solid var(--line-soft); border-radius:14px; background:var(--panel); padding:12px; margin-bottom:10px; }
+      .adj-head{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:9px; }
+      .adj-head b{ font-size:14.5px; }
+      .adj-head output{ font-size:17px; font-weight:800; color:var(--gold-2); font-variant-numeric:tabular-nums; }
+      .adj-row{ display:flex; align-items:center; gap:9px; }
+      .adj-btn{
+        flex:none; width:42px; height:42px; border-radius:11px;
+        border:1px solid var(--line); background:#19130a; color:var(--gold-2);
+        font-size:21px; font-weight:800; line-height:1; display:grid; place-items:center;
+      }
+      .adj-row input[type="range"]{ flex:1; min-width:0; accent-color:var(--gold); height:32px; }
+      .adj-note{ margin:2px 0 12px; color:var(--muted); font-size:12.5px; line-height:1.45; }
+      .reset-btn{ width:100%; min-height:44px; margin-bottom:12px; }
+      .editor-h{ margin:16px 0 4px; font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:20px; letter-spacing:.03em; text-transform:uppercase; color:#fdfaf2; }
+      .adj-head output{ display:none; }
+      .adj-num{
+        width:118px; flex:none; height:36px; border:1px solid rgba(240,194,75,.45); border-radius:9px;
+        padding:0 9px; background:#080705; color:var(--gold-2); font:800 16px "Barlow";
+        font-variant-numeric:tabular-nums; text-align:right; outline:none;
+      }
+      .adj-num:focus{ border-color:var(--gold-2); box-shadow:0 0 0 2px rgba(212,160,23,.12); }
+      .adj-unit{ color:var(--muted); font-size:13px; font-weight:700; margin-left:-4px; }
+      .apply-btn{ width:100%; min-height:44px; margin:2px 0 4px; }
+      .ptoggle{
+        display:flex; align-items:center; gap:11px; width:100%;
+        border:1px solid var(--line-soft); border-radius:14px; background:var(--panel);
+        padding:10px 12px; margin-bottom:8px; color:var(--text); text-align:left;
+      }
+      .ptoggle img{ width:52px; height:40px; border-radius:9px; object-fit:cover; flex:none; }
+      .ptoggle .pt-info{ flex:1; min-width:0; }
+      .ptoggle .pt-info b{ display:block; font-size:14.5px; line-height:1.2; }
+      .ptoggle .pt-info small{ display:block; color:var(--muted); font-size:11.5px; margin-top:1px; }
+      .ptoggle .pt-btn{
+        flex:none; border:1px solid var(--line); border-radius:999px; min-height:34px; padding:5px 12px;
+        background:#19130a; color:var(--gold-2); font-size:12px; font-weight:800; white-space:nowrap;
+      }
+      .ptoggle.on{ border-color:rgba(61,220,132,.5); }
+      .ptoggle.on .pt-btn{ border-color:rgba(255,93,93,.5); background:rgba(255,93,93,.07); color:#ff9c9c; }
+      .pt-state{ display:inline-block; margin-top:3px; font-size:10.5px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; color:var(--muted-2); }
+      .ptoggle.on .pt-state{ color:#7bf0ae; }
+      .plan-active-pill{
+        position:absolute; top:12px; right:12px; z-index:1;
+        display:inline-flex; align-items:center; gap:5px;
+        border-radius:999px; padding:3px 9px; font-size:11px; font-weight:700;
+        background:rgba(6,26,15,.85); border:1px solid rgba(61,220,132,.55); color:#7bf0ae;
+      }
+
       /* ---------- Historial ---------- */
       .move{
         display:flex; align-items:center; gap:13px;
@@ -884,22 +953,9 @@
               <p>Necesitas <b>2 referidos directos activos</b>. Un referido <b>activo</b> es quien <b>compra al menos un plan</b>. Y cada uno de esos 2 directos debe <b>invitar a 1 persona que también active un plan</b>: así sumas además <b>2 referidos de segundo nivel activos</b>.</p>
             </div>
 
-            <div class="chained-progress-head"><h3>Tu progreso de desbloqueo</h3><span>0 de 2 directos completos</span></div>
+            <div class="chained-progress-head"><h3>Tu progreso de desbloqueo</h3><span id="chainedProgressLabel">0 de 2 directos completos</span></div>
 
-            <div class="req-slot">
-              <div class="req-slot-head"><span class="slot-num">1</span><b>Directo 1</b><span>Pendiente</span></div>
-              <div class="req-marks">
-                <div class="req-mark"><span class="req-dot"></span><span><small>Directo activo</small><b>Compró un plan</b><em>Pendiente</em></span></div>
-                <div class="req-mark"><span class="req-dot"></span><span><small>Su invitado activo</small><b>Compró un plan</b><em>Pendiente</em></span></div>
-              </div>
-            </div>
-            <div class="req-slot">
-              <div class="req-slot-head"><span class="slot-num">2</span><b>Directo 2</b><span>Pendiente</span></div>
-              <div class="req-marks">
-                <div class="req-mark"><span class="req-dot"></span><span><small>Directo activo</small><b>Compró un plan</b><em>Pendiente</em></span></div>
-                <div class="req-mark"><span class="req-dot"></span><span><small>Su invitado activo</small><b>Compró un plan</b><em>Pendiente</em></span></div>
-              </div>
-            </div>
+            <div id="chainedSlots"></div>
 
             <div class="permanence-note">
               <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 1-7-7c0-2.4 1.2-4.3 2.7-6C9.2 7.1 10.6 5.3 10.8 2.2c0-.9 1.2-1.2 1.7-.5 2 2.4 2.6 5.6 2.1 8.2.6-.5 1-1.2 1.3-2 .3-.7 1.4-.7 1.7 0 .7 1.5 1.4 3 1.4 4.6a7 7 0 0 1-7 7Z"/></svg>
@@ -933,6 +989,12 @@
             <h3>Carlos Méndez</h3>
             <p>carlos.mendez@mail.com</p>
           </div>
+
+          <button class="data-row test-card" type="button" id="testModeCard" aria-label="Abrir el modo de prueba">
+            <span class="dicon"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v6.3L4.5 18a2.4 2.4 0 0 0 2.1 3.5h10.8A2.4 2.4 0 0 0 19.5 18L14 8.3V2"/><path d="M8.5 2h7"/><path d="M7.5 14h9"/></svg></span>
+            <span class="dinfo"><small>Modo de prueba</small><b id="testModeCurrent">Nivel Hierro</b><span style="display:block;color:var(--muted);font-size:12.5px;margin-top:2px">Cambia el escenario para probar cómo lo ve cada usuario</span></span>
+            <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--gold-2);flex:none"><path d="m9 5 7 7-7 7"/></svg>
+          </button>
 
           <div class="data-row">
             <span class="dicon"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
@@ -1004,7 +1066,11 @@
         { plan: "PLAN 01", name: "Mini Perforadora", img: "assets/plan-1.webp",
           oro: "12.35 g", label1: "Oro recolectado", pct: "2.5%", label2: "Rentabilidad diaria", prog: 42 },
         { plan: "PLAN 02", name: "Perforadora Triple", img: "assets/plan-2.webp",
-          oro: "5.80 g", label1: "Oro recolectado", pct: "3.5%", label2: "Rentabilidad diaria", prog: 28 }
+          oro: "5.80 g", label1: "Oro recolectado", pct: "3.5%", label2: "Rentabilidad diaria", prog: 28 },
+        { plan: "PLAN 03", name: "Planta Minera", img: "assets/plan-3.webp",
+          oro: "31.20 g", label1: "Oro recolectado", pct: "4.5%", label2: "Rentabilidad diaria", prog: 57 },
+        { plan: "PLAN 04", name: "Planta Minera Avanzada", img: "assets/plan-4.webp",
+          oro: "58.40 g", label1: "Oro recolectado", pct: "5.5%", label2: "Rentabilidad diaria", prog: 71 }
       ];
 
       var PLANS = [
@@ -1034,12 +1100,48 @@
         { icon: "check", title: "Activación · Plan 02", date: "Hace 9 días", amt: "Completada", cls: "" }
       ];
 
-      var STATES = {
-        completo: { balance: "125.50", machines: MACHINES, moves: MOVES_FULL },
-        nuevo:    { balance: "0.00",   machines: [],       moves: [] },
-        sinsaldo: { balance: "125.50", machines: [],       moves: [ MOVES_FULL[0] ] }
-      };
-      var currentState = "completo";
+      var MOVES_MITAD = [
+        { icon: "pick", title: "Producción diaria · Perforadora Triple", date: "Hoy", amt: "+1.40 g", cls: "pos" },
+        { icon: "users", title: "Comisión de referido · Nivel 1", date: "Ayer", amt: "+2.25 g", cls: "pos" },
+        { icon: "check", title: "Activación · Plan 02", date: "Hace 6 días", amt: "Completada", cls: "" }
+      ];
+      var MOVES_SINREF = [
+        { icon: "pick", title: "Producción diaria · Mini Perforadora", date: "Hoy", amt: "+0.85 g", cls: "pos" },
+        { icon: "check", title: "Activación · Plan 01", date: "Hace 5 días", amt: "Completada", cls: "" }
+      ];
+      var MOVES_ORO = [
+        { icon: "flame", title: "Fundición completada", date: "Hoy · Nivel Oro", amt: "+120.00 g", cls: "pos" },
+        { icon: "bolt", title: "Energía por referido directo", date: "Ayer", amt: "+50 ⚡", cls: "pos", raw: true },
+        { icon: "pick", title: "Producción diaria · Planta Minera", date: "Ayer", amt: "+4.10 g", cls: "pos" },
+        { icon: "users", title: "Comisión de referido · Nivel 1", date: "Hace 2 días", amt: "+6.75 g", cls: "pos" },
+        { icon: "check", title: "Activación · Plan 03", date: "Hace 12 días", amt: "Completada", cls: "" }
+      ];
+      var MOVES_DIAMANTE = [
+        { icon: "flame", title: "Fundición completada", date: "Hoy · Nivel Diamante", amt: "+350.00 g", cls: "pos" },
+        { icon: "bolt", title: "Energía por referido directo", date: "Hoy", amt: "+50 ⚡", cls: "pos", raw: true },
+        { icon: "pick", title: "Producción diaria · Planta Minera Avanzada", date: "Ayer", amt: "+9.60 g", cls: "pos" },
+        { icon: "users", title: "Comisión de referido · Nivel 2", date: "Ayer", amt: "+3.40 g", cls: "pos" },
+        { icon: "wallet", title: "Retiro completado", date: "Hace 3 días", amt: "−500.00 g", cls: "neg" },
+        { icon: "check", title: "Activación · Plan 04", date: "Hace 20 días", amt: "Completada", cls: "" }
+      ];
+
+      /* ============ Modo de prueba: escenarios del usuario ============ */
+      var DEFAULT_SCENARIO = "hierro";
+      var SCENARIOS = [
+        { key: "nuevo", name: "Usuario nuevo", desc: "Recién registrado: sin planes, sin oro y sin referidos.",
+          machines: [], gold: 0, wallet: 0, energy: 0, unlocked: false, unlockDone: 0, moves: [] },
+        { key: "sinref", name: "Sin referidos", desc: "Plan 1 activo produciendo, pero sin ningún referido.",
+          machines: [0], gold: 45.20, wallet: 0, energy: 0, unlocked: false, unlockDone: 0, moves: MOVES_SINREF },
+        { key: "mitad", name: "Desbloqueo a mitad", desc: "Plan 2 activo y 1 de 2 directos completos para desbloquear.",
+          machines: [1], gold: 80.00, wallet: 0, energy: 0, unlocked: false, unlockDone: 1, moves: MOVES_MITAD },
+        { key: "hierro", name: "Nivel Hierro", desc: "El estado aprobado: 2 planes, fundidora desbloqueada en Hierro.",
+          machines: [0, 1], gold: 125.50, wallet: 125.50, energy: 320, unlocked: true, unlockDone: 2, moves: MOVES_FULL },
+        { key: "oro", name: "Nivel Oro", desc: "3 planes activos y energía para operar en Nivel Oro.",
+          machines: [0, 1, 2], gold: 640.75, wallet: 480.20, energy: 720, unlocked: true, unlockDone: 2, moves: MOVES_ORO },
+        { key: "diamante", name: "Nivel Diamante", desc: "Los 4 planes activos y el nivel máximo de la fundidora.",
+          machines: [0, 1, 2, 3], gold: 2450.00, wallet: 1930.00, energy: 1480, unlocked: true, unlockDone: 2, moves: MOVES_DIAMANTE }
+      ];
+      function scenarioByKey(k) { for (var i = 0; i < SCENARIOS.length; i++) if (SCENARIOS[i].key === k) return SCENARIOS[i]; return SCENARIOS[3]; }
       var balanceHidden = false;
 
       /* ============ Iconos reutilizables ============ */
@@ -1055,12 +1157,22 @@
       };
 
       /* ============ Render: máquinas ============ */
+      function currentMachines() {
+        return testState.plans.slice().sort(function (a, b) { return a - b; }).map(function (i) { return MACHINES[i]; });
+      }
+      function togglePlan(idx) {
+        var pos = testState.plans.indexOf(idx);
+        if (pos >= 0) { testState.plans.splice(pos, 1); showToast("Plan de prueba retirado: " + PLANS[idx].name); }
+        else { testState.plans.push(idx); showToast("Plan de prueba activo: " + PLANS[idx].name); }
+        persistTest();
+        renderMachines(); renderPlans();
+      }
       function renderMachines() {
         var wrap = document.getElementById("machineList");
-        var st = STATES[currentState];
-        wrap.classList.toggle("no-scroll", st.machines.length <= 1);
+        var list = currentMachines();
+        wrap.classList.toggle("no-scroll", list.length <= 1);
         wrap.scrollTop = 0;
-        if (!st.machines.length) {
+        if (!list.length) {
           wrap.innerHTML =
             '<div class="empty">' +
               '<span class="eicon">' + ICONS.drill + '</span>' +
@@ -1069,7 +1181,7 @@
               '<button class="btn btn-gold" type="button" data-goto="planes">Ver planes</button>' +
             '</div>';
         } else {
-          wrap.innerHTML = st.machines.map(function (m, i) {
+          wrap.innerHTML = list.map(function (m, i) {
             return '<button class="machine" type="button" data-machine="' + i + '" aria-label="Ver detalles de ' + m.name + '">' +
               '<span class="bg"><img src="' + m.img + '" alt="" loading="lazy" /></span>' +
               '<span class="machine-top"><span class="plan-pill">' + m.plan + '</span>' +
@@ -1088,9 +1200,11 @@
 
       /* ============ Render: planes ============ */
       function renderPlans() {
-        document.getElementById("planList").innerHTML = PLANS.map(function (p) {
+        document.getElementById("planList").innerHTML = PLANS.map(function (p, idx) {
+          var active = testState.plans.indexOf(idx) >= 0;
           return '<article class="plan-card">' +
-            '<div class="pimg"><img src="' + p.img + '" alt="' + p.name + '" loading="lazy" /><span class="plan-pill">' + p.plan + '</span></div>' +
+            '<div class="pimg"><img src="' + p.img + '" alt="' + p.name + '" loading="lazy" /><span class="plan-pill">' + p.plan + '</span>' +
+            (active ? '<span class="plan-active-pill">Plan activo</span>' : '') + '</div>' +
             '<div class="plan-body"><h3>' + p.name + '</h3>' +
               '<div class="plan-price"><b>' + p.price + '</b><span>Precio de la máquina</span></div>' +
               '<div class="plan-rows">' +
@@ -1098,7 +1212,9 @@
                 '<div><span>Rentabilidad</span><b>' + p.pct + '</b></div>' +
                 '<div><span>Mantenimiento semanal</span><b>' + p.maint + '</b></div>' +
               '</div>' +
-              '<button class="btn btn-gold" type="button" data-activate="' + p.name + '">Activar plan</button>' +
+              (active
+                ? '<button class="btn btn-dark" type="button" data-active-plan="' + p.name + '">Plan activo</button>'
+                : '<button class="btn btn-gold" type="button" data-activate="' + p.name + '">Activar plan</button>') +
             '</div></article>';
         }).join("");
         Array.prototype.forEach.call(document.querySelectorAll("[data-activate]"), function (b) {
@@ -1106,18 +1222,41 @@
             showToast("Plan seleccionado: " + b.getAttribute("data-activate"));
           });
         });
+        Array.prototype.forEach.call(document.querySelectorAll("[data-active-plan]"), function (b) {
+          b.addEventListener("click", function () {
+            showToast("Ya tienes activo el " + b.getAttribute("data-active-plan"));
+          });
+        });
       }
 
       /* ============ Fundidora: estado y niveles ============ */
       function lsGet(k, d) { try { var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }
       function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
-      var smeltState = {
-        energy: lsGet("gm_energy", 320),
-        goldSpent: lsGet("gm_gold_spent", 0),
-        wallet: lsGet("gm_wallet", 125.50),
-        previewKey: "hierro"
+      var testState = {
+        scenario: lsGet("gm_scenario", DEFAULT_SCENARIO)
       };
-      function goldAvailable() { return Math.max(0, 125.50 - smeltState.goldSpent); }
+      if (!SCENARIOS.some(function (s) { return s.key === testState.scenario; })) testState.scenario = DEFAULT_SCENARIO;
+      var _sc0 = scenarioByKey(testState.scenario);
+      testState.plans = lsGet("gm_plans", null);
+      if (!Array.isArray(testState.plans) || !testState.plans.every(function (i) { return MACHINES[i]; })) testState.plans = _sc0.machines.slice();
+      var smeltState = {
+        energy: lsGet("gm_energy", _sc0.energy),
+        goldBase: lsGet("gm_gold", _sc0.gold),
+        goldSpent: lsGet("gm_gold_spent", 0),
+        wallet: lsGet("gm_wallet", _sc0.wallet),
+        previewKey: lsGet("gm_preview", null) || levelKeyForEnergy(lsGet("gm_energy", _sc0.energy))
+      };
+      function levelKeyForEnergy(e) { var cur = LEVELS[0]; LEVELS.forEach(function (l) { if (e >= l.min) cur = l; }); return cur.key; }
+      function goldAvailable() { return Math.max(0, smeltState.goldBase - smeltState.goldSpent); }
+      function persistTest() {
+        lsSet("gm_scenario", testState.scenario);
+        lsSet("gm_plans", testState.plans);
+        lsSet("gm_energy", smeltState.energy);
+        lsSet("gm_gold", smeltState.goldBase);
+        lsSet("gm_gold_spent", smeltState.goldSpent);
+        lsSet("gm_wallet", smeltState.wallet);
+        lsSet("gm_preview", smeltState.previewKey);
+      }
       function levelByKey(k) { for (var i = 0; i < LEVELS.length; i++) if (LEVELS[i].key === k) return LEVELS[i]; return LEVELS[1]; }
       function operativeLevel() { var e = smeltState.energy, cur = LEVELS[0]; LEVELS.forEach(function (l) { if (e >= l.min) cur = l; }); return cur; }
       function levelForEnergy(e) { var cur = LEVELS[0]; LEVELS.forEach(function (l) { if (e >= l.min) cur = l; }); return cur; }
@@ -1192,6 +1331,7 @@
           noteEl.textContent = "ⓘ Mantén la energía por encima del umbral para conservar tu nivel.";
         }
         document.getElementById("goldNow").textContent = fmt(goldAvailable(), 2) + " g";
+        renderBalance();
         document.getElementById("walletBalance").textContent = "US$" + fmt(smeltState.wallet, 2);
         document.getElementById("referralEnergy").textContent = fmtInt(smeltState.energy) + " unidades";
         document.getElementById("smeltCost").textContent = op.cost + " unidades";
@@ -1267,8 +1407,8 @@
         var now = Date.now();
         var op = { id: "op-" + now, start: now, durationMs: lv.hours * 3600 * 1000, grams: amt, usd: amt, levelKey: lv.key, cost: lv.cost, credited: false };
         lsSet("gm_smelt_op", op);
-        smeltState.energy -= lv.cost; lsSet("gm_energy", smeltState.energy);
-        smeltState.goldSpent += amt; lsSet("gm_gold_spent", smeltState.goldSpent);
+        smeltState.energy -= lv.cost;
+        smeltState.goldSpent += amt; persistTest();
         showRun(op);
         showToast("Fundición iniciada · Nivel " + lv.name);
       }
@@ -1318,7 +1458,7 @@
         if (doneVid) { doneVid.pause(); doneVid.hidden = true; }
         if (!op.credited) {
           op.credited = true; lsSet("gm_smelt_op", op);
-          smeltState.wallet += op.usd; lsSet("gm_wallet", smeltState.wallet);
+          smeltState.wallet += op.usd; persistTest();
           lsSet("gm_smelt_move", { icon: "flame", title: "Fundición completada", date: "Nivel " + levelByKey(op.levelKey).name, amt: "+" + fmt(op.usd, 2) + " USD", cls: "pos" });
           renderMoves();
         }
@@ -1341,6 +1481,11 @@
       }
       function restoreSmelt() {
         var op = lsGet("gm_smelt_op", null);
+        if (op && !scenarioByKey(testState.scenario).unlocked) {
+          /* Un escenario bloqueado nunca conserva una fundición en curso */
+          try { localStorage.removeItem("gm_smelt_op"); } catch (e) {}
+          op = null;
+        }
         if (op) showRun(op); else renderSmelt();
       }
 
@@ -1348,7 +1493,8 @@
       function renderMoves() {
         var wrap = document.getElementById("moveList");
         var extra = lsGet("gm_smelt_move", null);
-        var moves = (extra && currentState === "completo") ? [extra].concat(STATES[currentState].moves) : STATES[currentState].moves;
+        var base = scenarioByKey(testState.scenario).moves;
+        var moves = (extra && testState.scenario === DEFAULT_SCENARIO) ? [extra].concat(base) : base;
         if (!moves.length) {
           wrap.innerHTML =
             '<div class="empty">' +
@@ -1365,17 +1511,178 @@
         }).join("");
       }
 
-      /* ============ Saldo y estados ============ */
+      /* ============ Saldo ============ */
       function renderBalance() {
         var el = document.getElementById("balanceValue");
-        el.textContent = balanceHidden ? "•••••" : STATES[currentState].balance;
+        el.textContent = balanceHidden ? "•••••" : fmt(goldAvailable(), 2);
       }
-      function setState(key) {
-        currentState = key;
-        Array.prototype.forEach.call(document.querySelectorAll(".chip[data-state]"), function (c) {
-          c.setAttribute("aria-pressed", c.getAttribute("data-state") === key ? "true" : "false");
+
+      /* ============ Modo de prueba: aplicar escenario y ajustes ============ */
+      var chainedPreview = false;
+      function renderTestCard() {
+        document.getElementById("testModeCurrent").textContent = scenarioByKey(testState.scenario).name;
+      }
+      function cancelRunningSmelt() {
+        clearInterval(smeltTimer);
+        try { localStorage.removeItem("gm_smelt_op"); } catch (e) {}
+        var rv = document.getElementById("runVideo");
+        if (rv) { rv.pause(); rv.removeAttribute("src"); rv.load(); rv.hidden = true; }
+        document.getElementById("smeltRunning").hidden = true;
+        document.getElementById("smeltPrep").hidden = false;
+      }
+      function applyScenario(key, silent) {
+        var sc = scenarioByKey(key);
+        testState.scenario = sc.key;
+        testState.plans = sc.machines.slice();
+        smeltState.energy = sc.energy;
+        smeltState.goldBase = sc.gold;
+        smeltState.goldSpent = 0;
+        smeltState.wallet = sc.wallet;
+        smeltState.previewKey = levelKeyForEnergy(sc.energy);
+        chainedPreview = false;
+        cancelRunningSmelt();
+        persistTest();
+        renderTestCard(); renderBalance(); renderMachines(); renderPlans(); renderMoves(); renderSmelt(); renderChained(); updateSmeltGate();
+        if (!silent) showToast("Escenario activo: " + sc.name);
+      }
+      function applyAdjustments(wasOperative) {
+        /* Si la vista previa era el nivel operativo, sigue al nuevo nivel al cambiar la energía */
+        if (wasOperative) smeltState.previewKey = levelKeyForEnergy(smeltState.energy);
+        persistTest();
+        renderBalance(); renderSmelt();
+      }
+      function updateSmeltGate() {
+        var sc = scenarioByKey(testState.scenario);
+        var showChainedView = !sc.unlocked || chainedPreview;
+        document.getElementById("smeltMain").hidden = showChainedView;
+        document.getElementById("smeltChained").hidden = !showChainedView;
+        document.getElementById("chainedBack").hidden = sc.unlocked ? false : true;
+        if (showChainedView) renderChained();
+      }
+      function renderChained() {
+        var sc = scenarioByKey(testState.scenario);
+        var done = sc.unlocked ? 2 : sc.unlockDone;
+        document.getElementById("chainedProgressLabel").textContent = done + " de 2 directos completos";
+        var check = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.5 5 5 10-11"/></svg>';
+        var html = "";
+        for (var i = 1; i <= 2; i++) {
+          var complete = i <= done;
+          html += '<div class="req-slot">' +
+            '<div class="req-slot-head"><span class="slot-num">' + i + '</span><b>Directo ' + i + '</b><span class="' + (complete ? 'done' : '') + '">' + (complete ? 'Completo' : 'Pendiente') + '</span></div>' +
+            '<div class="req-marks">' +
+              '<div class="req-mark' + (complete ? ' done' : '') + '"><span class="req-dot">' + (complete ? check : '') + '</span><span><small>Directo activo</small><b>Compró un plan</b><em>' + (complete ? 'Completado' : 'Pendiente') + '</em></span></div>' +
+              '<div class="req-mark' + (complete ? ' done' : '') + '"><span class="req-dot">' + (complete ? check : '') + '</span><span><small>Su invitado activo</small><b>Compró un plan</b><em>' + (complete ? 'Completado' : 'Pendiente') + '</em></span></div>' +
+            '</div></div>';
+        }
+        document.getElementById("chainedSlots").innerHTML = html;
+      }
+      function openTestMode() {
+        var sc = scenarioByKey(testState.scenario);
+        var cards = SCENARIOS.map(function (s) {
+          return '<button class="scenario-card' + (s.key === sc.key ? ' active' : '') + '" type="button" data-scenario="' + s.key + '">' +
+            '<span class="sc-info"><b>' + s.name + '</b><small>' + s.desc + '</small></span>' +
+            '<span class="sc-check">Activo</span></button>';
+        }).join("");
+        var planToggles = PLANS.map(function (p, idx) {
+          var on = testState.plans.indexOf(idx) >= 0;
+          return '<div class="ptoggle' + (on ? ' on' : '') + '">' +
+            '<img src="' + p.img + '" alt="" loading="lazy" />' +
+            '<span class="pt-info"><b>' + p.plan + ' · ' + p.name + '</b><small>' + p.pct + ' · ' + p.price + '</small>' +
+            '<span class="pt-state">' + (on ? 'Plan activo' : 'Sin activar') + '</span></span>' +
+            '<button class="pt-btn" type="button" data-plan-toggle="' + idx + '">' + (on ? 'Quitar' : 'Activar plan de prueba') + '</button></div>';
+        }).join("");
+        var html =
+          '<p>Elige un escenario para ver el panel tal como lo vive ese usuario. Cambiar de escenario reinicia cualquier fundición en curso.</p>' +
+          '<div class="scenario-list">' + cards + '</div>' +
+          '<h4 class="editor-h">Editor de estado</h4>' +
+          '<p class="adj-note" style="margin:0 0 10px">Fija el punto de partida que quieras y la app responde de verdad: escribe las cantidades y pulsa «Aplicar», o usa los deslizadores.</p>' +
+          '<div class="adj-block"><div class="adj-head"><b>Energía</b><span><input class="adj-num" type="number" id="adjEnergyNum" min="0" max="100000" step="1" value="' + smeltState.energy + '" aria-label="Energía en unidades" /> <span class="adj-unit">⚡</span></span></div>' +
+            '<div class="adj-row"><button class="adj-btn" type="button" data-adj="energy:-50" aria-label="Quitar 50 de energía">−</button>' +
+            '<input type="range" id="adjEnergy" min="0" max="1500" step="10" value="' + Math.min(1500, smeltState.energy) + '" aria-label="Energía, de 0 a 1500" />' +
+            '<button class="adj-btn" type="button" data-adj="energy:50" aria-label="Añadir 50 de energía">+</button></div></div>' +
+          '<div class="adj-block"><div class="adj-head"><b>Saldo de oro</b><span><input class="adj-num" type="number" id="adjGoldNum" min="0" max="1000000" step="0.01" value="' + goldAvailable().toFixed(2) + '" aria-label="Saldo de oro en gramos" /> <span class="adj-unit">g</span></span></div>' +
+            '<div class="adj-row"><button class="adj-btn" type="button" data-adj="gold:-25" aria-label="Quitar 25 gramos de oro">−</button>' +
+            '<input type="range" id="adjGold" min="0" max="3000" step="5" value="' + Math.min(3000, goldAvailable()) + '" aria-label="Oro disponible, de 0 a 3000 gramos" />' +
+            '<button class="adj-btn" type="button" data-adj="gold:25" aria-label="Añadir 25 gramos de oro">+</button></div></div>' +
+          '<div class="adj-block"><div class="adj-head"><b>Billetera de plataforma</b><span><input class="adj-num" type="number" id="adjWalletNum" min="0" max="1000000" step="0.01" value="' + smeltState.wallet.toFixed(2) + '" aria-label="Billetera de plataforma en dólares" /> <span class="adj-unit">US$</span></span></div>' +
+            '<div class="adj-row"><button class="adj-btn" type="button" data-adj="wallet:-50" aria-label="Quitar 50 dólares de la billetera">−</button>' +
+            '<span style="flex:1;color:var(--muted);font-size:12px">Saldo que la Fundidora muestra y al que se abonan las fundiciones.</span>' +
+            '<button class="adj-btn" type="button" data-adj="wallet:50" aria-label="Añadir 50 dólares a la billetera">+</button></div></div>' +
+          '<button class="btn btn-gold apply-btn" type="button" id="adjApply">Aplicar</button>' +
+          '<h4 class="editor-h">Planes de prueba</h4>' +
+          '<p class="adj-note" style="margin:0 0 10px">Activa o quita planes al instante, sin pagos: la máquina aparece en Inicio y el catálogo lo marca «Plan activo».</p>' +
+          '<div>' + planToggles + '</div>' +
+          '<button class="btn btn-dark reset-btn" type="button" id="adjReset" style="margin-top:6px">Restablecer todo · Nivel Hierro</button>';
+        openSheet("Modo de prueba", html);
+        document.getElementById("sheetTitle").textContent = "Modo de prueba · Escenario del usuario";
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-scenario]"), function (b) {
+          b.addEventListener("click", function () {
+            applyScenario(b.getAttribute("data-scenario"));
+            openTestMode();
+          });
         });
-        renderBalance(); renderMachines(); renderMoves();
+        var eRange = document.getElementById("adjEnergy"), gRange = document.getElementById("adjGold");
+        var eNum = document.getElementById("adjEnergyNum"), gNum = document.getElementById("adjGoldNum"), wNum = document.getElementById("adjWalletNum");
+        function syncNums() {
+          eNum.value = smeltState.energy;
+          gNum.value = goldAvailable().toFixed(2);
+          wNum.value = smeltState.wallet.toFixed(2);
+          eRange.value = Math.min(1500, smeltState.energy);
+          gRange.value = Math.min(3000, goldAvailable());
+        }
+        eRange.addEventListener("input", function () {
+          var wasOp = smeltState.previewKey === operativeLevel().key;
+          smeltState.energy = Number(eRange.value);
+          applyAdjustments(wasOp); syncNums();
+        });
+        gRange.addEventListener("input", function () {
+          smeltState.goldBase = Number(gRange.value) + smeltState.goldSpent;
+          applyAdjustments(false); syncNums();
+        });
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-adj]"), function (b) {
+          b.addEventListener("click", function () {
+            var parts = b.getAttribute("data-adj").split(":"), kind = parts[0], delta = Number(parts[1]);
+            var wasOp = smeltState.previewKey === operativeLevel().key;
+            if (kind === "energy") {
+              smeltState.energy = Math.max(0, Math.min(1500, smeltState.energy + delta));
+              applyAdjustments(wasOp);
+            } else if (kind === "gold") {
+              var g = Math.max(0, Math.min(3000, goldAvailable() + delta));
+              smeltState.goldBase = g + smeltState.goldSpent;
+              applyAdjustments(false);
+            } else if (kind === "wallet") {
+              smeltState.wallet = Math.max(0, Math.round((smeltState.wallet + delta) * 100) / 100);
+              persistTest(); renderSmelt();
+            }
+            syncNums();
+          });
+        });
+        function applyTyped() {
+          var wasOp = smeltState.previewKey === operativeLevel().key;
+          var e = parseFloat(eNum.value), g = parseFloat(gNum.value), w = parseFloat(wNum.value);
+          if (!isNaN(e)) smeltState.energy = Math.max(0, Math.min(100000, Math.round(e)));
+          if (!isNaN(g)) smeltState.goldBase = Math.max(0, Math.min(1000000, g)) + smeltState.goldSpent;
+          if (!isNaN(w)) smeltState.wallet = Math.max(0, Math.min(1000000, Math.round(w * 100) / 100));
+          applyAdjustments(wasOp);
+          renderSmelt(); syncNums();
+          showToast("Estado aplicado");
+        }
+        document.getElementById("adjApply").addEventListener("click", applyTyped);
+        [eNum, gNum, wNum].forEach(function (inp) {
+          inp.addEventListener("change", applyTyped);
+          inp.addEventListener("keydown", function (ev) { if (ev.key === "Enter") { ev.preventDefault(); applyTyped(); } });
+        });
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-plan-toggle]"), function (b) {
+          b.addEventListener("click", function () {
+            togglePlan(Number(b.getAttribute("data-plan-toggle")));
+            openTestMode();
+          });
+        });
+        document.getElementById("adjReset").addEventListener("click", function () {
+          applyScenario(DEFAULT_SCENARIO);
+          showToast("Todo restablecido · Nivel Hierro");
+          openTestMode();
+        });
       }
 
       /* ============ Navegación SPA por hash ============ */
@@ -1444,14 +1751,14 @@
       /* ============ Fundidora encadenada (vista de revisión) ============ */
       function showChained() {
         closeSheet();
-        document.getElementById("smeltMain").hidden = true;
-        document.getElementById("smeltChained").hidden = false;
+        chainedPreview = true;
+        updateSmeltGate();
         var v = document.getElementById("view-fundir");
         if (v) v.scrollTop = 0;
       }
       function hideChained() {
-        document.getElementById("smeltChained").hidden = true;
-        document.getElementById("smeltMain").hidden = false;
+        chainedPreview = false;
+        updateSmeltGate();
         var v = document.getElementById("view-fundir");
         if (v) v.scrollTop = 0;
       }
@@ -1521,7 +1828,8 @@
       document.getElementById("machineList").addEventListener("click", function (e) {
         var card = e.target.closest("[data-machine]");
         if (!card) return;
-        var m = MACHINES[Number(card.getAttribute("data-machine"))];
+        var m = currentMachines()[Number(card.getAttribute("data-machine"))];
+        if (!m) return;
         openSheet(m.name,
           '<p><b>' + m.plan + '</b> · Estado: <b>Activa</b></p>' +
           '<ul><li>Oro recolectado: <b>' + m.oro + '</b></li>' +
@@ -1587,11 +1895,15 @@
       document.getElementById("logoutBtn").addEventListener("click", function () {
         showToast("Sesión activa de Carlos Méndez");
       });
+      document.getElementById("testModeCard").addEventListener("click", openTestMode);
 
       /* ============ Arranque ============ */
       renderPlans();
+      renderTestCard();
+      renderChained();
+      updateSmeltGate();
       restoreSmelt();
-      setState("completo");
+      renderBalance(); renderMachines(); renderMoves();
       bindGoto(document);
       route();
     </script>
