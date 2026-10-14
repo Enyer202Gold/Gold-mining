@@ -1087,6 +1087,140 @@
         background:rgba(6,26,15,.85); border:1px solid rgba(61,220,132,.55); color:#7bf0ae;
       }
 
+      /* ---------- Cabina de la máquina ---------- */
+      .cabin-sheet{
+        position:fixed; left:50%; top:0; bottom:0; z-index:70;
+        width:min(430px,100%); height:100dvh;
+        transform:translate(-50%,100%); visibility:hidden; pointer-events:none;
+        transition:transform .3s cubic-bezier(.32,.9,.35,1), visibility 0s .3s;
+        background:linear-gradient(180deg,#0b0906 0%, var(--app) 260px);
+        box-shadow:0 0 0 1px rgba(212,160,23,.14), 0 0 90px rgba(0,0,0,.9);
+        overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain; -webkit-overflow-scrolling:touch;
+        scrollbar-width:thin; scrollbar-color:rgba(212,160,23,.4) transparent;
+      }
+      .cabin-sheet.open{ transform:translate(-50%,0); visibility:visible; pointer-events:auto; transition:transform .3s cubic-bezier(.32,.9,.35,1); }
+      .cabin-head .plan-pill{ flex:none; margin-top:6px; }
+      .cabin-title{ flex:1; min-width:0; text-align:center; padding-top:1px; }
+      .cabin-title b{
+        display:block; font-family:"Barlow Condensed",sans-serif; font-weight:800;
+        font-size:21px; letter-spacing:.02em; text-transform:uppercase; line-height:1.05; color:#fdfaf2;
+        white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      }
+      .cabin-title small{
+        display:block; margin-top:3px; color:var(--muted);
+        font-size:10px; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+      }
+      .cabin-visual{ position:relative; overflow:hidden; background:#0d0a06; }
+      .cabin-visual img.cv{ width:100%; aspect-ratio:16/9; object-fit:cover; }
+      .cabin-visual img.cv.dim{ filter:brightness(.48) saturate(.5); }
+      .cabin-visual video.cv{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+      .cabin-visual video.cv[hidden]{ display:none; }
+      .cabin-visual::after{
+        content:""; position:absolute; inset:0; pointer-events:none;
+        background:linear-gradient(0deg, rgba(4,3,2,.55), transparent 42%);
+      }
+      .cabin-seal{
+        position:absolute; left:12px; bottom:12px; z-index:2;
+        display:inline-flex; align-items:center; gap:6px;
+        border-radius:999px; padding:4px 11px; font-size:12px; font-weight:800; white-space:nowrap;
+        background:rgba(8,6,3,.87); border:1px solid rgba(246,240,226,.3); color:#e7ddc7;
+      }
+      .cabin-seal i{ width:7px; height:7px; border-radius:50%; background:#9a8f7a; flex:none; }
+      .cabin-seal.work{ border-color:rgba(61,220,132,.55); color:#7bf0ae; }
+      .cabin-seal.work i{ background:var(--green); box-shadow:0 0 7px var(--green); }
+      .cabin-seal.done{ border-color:var(--gold); color:var(--gold-3); }
+      .cabin-seal.done i{ background:var(--gold-2); box-shadow:0 0 7px var(--gold-2); }
+      .cabin-seal.void{ border-color:rgba(255,93,93,.55); color:#ff9c9c; }
+      .cabin-seal.void i{ background:var(--red); box-shadow:0 0 7px var(--red); }
+      .cabin-seal.pending{ border-color:rgba(255,176,46,.55); color:#ffd485; }
+      .cabin-seal.pending i{ background:var(--amber); box-shadow:0 0 7px var(--amber); }
+      .cycle-timer{ text-align:center; padding:2px 0 4px; }
+      .cycle-timer small{ display:block; color:#d6bd72; font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; margin-bottom:2px; }
+      .cycle-line{ margin:9px 0 0; color:#e7ddc7; font-size:13.5px; line-height:1.55; }
+      .cycle-line b{ color:#f5ead3; font-variant-numeric:tabular-nums; }
+      .cycle-line b.gold{ color:var(--gold-2); }
+      .upgrade-btn{
+        display:flex; align-items:center; gap:11px; width:100%; text-align:left;
+        border:1px solid var(--line-soft); border-radius:14px; background:var(--panel);
+        padding:12px 13px; color:var(--text); margin-top:14px;
+      }
+      .upgrade-btn .up-ic{
+        flex:none; width:36px; height:36px; border-radius:50%;
+        border:1px solid var(--line-soft); background:rgba(212,160,23,.08);
+        display:grid; place-items:center; color:var(--gold-2);
+      }
+      .upgrade-btn .up-ic svg{ width:18px; height:18px; }
+      .upgrade-btn b{ display:block; font-size:15.5px; line-height:1.2; }
+      .upgrade-btn small{ display:block; color:var(--muted); font-size:12px; margin-top:1px; }
+      .upgrade-btn > svg{ flex:none; width:18px; height:18px; color:var(--gold-2); }
+      .status-pill.off{ background:rgba(20,18,14,.87); border-color:rgba(246,240,226,.28); color:#cbbfa5; }
+      .status-pill.off i{ background:#9a8f7a; box-shadow:none; }
+      .status-pill.done{ background:linear-gradient(180deg,#ffe9a8,var(--gold-2) 55%,var(--gold)); border-color:#ffedb5; color:#241a02; }
+      .status-pill.done i{ background:#241a02; box-shadow:none; }
+      .status-pill.void{ background:rgba(35,8,8,.87); border-color:rgba(255,93,93,.55); color:#ff9c9c; }
+      .status-pill.void i{ background:var(--red); box-shadow:0 0 7px var(--red); }
+
+      /* ---------- Cabina: anillo del ciclo, detención e historial ---------- */
+      .cycle-flex{ display:flex; gap:14px; align-items:center; }
+      .ring-wrap{ position:relative; width:88px; height:88px; flex:none; }
+      .ring-wrap svg{ transform:rotate(-90deg); }
+      .ring-bg{ stroke:rgba(255,255,255,.12); }
+      .ring-fg{ stroke:var(--gold-2); filter:drop-shadow(0 0 6px rgba(212,160,23,.45)); transition:stroke-dashoffset .5s linear; }
+      .ring-pct{
+        position:absolute; inset:0; display:grid; place-items:center;
+        font-weight:800; font-size:19px; color:var(--gold-3); font-variant-numeric:tabular-nums;
+      }
+      .cycle-side{ flex:1; min-width:0; }
+      .cycle-side small{ display:block; color:#d6bd72; font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; margin-bottom:2px; }
+      .cycle-dates{ margin-top:9px; color:var(--muted); font-size:12.5px; line-height:1.55; }
+      .cycle-dates b{ color:#e7ddc7; font-variant-numeric:tabular-nums; }
+      .btn.is-disabled{ opacity:.45; filter:grayscale(.45); box-shadow:none; }
+      .collect-note{ margin:7px 2px 0; text-align:center; color:var(--muted); font-size:12.5px; }
+      .stop-card{ border:1px solid rgba(255,176,46,.5); border-radius:14px; background:rgba(255,176,46,.06); padding:12px 13px; margin-bottom:12px; }
+      .stop-card.red{ border-color:rgba(255,93,93,.55); background:rgba(255,93,93,.07); }
+      .stop-card .box-head{ color:#ffd485; margin-bottom:5px; }
+      .stop-card.red .box-head{ color:#ff9c9c; }
+      .stop-card p{ margin:0; color:#e7ddc7; font-size:13.5px; line-height:1.55; }
+      .stop-card p b{ color:#f5ead3; font-variant-numeric:tabular-nums; }
+      .wallet-detail-btn{
+        width:100%; margin-top:10px; min-height:40px;
+        border:1px solid var(--line); border-radius:11px; background:rgba(212,160,23,.08);
+        color:var(--gold-2); font-size:13.5px; font-weight:800;
+        display:flex; align-items:center; justify-content:center; gap:7px;
+      }
+      .wallet-detail-btn svg{ width:16px; height:16px; }
+      .full-addr{
+        border:1px solid var(--line-soft); border-radius:12px; background:#0d0a06;
+        padding:11px 12px; font-size:14.5px; letter-spacing:.02em; line-height:1.45;
+        word-break:break-all; font-variant-numeric:tabular-nums; margin-bottom:12px;
+      }
+      .cyc-hist-row{
+        display:flex; align-items:center; gap:11px;
+        border:1px solid var(--line-soft); border-radius:13px; background:#0d0a06;
+        padding:11px 12px; margin-bottom:8px;
+      }
+      .cyc-hist-row .ch-ic{ flex:none; width:34px; height:34px; border-radius:50%; border:1px solid var(--line-soft); display:grid; place-items:center; color:var(--gold-2); }
+      .cyc-hist-row .ch-ic svg{ width:17px; height:17px; }
+      .cyc-hist-row .ch-info{ flex:1; min-width:0; }
+      .cyc-hist-row .ch-info b{ display:block; font-size:14.5px; }
+      .cyc-hist-row .ch-info small{ display:block; color:var(--muted); font-size:11.5px; margin-top:1px; }
+      .cyc-hist-row .ch-amt{ flex:none; font-size:15px; font-weight:800; font-variant-numeric:tabular-nums; }
+      .cyc-hist-row .ch-amt.pos{ color:var(--green); }
+      .cyc-hist-row .ch-amt.neg{ color:#ff9c9c; }
+
+      /* ---------- Mis máquinas (lista en Planes) ---------- */
+      .my-machine{
+        display:flex; align-items:center; gap:11px; width:100%; text-align:left;
+        border:1px solid var(--line-soft); border-radius:14px; background:var(--panel);
+        padding:9px 11px; margin-bottom:8px; color:var(--text);
+      }
+      .my-machine img{ width:66px; height:50px; object-fit:cover; border-radius:9px; flex:none; border:1px solid rgba(212,160,23,.25); }
+      .my-machine .mm-info{ flex:1; min-width:0; }
+      .my-machine .mm-info b{ display:block; font-size:15px; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+      .my-machine .mm-info small{ display:block; color:var(--muted); font-size:11.5px; margin-top:2px; }
+      .my-machine .mm-state{ flex:none; font-size:11.5px; font-weight:800; text-align:right; color:var(--gold-2); max-width:110px; }
+      .my-machine > svg{ flex:none; color:var(--gold-2); }
+
       /* ---------- Historial ---------- */
       .move{
         display:flex; align-items:center; gap:13px;
@@ -1328,6 +1462,7 @@
             </button>
           </div>
           <p class="view-sub">Selecciona tu maquinaria y comienza a extraer oro. Cada plan requiere mantener un capital mínimo en tu billetera conectada de la plataforma.</p>
+          <div id="myMachines"></div>
           <div id="planList"></div>
         </section>
 
@@ -1574,6 +1709,11 @@
       <div id="connectSheetBody" style="display:contents"></div>
     </div>
 
+    <!-- Cabina de la máquina: vista de una unidad a pantalla completa -->
+    <div class="cabin-sheet" id="cabinSheet" role="dialog" aria-modal="true" aria-label="Cabina de la máquina">
+      <div id="cabinBody"></div>
+    </div>
+
     <!-- Hoja inferior reutilizable -->
     <div class="sheet-veil" id="sheetVeil"></div>
     <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
@@ -1620,6 +1760,111 @@
       /* Dirección de la plataforma para pagar el precio de cada plan (dato de ejemplo) */
       var PLATFORM_ADDRESS = "TGm9xKpL2sQw7rTnY4hJkF6d8xQa";
 
+      /* ============ Mejora de capacidad: escalera por plan ============ */
+      /* Sube SOLO el tope de capital de la unidad; no toca rentabilidad ni mínimo.
+         Plan 4: tope ilimitado, sin mejoras. */
+      var UPGRADES = [
+        { step: 50, price: 10, max: 2 },
+        { step: 100, price: 20, max: 2 },
+        { step: 250, price: 40, max: 2 },
+        null
+      ];
+      function upgMax(u) { var up = UPGRADES[u.plan]; return up ? up.max : 0; }
+      function effCap(u) {
+        var p = PLANS[u.plan];
+        if (p.max === null) return null;
+        var up = UPGRADES[u.plan];
+        return p.max + (up ? (u.upgrades || 0) * up.step : 0);
+      }
+      function maintNum(p) { return parseInt(String(p.maint).replace(/[^0-9]/g, ""), 10) || 0; }
+      function planPctNum(p) { return parseFloat(p.pct) || 0; }
+
+      /* ============ Ciclo de 24 h por unidad ============ */
+      var CYCLE_MS = 24 * 3600 * 1000;
+      function cycleState(u) {
+        if (!u.connected) return "nowallet";
+        if (!u.cycle) return "ready";
+        if (u.cycle.status === "voided") return "voided";
+        return (Date.now() - u.cycle.start >= CYCLE_MS) ? "done" : "working";
+      }
+      function cycleProgress(u) {
+        var st = cycleState(u);
+        if (st === "done") return 100;
+        if (st !== "working") return 0;
+        return Math.min(100, Math.floor(((Date.now() - u.cycle.start) / CYCLE_MS) * 100));
+      }
+      function cycleYield(u) { return u.cycle ? u.cycle.base * planPctNum(PLANS[u.plan]) / 100 : 0; }
+      /* Si el saldo cae bajo el mínimo del plan durante el ciclo, el ciclo se anula.
+         Se verifica al entrar a la cabina y cuando el saldo cambia (Modo de prueba). */
+      function checkCycleVoid(u) {
+        if (u.cycle && u.cycle.status === "working" && u.balance < PLANS[u.plan].min) {
+          u.cycle.status = "voided";
+          return true;
+        }
+        return false;
+      }
+      function checkAllCycleVoids() {
+        var changed = false;
+        fleet.forEach(function (u) { if (checkCycleVoid(u)) changed = true; });
+        return changed;
+      }
+      function cycleStateLabel(u) {
+        var st = cycleState(u);
+        if (st === "nowallet") return "Sin billetera";
+        if (st === "ready") return "Apagada";
+        if (st === "working") return "Trabajando · " + cycleProgress(u) + "%";
+        if (st === "done") return "Lista para recolectar";
+        return "Ciclo anulado";
+      }
+      function maintLabel(u) {
+        if (u.maintDays < 0) return "Vencido";
+        if (u.maintDays === 0) return "Vence hoy";
+        return "en " + u.maintDays + (u.maintDays === 1 ? " día" : " días");
+      }
+      function activateCycle(u) {
+        if (!u.connected || u.cycle) return false;
+        if (u.maintDays < 0) return false;
+        var cap = effCap(u);
+        var base = cap === null ? u.balance : Math.min(u.balance, cap);
+        u.cycle = { status: "working", start: Date.now(), base: Math.round(base * 100) / 100 };
+        return true;
+      }
+      function fmtCountdown(ms) {
+        var sec = Math.max(0, Math.ceil(ms / 1000));
+        return pad2(Math.floor(sec / 3600)) + ":" + pad2(Math.floor(sec / 60) % 60) + ":" + pad2(sec % 60);
+      }
+      function fmtHour(ts) {
+        var d = new Date(ts);
+        return pad2(d.getHours()) + ":" + pad2(d.getMinutes());
+      }
+      /* Motivo por el que la máquina no puede trabajar ahora mismo (null = puede trabajar).
+         Prioridad: ciclo anulado > mantenimiento vencido > capital bajo el mínimo > ciclo no iniciado. */
+      function stopReason(u) {
+        var p = PLANS[u.plan], st = cycleState(u);
+        if (st === "voided") {
+          return { cls: "red", text: 'El ciclo se anuló porque la billetera bajó del mínimo de su plan. Repone el saldo y vuelve a activar.' };
+        }
+        if (st !== "ready") return null;
+        if (u.maintDays < 0) {
+          return { cls: "", text: 'El mantenimiento de esta máquina está <b>vencido</b>. Monto: <b>' + p.maint + '</b>. Págallo para poder activarla de nuevo.' };
+        }
+        if (u.balance < p.min) {
+          return { cls: "", text: 'Capital bajo el mínimo de su plan. Saldo <b>' + fmt(u.balance, 2) + ' USDT</b> · Mínimo <b>' + fmtInt(p.min) + ' USDT</b> · Te faltan <b>' + fmt(p.min - u.balance, 2) + ' USDT</b>.' };
+        }
+        return { cls: "", text: 'Ciclo no iniciado. Activa la máquina para comenzar un nuevo ciclo de 24 horas.' };
+      }
+      /* Registro del Historial de ciclos de la unidad */
+      function recordCycleEnd(u, result, grams) {
+        if (!Array.isArray(u.cycleHistory)) u.cycleHistory = [];
+        u.cycleHistory.unshift({
+          result: result,
+          grams: Math.round((grams || 0) * 100) / 100,
+          start: u.cycle ? u.cycle.start : null,
+          end: Date.now()
+        });
+        if (u.cycleHistory.length > 24) u.cycleHistory.length = 24;
+      }
+
       /* ============ Flota de máquinas: una unidad independiente por compra ============ */
       /* Direcciones de billetera de ejemplo: una distinta por unidad, sin duplicados */
       var UNIT_ADDRESS_POOL = [
@@ -1637,13 +1882,22 @@
         var n = 0; for (var k in used) n++;
         return "TQ" + (7000 + n) + "xKm9RvLpQw8sTnY2hJfQa";
       }
+      /* Oro inicial de ejemplo por unidad (el mismo reparto que mostraban las tarjetas) */
+      function defaultGoldEarned(planIdx, n) {
+        var factors = [0.64, 0.83, 0.51, 0.72];
+        var f = n <= 1 ? 1 : factors[(n - 2) % factors.length];
+        return Math.round(parseFloat(MACHINES[planIdx].oro) * f * 100) / 100;
+      }
       function buildFleet(sc) {
-        var used = {};
+        var used = {}, counts = {};
         return (sc && sc.fleet ? sc.fleet : []).map(function (u) {
           var addr = u.address;
           if (!addr || used[addr]) addr = firstFreeAddr(used);
           used[addr] = true;
-          return { id: uid(), plan: u.plan, connected: !!u.connected, balance: typeof u.balance === "number" ? u.balance : 0, address: addr };
+          counts[u.plan] = (counts[u.plan] || 0) + 1;
+          return { id: uid(), plan: u.plan, connected: !!u.connected, balance: typeof u.balance === "number" ? u.balance : 0, address: addr,
+            goldEarned: defaultGoldEarned(u.plan, counts[u.plan]), cycle: null, maintDays: 15, upgrades: 0,
+            lastRead: Date.now(), cycleHistory: [] };
         });
       }
       function fleetCount(planIdx) { return fleet.filter(function (u) { return u.plan === planIdx; }).length; }
@@ -1658,14 +1912,8 @@
         return firstFreeAddr(used);
       }
       function createUnit(planIdx) {
-        return { id: uid(), plan: planIdx, connected: false, balance: 0, address: nextAddress() };
-      }
-      /* Cifras de ejemplo por unidad: el % es el del plan; solo varía el oro producido */
-      function unitStats(u) {
-        var m = MACHINES[u.plan], n = unitNumber(u);
-        var factors = [0.64, 0.83, 0.51, 0.72];
-        var f = n <= 1 ? 1 : factors[(n - 2) % factors.length];
-        return { oro: fmt(parseFloat(m.oro) * f, 2) + " g", prog: Math.min(95, m.prog + (n - 1) * 9) };
+        return { id: uid(), plan: planIdx, connected: false, balance: 0, address: nextAddress(),
+          goldEarned: 0, cycle: null, maintDays: 15, upgrades: 0, lastRead: Date.now(), cycleHistory: [] };
       }
 
       var LEVELS = [
@@ -1736,6 +1984,7 @@
         pick: '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 12.5 5 22"/><path d="M19.6 4.4a9.4 9.4 0 0 0-12.9 12L3 13a11.5 11.5 0 0 1 16.6-8.6Z"/></svg>',
         wallet: '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>',
         check: '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.2 2.4 2.4 4.6-5"/></svg>',
+        wrench: '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4.5 4.5 0 0 0-6 6L3 18l3 3 5.7-5.7a4.5 4.5 0 0 0 6-6L14 13l-3-3 3.7-3.7Z"/></svg>',
         drill: '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 12.5 5 22"/><path d="M19.6 4.4a9.4 9.4 0 0 0-12.9 12L3 13a11.5 11.5 0 0 1 16.6-8.6Z"/></svg>',
         doc: '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>'
       };
@@ -1758,23 +2007,58 @@
           wrap.innerHTML = units.map(function (u) {
             var m = MACHINES[u.plan];
             var total = fleetCount(u.plan), n = unitNumber(u);
-            var s = unitStats(u);
+            checkCycleVoid(u);
+            var st = cycleState(u);
+            var prog = cycleProgress(u);
             var name = total > 1 ? m.name + ' <span class="unit-num">Unidad ' + n + '</span>' : m.name;
             var label = total > 1 ? m.name + " · Unidad " + n : m.name;
-            return '<button class="machine" type="button" data-unit="' + u.id + '" aria-label="Ver detalles de ' + label + '">' +
+            var pill;
+            if (st === "nowallet") pill = '<span class="status-pill off"><i></i>Sin billetera</span>';
+            else if (st === "ready") pill = '<span class="status-pill off"><i></i>Apagada</span>';
+            else if (st === "working") pill = '<span class="status-pill"><i></i>Trabajando · ' + prog + '%</span>';
+            else if (st === "done") pill = '<span class="status-pill done"><i></i>Lista para recolectar</span>';
+            else pill = '<span class="status-pill void"><i></i>Ciclo anulado</span>';
+            var progressRow = st === "nowallet" ? "" :
+              '<span class="progress-row"><span class="progress"><i style="width:' + prog + '%"></i></span><b>' + prog + '%</b></span>';
+            return '<button class="machine" type="button" data-unit="' + u.id + '" aria-label="Ver la cabina de ' + label + '">' +
               '<span class="bg"><img src="' + m.img + '" alt="" loading="lazy" /></span>' +
-              '<span class="machine-top"><span class="plan-pill">' + m.plan + '</span>' +
-              '<span class="status-pill"><i></i>Activa</span></span>' +
+              '<span class="machine-top"><span class="plan-pill">' + m.plan + '</span>' + pill + '</span>' +
               '<h3>' + name + '</h3>' +
               '<span class="machine-stats">' +
-                '<span class="mstat"><b>' + s.oro + '</b><span>' + m.label1 + '</span></span>' +
+                '<span class="mstat"><b>' + fmt(u.goldEarned || 0, 2) + ' g</b><span>' + m.label1 + '</span></span>' +
                 '<span class="mstat"><b>' + m.pct + '</b><span>' + m.label2 + '</span></span>' +
               '</span>' +
-              '<span class="progress-row"><span class="progress"><i style="width:' + s.prog + '%"></i></span><b>' + s.prog + '%</b></span>' +
+              progressRow +
             '</button>';
           }).join("");
         }
         bindGoto(wrap);
+      }
+
+      /* ============ Lista «Mis máquinas» en Planes: toca una unidad y abre su cabina ============ */
+      function renderMyMachines() {
+        var wrap = document.getElementById("myMachines");
+        if (!wrap) return;
+        if (!fleet.length) { wrap.innerHTML = ""; return; }
+        var units = fleet.slice().sort(function (a, b) { return a.plan - b.plan; });
+        wrap.innerHTML = '<div class="section-head" style="margin-top:0"><h2>Mis máquinas</h2></div>' +
+          units.map(function (u) {
+            var m = MACHINES[u.plan], p = PLANS[u.plan];
+            var total = fleetCount(u.plan), n = unitNumber(u);
+            checkCycleVoid(u);
+            return '<button class="my-machine" type="button" data-my-unit="' + u.id + '" aria-label="Abrir la cabina de ' + m.name + ', unidad ' + n + '">' +
+              '<img src="' + m.img + '" alt="" loading="lazy" />' +
+              '<span class="mm-info"><b>' + m.name + '</b><small>' + p.plan + ' · Unidad ' + n + (total > 1 ? ' de ' + total : '') + '</small></span>' +
+              '<span class="mm-state">' + cycleStateLabel(u) + '</span>' +
+              '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>' +
+            '</button>';
+          }).join("");
+        Array.prototype.forEach.call(wrap.querySelectorAll("[data-my-unit]"), function (b) {
+          b.addEventListener("click", function () {
+            var u = findUnit(b.getAttribute("data-my-unit"));
+            if (u) openCabin(u);
+          });
+        });
       }
 
       /* ============ Catálogo de planes: iconos y piezas ============ */
@@ -1804,7 +2088,7 @@
         return '<div class="plan-data">' +
           '<div class="drow"><span class="dicon-sm">' + PLAN_ICONS.wallet + '</span><span class="dlabel">Capital requerido en billetera conectada</span><span class="dval">' + p.capital + '</span></div>' +
           '<div class="drow"><span class="dicon-sm">' + PLAN_ICONS.chart + '</span><span class="dlabel">Rentabilidad indicada</span><span class="dval gold">' + p.pct + '</span></div>' +
-          '<div class="drow"><span class="dicon-sm">' + PLAN_ICONS.wrench + '</span><span class="dlabel">Mantenimiento semanal</span><span class="dval">' + p.maint + '</span></div>' +
+          '<div class="drow"><span class="dicon-sm">' + PLAN_ICONS.wrench + '</span><span class="dlabel">Mantenimiento quincenal</span><span class="dval">' + p.maint + '</span></div>' +
         '</div>';
       }
       function shortenAddr(a) {
@@ -1814,9 +2098,10 @@
       function fmtBal(n) {
         return (Math.round(n * 100) % 100 === 0) ? fmtInt(Math.round(n)) : fmt(n, 2);
       }
-      function walletRangeState(p, w) {
-        if (w.balance < p.min) return "below";
-        if (p.max !== null && w.balance > p.max) return "above";
+      function walletRangeState(p, u) {
+        var cap = effCap(u);
+        if (u.balance < p.min) return "below";
+        if (cap !== null && u.balance > cap) return "above";
         return "in";
       }
       /* SVG decorativo tipo QR para el bloque de pago */
@@ -1839,9 +2124,10 @@
         var banner = "";
         if (typeof order !== "undefined" && orderActive()) {
           var op = PLANS[order.planId];
+          var isService = !!(order.kind && order.kind !== "compra");
           banner = '<button class="order-banner" type="button" id="orderBanner">' +
             '<span class="ob-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span>' +
-            '<span><b>Compra en verificación</b><small>' + op.plan + ' · ' + order.amount + ' USDT</small></span>' +
+            '<span><b>' + (isService ? 'Pago en verificación' : 'Compra en verificación') + '</b><small>' + (isService ? order.concept : op.plan) + ' · ' + order.amount + ' USDT</small></span>' +
             '<span class="ob-go">Ver estado →</span></button>';
         } else if (typeof order !== "undefined" && walletPendingOrder()) {
           var wpPlan = PLANS[walletPendingOrder().planId];
@@ -1871,6 +2157,7 @@
         if (ob) ob.addEventListener("click", function () { if (orderActive()) openBuyFlow(order.planId); });
         var wb = document.getElementById("walletBanner");
         if (wb) wb.addEventListener("click", function () { openWalletPendingOrder(); });
+        renderMyMachines();
       }
 
       /* ============ Ficha del plan (hoja a pantalla completa) ============ */
@@ -1960,10 +2247,10 @@
       };
       BUY_ICONS.image = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><path d="m21 15.5-4.8-4.8a2 2 0 0 0-2.8 0L6 18"/></svg>';
       function tronBadge(cls) { return '<span class="tron-badge' + (cls ? ' ' + cls : '') + '">' + BUY_ICONS.tron + '</span>'; }
-      function buyHeadHTML() {
+      function buyHeadHTML(subtitle) {
         return '<header class="ps-head">' +
           '<button class="ps-nav-btn" type="button" id="buyBackBtn" aria-label="Volver">' + PS_ICONS.back + '</button>' +
-          '<div class="ps-brand"><div class="ps-brand-row">' + PS_ICONS.logo + '<span>Gold Mining 2.0</span></div><small>Compra de máquina</small></div>' +
+          '<div class="ps-brand"><div class="ps-brand-row">' + PS_ICONS.logo + '<span>Gold Mining 2.0</span></div><small>' + (subtitle || "Compra de máquina") + '</small></div>' +
           '<button class="ps-nav-btn help" type="button" id="buyHelpBtn" aria-label="¿Cómo funcionan los planes?">' + PS_ICONS.help + '</button>' +
         '</header>';
       }
@@ -2079,6 +2366,8 @@
       function closeBuyFlow() { buySheetEl.classList.remove("open"); }
       function openBuyFlow(idx) {
         buyState.idx = idx;
+        buyState.kind = order && order.kind ? order.kind : "compra";
+        buyState.unitId = order ? (order.unitId || null) : null;
         if (orderActive()) {
           if (order.planId === idx) {
             buyState.step = order.status === "pago" ? "pay" : "verify";
@@ -2102,11 +2391,16 @@
       function renderBuySheet() {
         if (buyState.step === "pay") { renderBuyPay(); return; }
         if (buyState.step === "verify") {
-          if (order && order.status === "confirmada") { renderBuyDone(); return; }
+          if (order && order.status === "confirmada") { renderBuyDoneDispatch(); return; }
           renderBuyVerify(); return;
         }
-        if (buyState.step === "done") { renderBuyDone(); return; }
+        if (buyState.step === "done") { renderBuyDoneDispatch(); return; }
+        if (buyState.kind && buyState.kind !== "compra") { renderServiceConfirm(); return; }
         renderBuyConfirm();
+      }
+      function renderBuyDoneDispatch() {
+        if (order && order.kind && order.kind !== "compra") { renderServiceDone(); return; }
+        renderBuyDone();
       }
       function buyScrollTop() { var s = buySheetEl.querySelector(".buy-scroll"); if (s) s.scrollTop = 0; }
 
@@ -2140,7 +2434,7 @@
           '<div class="buy-row"><span>Precio de la máquina</span><b class="gold">' + p.price + '</b></div>' +
           '<div class="buy-row"><span>Capital requerido<small>(en tu billetera al activar)</small></span><b>' + p.capital + '</b></div>' +
           '<div class="buy-row"><span>Rentabilidad indicada</span><b>' + p.pct + '</b></div>' +
-          '<div class="buy-row"><span>Mantenimiento semanal</span><b>' + p.maint + '</b></div>' +
+          '<div class="buy-row"><span>Mantenimiento quincenal</span><b>' + p.maint + '</b></div>' +
         '</div>';
         html += '<p class="buy-explain">Primero compras tu máquina. Después conectas tu billetera para comprobar el capital necesario y activarla.</p>';
         html += '<div class="validation-msg" id="buyConfirmError" role="alert"></div>';
@@ -2179,7 +2473,7 @@
       function renderBuyPay() {
         if (!order) { buyState.step = "confirm"; renderBuyConfirm(); return; }
         var p = PLANS[order.planId];
-        var html = buyHeadHTML();
+        var html = buyHeadHTML(order.kind && order.kind !== "compra" ? serviceSubtitle(order.kind) : undefined);
         html += '<div class="buy-scroll"><div class="buy-body">';
         html += buyProgressHTML(1, false);
         html += '<div class="buy-total"><small>Total a transferir</small><b>' + order.amount + ' USDT</b></div>';
@@ -2328,13 +2622,21 @@
         if (isErr) {
           html += '<div class="err-box"><b>Error en la verificación</b><p>' + (order.errorReason || "No se pudo verificar tu pago en la red. Revisa la transferencia e inténtalo de nuevo.") + '</p></div>';
         }
+        var svcKind = order.kind && order.kind !== "compra" ? order.kind : null;
         html += '<div class="big-circle">' + BUY_ICONS.clock + '</div>';
         html += '<h3 class="buy-h">Estamos verificando tu pago en la red</h3>';
-        html += '<p class="buy-lead">Una vez que tu transferencia sea confirmada en la red TRON, tu máquina será registrada en tu cuenta.</p>';
+        html += '<p class="buy-lead">' + (svcKind === "mantenimiento"
+          ? 'Una vez que tu transferencia sea confirmada en la red TRON, el mantenimiento quedará pagado y el contador de tu máquina volverá a 15 días.'
+          : svcKind === "mejora"
+            ? 'Una vez que tu transferencia sea confirmada en la red TRON, el tope de capital de tu máquina subirá de inmediato.'
+            : 'Una vez que tu transferencia sea confirmada en la red TRON, tu máquina será registrada en tu cuenta.') + '</p>';
         html += '<h4 class="buy-h4">Detalles de la orden</h4>';
         html += '<div class="buy-card">' +
           '<div class="buy-row"><span>ID de la orden</span><b>' + order.id + '</b></div>' +
-          '<div class="buy-row"><span>Plan</span><b>' + p.plan + ' — ' + p.name + '</b></div>' +
+          (svcKind
+            ? '<div class="buy-row"><span>Concepto</span><b>' + order.concept + '</b></div>' +
+              '<div class="buy-row"><span>Plan</span><b>' + p.plan + ' — ' + p.name + '</b></div>'
+            : '<div class="buy-row"><span>Plan</span><b>' + p.plan + ' — ' + p.name + '</b></div>') +
           '<div class="buy-row"><span>Monto</span><b class="gold">' + order.amount + ' USDT</b></div>' +
           '<div class="buy-row"><span>Red</span><span class="kv-addr">' + tronBadge("sm") + '<b>TRON (TRC-20)</b></span></div>' +
           '<div class="buy-row"><span>Dirección</span><span class="kv-addr"><b>' + shortenAddr(order.address) + '</b><button class="copy-btn" type="button" data-copy-addr data-label="Copiar">Copiar</button></span></div>' +
@@ -2424,6 +2726,160 @@
         buyScrollTop();
       }
 
+      /* ============ Pagos de servicio: mantenimiento y mejora de capacidad ============ */
+      /* Reutilizan el MISMO flujo de 3 etapas y la MISMA orden única del panel:
+         una sola orden activa a la vez, sea compra, mantenimiento o mejora. */
+      function serviceConcept(kind, u) {
+        return (kind === "mantenimiento" ? "Mantenimiento · " : "Mejora de capacidad · ") + MACHINES[u.plan].name;
+      }
+      function serviceAmount(kind, u) {
+        return kind === "mantenimiento" ? maintNum(PLANS[u.plan]) : UPGRADES[u.plan].price;
+      }
+      function serviceSubtitle(kind) {
+        return kind === "mantenimiento" ? "Pago de mantenimiento" : "Mejora de capacidad";
+      }
+      function ensureServiceOrder(kind, u) {
+        if (orderActive()) {
+          return (order.kind === kind && order.unitId === u.id) ? order : null;
+        }
+        orderSeq++;
+        order = {
+          id: "GM-" + String(10000 + orderSeq).slice(1),
+          kind: kind,
+          planId: u.plan,
+          unitId: u.id,
+          concept: serviceConcept(kind, u),
+          amount: serviceAmount(kind, u),
+          address: PLATFORM_ADDRESS,
+          status: "pago",
+          createdAt: Date.now(),
+          txid: "",
+          receiptName: "",
+          receiptThumb: "",
+          receiptTest: false,
+          celebrated: true,
+          unitCreated: false,
+          errorReason: "",
+          archived: false
+        };
+        persistOrder();
+        renderPlans();
+        return order;
+      }
+      function openServiceFlow(kind, u) {
+        if (!u) return;
+        buyState.kind = kind;
+        buyState.unitId = u.id;
+        buyState.idx = u.plan;
+        if (orderActive()) {
+          buyState.step = (order.kind === kind && order.unitId === u.id)
+            ? (order.status === "pago" ? "pay" : "verify")
+            : "confirm";
+        } else if (order && order.status === "confirmada" && !order.archived && order.kind === kind && order.unitId === u.id) {
+          buyState.step = "done";
+        } else {
+          buyState.step = "confirm";
+        }
+        renderBuySheet();
+        buySheetEl.classList.add("open");
+      }
+
+      /* ----- Servicio, etapa 1: confirmar ----- */
+      function renderServiceConfirm() {
+        var u = findUnit(buyState.unitId);
+        if (!u) { closeBuyFlow(); return; }
+        var kind = buyState.kind, p = PLANS[u.plan], m = MACHINES[u.plan];
+        var amount = serviceAmount(kind, u);
+        var concept = serviceConcept(kind, u);
+        var total = fleetCount(u.plan), n = unitNumber(u);
+        var otherPending = orderActive() && !(order.kind === kind && order.unitId === u.id);
+        var html = buyHeadHTML(serviceSubtitle(kind));
+        html += '<div class="buy-scroll"><div class="buy-body">';
+        html += buyProgressHTML(1, false);
+        html += '<div class="buy-hero"><img src="' + p.img + '" alt="' + m.name + '" /><span class="plan-pill">' + p.plan + '</span></div>';
+        html += '<h3 class="buy-name">' + concept + '</h3>';
+        if (otherPending) {
+          html += '<div class="pending-box">' + BUY_ICONS.warn + '<div>' +
+            '<b>Tienes una orden en curso</b>' +
+            '<p>' + (order.kind && order.kind !== "compra" ? order.concept : PLANS[order.planId].name) + ' · ' + order.amount + ' USDT · Orden ' + order.id + '. Resuélvela antes de crear otra orden.</p>' +
+            '<button class="btn btn-dark" type="button" id="svcSeeOrderBtn">Ver orden en curso</button>' +
+          '</div></div>';
+        }
+        html += '<div class="buy-card">' +
+          '<div class="buy-row"><span>Concepto</span><b>' + concept + '</b></div>' +
+          '<div class="buy-row"><span>Máquina</span><b>' + m.name + ' · Unidad ' + n + (total > 1 ? ' de ' + total : '') + '</b></div>' +
+          '<div class="buy-row"><span>Monto</span><b class="gold">' + amount + ' USDT</b></div>' +
+          (kind === "mantenimiento"
+            ? '<div class="buy-row"><span>Tras el pago</span><b>Contador reiniciado a 15 días</b></div>'
+            : '<div class="buy-row"><span>Nuevo tope de la máquina</span><b>' + fmtInt(effCap(u) + UPGRADES[u.plan].step) + ' USDT</b></div>') +
+        '</div>';
+        html += '<p class="buy-explain">' + (kind === "mantenimiento"
+          ? 'El mantenimiento mantiene tu máquina operativa. Al confirmarse el pago, el contador de mantenimiento vuelve a 15 días.'
+          : 'La mejora sube el tope de capital de esta máquina. No cambia su rentabilidad ni su mínimo.') + '</p>';
+        html += '<div class="validation-msg" id="svcConfirmError" role="alert"></div>';
+        html += '</div></div>';
+        html += '<div class="buy-foot"><button class="btn btn-gold" type="button" id="svcContinueBtn">Continuar al pago · US$' + amount + '</button></div>';
+        document.getElementById("buySheetBody").innerHTML = html;
+        bindBuyHead(function () { closeBuyFlow(); });
+        if (otherPending) {
+          document.getElementById("svcSeeOrderBtn").addEventListener("click", function () { openBuyFlow(order.planId); });
+        }
+        document.getElementById("svcContinueBtn").addEventListener("click", function () {
+          var o = ensureServiceOrder(kind, u);
+          if (!o) {
+            var err = document.getElementById("svcConfirmError");
+            err.textContent = "Tienes una orden en curso. Confírmala o descártala antes de crear una nueva.";
+            err.classList.add("show");
+            return;
+          }
+          buyState.step = o.status === "pago" ? "pay" : "verify";
+          renderBuySheet();
+          buyScrollTop();
+        });
+        buyScrollTop();
+      }
+
+      /* ----- Servicio, etapa 3: pago confirmado ----- */
+      function renderServiceDone() {
+        if (!order) { closeBuyFlow(); return; }
+        var kind = order.kind, p = PLANS[order.planId];
+        var u = order.unitId ? findUnit(order.unitId) : null;
+        var archiveAndClose = function () {
+          order.archived = true;
+          persistOrder();
+          closeBuyFlow();
+        };
+        var html = buyHeadHTML(serviceSubtitle(kind));
+        html += '<div class="buy-scroll"><div class="buy-body">';
+        html += buyProgressHTML(3, true);
+        html += '<div class="big-circle green">' + BUY_ICONS.checkBig + '</div>';
+        html += '<h3 class="buy-h">' + (kind === "mantenimiento" ? '¡Mantenimiento pagado!' : '¡Capacidad mejorada!') + '</h3>';
+        html += '<p class="buy-lead">' + (kind === "mantenimiento"
+          ? 'El próximo mantenimiento de tu ' + (u ? MACHINES[u.plan].name : p.name) + ' será en 15 días.'
+          : 'El tope de capital de tu ' + (u ? MACHINES[u.plan].name : p.name) + (u ? ' ahora es ' + fmtInt(effCap(u)) + ' USDT.' : ' subió al nuevo nivel.')) + '</p>';
+        html += '<h4 class="buy-h4">Detalles del pago</h4>';
+        html += '<div class="buy-card">' +
+          '<div class="buy-row"><span>Concepto</span><b>' + order.concept + '</b></div>' +
+          '<div class="buy-row"><span>Monto</span><b class="gold">' + order.amount + ' USDT</b></div>' +
+          '<div class="buy-row"><span>Red</span><span class="kv-addr">' + tronBadge("sm") + '<b>TRON (TRC-20)</b></span></div>' +
+          txidRowHTML(false) +
+          receiptRowHTML("buyDoneReceiptBtn") +
+          '<div class="buy-row"><span>Fecha</span><b>' + fmtOrderDate(order.createdAt) + '</b></div>' +
+          '<div class="buy-row"><span>Estado</span><span class="state-chip green"><i></i>Confirmada</span></div>' +
+        '</div>';
+        html += '<button class="btn btn-gold" type="button" id="svcBackMachineBtn" style="width:100%;min-height:52px">Volver a mi máquina</button>';
+        html += '</div></div>';
+        document.getElementById("buySheetBody").innerHTML = html;
+        bindBuyHead(archiveAndClose);
+        bindOrderDetailBtns(buySheetEl);
+        document.getElementById("svcBackMachineBtn").addEventListener("click", function () {
+          var unit = order && order.unitId ? findUnit(order.unitId) : null;
+          archiveAndClose();
+          if (unit) openCabin(unit);
+        });
+        buyScrollTop();
+      }
+
       /* ============ Billetera de una máquina (bloque del detalle de máquina) ============ */
       function walletBoxHTML(p, u) {
         if (!u.connected) {
@@ -2435,16 +2891,19 @@
           '</div>';
         }
         var rs = walletRangeState(p, u);
+        var cap = effCap(u);
         var chip = rs === "in"
           ? '<span class="state-chip green"><i></i>En rango</span>'
           : (rs === "below"
-            ? '<span class="state-chip red"><i></i>Por debajo del mínimo</span>'
-            : '<span class="state-chip amber"><i></i>Sobre el máximo · gana sobre el tope</span>');
+            ? '<span class="state-chip red"><i></i>Bajo el mínimo</span>'
+            : '<span class="state-chip amber"><i></i>Sobre el tope — rinde hasta ' + fmtInt(cap) + ' USDT</span>');
         return '<div class="wallet-box">' +
           '<small class="lbl">Dirección conectada · TRON</small>' +
           '<div class="wallet-addr">' + shortenAddr(u.address) + '</div>' +
-          '<div class="wallet-bal">Saldo en billetera: <b>' + fmtBal(u.balance) + ' USDT</b></div>' +
+          '<div class="wallet-bal">Saldo actual de esta billetera: <b>' + fmtBal(u.balance) + ' USDT</b></div>' +
+          '<div class="wallet-bal" style="margin-top:2px;color:var(--muted);font-size:12.5px">Última actualización: <b style="color:#e7ddc7">' + fmtHour(u.lastRead || Date.now()) + '</b></div>' +
           chip +
+          '<button class="wallet-detail-btn" type="button" id="walletDetailBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>Detalle de la billetera</button>' +
         '</div>';
       }
 
@@ -2540,32 +2999,301 @@
         connectScrollTop();
       }
 
-      /* ============ Detalle de una máquina de la flota ============ */
-      function openMachineSheet(u) {
+      /* ============ LA CABINA DE LA MÁQUINA ============ */
+      var cabinEl = document.getElementById("cabinSheet");
+      var cabinState = { unitId: null };
+      var cabinTimer = null;
+      var CABIN_ICONS = {
+        up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>',
+        play: '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.8v14.4c0 .9 1 1.5 1.8 1L20 13a1.2 1.2 0 0 0 0-2L8.8 3.9C8 3.4 7 4 7 4.8Z"/></svg>'
+      };
+      function cabinVideoEl() { return document.getElementById("cabinVideo"); }
+      function cabinPauseVideo() {
+        var v = cabinVideoEl();
+        if (v) { try { v.pause(); } catch (e) {} }
+      }
+      function hideCabinPlayBtn() { var b = document.getElementById("cabinPlayBtn"); if (b) b.hidden = true; }
+      function updateCabinPlayBtn() {
+        var v = cabinVideoEl(), b = document.getElementById("cabinPlayBtn");
+        if (!b) return;
+        b.hidden = !(v && !v.hidden && v.paused && cabinEl.classList.contains("open"));
+      }
+      function setupCabinVideo() {
+        var v = cabinVideoEl();
+        if (!v) return;
+        v.muted = true;
+        v.playsInline = true;
+        v.addEventListener("playing", hideCabinPlayBtn);
+        v.addEventListener("play", hideCabinPlayBtn);
+        v.addEventListener("pause", updateCabinPlayBtn);
+        v.addEventListener("error", function () { v.hidden = true; hideCabinPlayBtn(); }, true);
+        var pb = document.getElementById("cabinPlayBtn");
+        if (pb) pb.addEventListener("click", function () {
+          v.muted = true;
+          var pr = v.play();
+          if (pr && pr.catch) pr.catch(function () { updateCabinPlayBtn(); });
+        });
+        var pr = v.play();
+        if (pr && pr.catch) pr.catch(function () { updateCabinPlayBtn(); });
+      }
+      function openCabin(u) {
+        if (!u) return;
+        if (checkCycleVoid(u)) persistTest();
+        cabinState.unitId = u.id;
+        renderCabin();
+        cabinEl.classList.add("open");
+        cabinEl.scrollTop = 0;
+        syncCabinTimer();
+      }
+      function closeCabin() {
+        cabinPauseVideo();
+        cabinEl.classList.remove("open");
+        if (cabinTimer) { clearInterval(cabinTimer); cabinTimer = null; }
+      }
+      function syncCabinTimer() {
+        if (cabinTimer) { clearInterval(cabinTimer); cabinTimer = null; }
+        var u = findUnit(cabinState.unitId);
+        if (!u || !cabinEl.classList.contains("open") || cycleState(u) !== "working") return;
+        cabinTimer = setInterval(function () {
+          var uu = findUnit(cabinState.unitId);
+          if (!uu || !cabinEl.classList.contains("open")) { clearInterval(cabinTimer); cabinTimer = null; return; }
+          if (checkCycleVoid(uu)) {
+            persistTest();
+            clearInterval(cabinTimer); cabinTimer = null;
+            renderCabin(); renderMachines();
+            return;
+          }
+          if (cycleState(uu) !== "working") {
+            clearInterval(cabinTimer); cabinTimer = null;
+            renderCabin(); renderMachines();
+            return;
+          }
+          var prog = cycleProgress(uu);
+          var t = document.getElementById("cycTimer");
+          if (t) t.textContent = fmtCountdown(CYCLE_MS - (Date.now() - uu.cycle.start));
+          var bar = document.getElementById("cycBar");
+          if (bar) bar.style.width = prog + "%";
+          var pctEl = document.getElementById("cycPct");
+          if (pctEl) pctEl.textContent = prog + "%";
+          var rp = document.getElementById("cycRingPct");
+          if (rp) rp.textContent = prog + "%";
+          var rf = document.getElementById("cycRingFg");
+          if (rf) rf.style.strokeDashoffset = (226.2 * (1 - prog / 100)).toFixed(1);
+        }, 1000);
+      }
+      function collectCycle(u) {
+        if (cycleState(u) !== "done") return;
+        var y = Math.round(cycleYield(u) * 100) / 100;
+        recordCycleEnd(u, "completado", y);
+        smeltState.goldBase += y;
+        u.goldEarned = Math.round(((u.goldEarned || 0) + y) * 100) / 100;
+        u.cycle = null;
+        pushMove({ icon: "pick", title: "Ciclo completado · " + MACHINES[u.plan].name, date: "Hoy", amt: "+" + fmt(y, 2) + " g", cls: "pos" });
+        persistTest();
+        renderBalance(); renderMachines(); renderCabin();
+        showCollectCeleb(u, y);
+      }
+      function showCollectCeleb(u, y) {
+        celebSheetEl.innerHTML = '<div class="celeb-body">' +
+          '<div class="big-circle green">' + BUY_ICONS.checkBig + '</div>' +
+          '<h3 class="celeb-title">¡Ciclo completado!</h3>' +
+          '<p class="celeb-text">Recolectaste <b style="color:var(--gold-2)">+' + fmt(y, 2) + ' g</b> de tu ' + MACHINES[u.plan].name + '. El oro ya está en tu saldo y tu máquina quedó lista para activarse de nuevo.</p>' +
+          '<div class="celeb-actions">' +
+            '<button class="btn btn-gold" type="button" id="collectOkBtn">Entendido</button>' +
+          '</div></div>';
+        celebSheetEl.classList.add("open");
+        document.getElementById("collectOkBtn").addEventListener("click", closeCeleb);
+      }
+      function openUpgradeSheet(u) {
+        var p = PLANS[u.plan], up = UPGRADES[u.plan];
+        var body = '<p>Sube el tope de capital de <b>ESTA máquina</b>. No cambia su rentabilidad ni su mínimo.</p>';
+        if (!up) {
+          body += '<p><b>Tu capacidad ya es ilimitada</b>: este plan no tiene tope de capital, así que esta máquina no necesita mejoras.</p>' +
+            '<p>Tope actual: <b>Ilimitado</b> · Mejoras: <b>0 de 0</b></p>';
+        } else {
+          body += '<ul><li>Cada mejora suma <b>+' + fmtInt(up.step) + ' USDT</b> al tope de esta máquina.</li>' +
+            '<li>Precio por mejora: <b>US$' + up.price + '</b>.</li>' +
+            '<li>Máximo <b>' + up.max + ' mejoras</b> por máquina.</li></ul>' +
+            '<p>Tope actual: <b>' + fmtInt(effCap(u)) + ' USDT</b> · Mejoras: <b>' + (u.upgrades || 0) + ' de ' + up.max + '</b></p>';
+          if ((u.upgrades || 0) < up.max) {
+            body += '<button class="btn btn-gold" type="button" id="upgBuyBtn" style="width:100%">Comprar mejora · US$' + up.price + '</button>';
+          } else {
+            body += '<p><b>Ya alcanzaste el máximo de mejoras de esta máquina.</b></p>';
+          }
+        }
+        openSheet("Mejora de capacidad", body);
+        var b = document.getElementById("upgBuyBtn");
+        if (b) b.addEventListener("click", function () { closeSheet(); openServiceFlow("mejora", u); });
+      }
+      function openWalletDetail(u) {
+        var p = PLANS[u.plan];
+        var rs = walletRangeState(p, u);
+        var cap = effCap(u);
+        var rangeTxt = rs === "in" ? "En rango"
+          : (rs === "below" ? "Bajo el mínimo · Mínimo " + fmtInt(p.min) + " USDT"
+            : "Sobre el tope — rinde hasta " + fmtInt(cap) + " USDT");
+        var body = '<p>La billetera TRON conectada a tu <b>' + MACHINES[u.plan].name + '</b>:</p>' +
+          '<div class="full-addr">' + u.address + '</div>' +
+          '<div class="buy-card">' +
+            '<div class="buy-row"><span>Red</span><b>TRON (TRC-20)</b></div>' +
+            '<div class="buy-row"><span>Saldo actual</span><b class="gold">' + fmtBal(u.balance) + ' USDT</b></div>' +
+            '<div class="buy-row"><span>Estado del capital</span><b>' + rangeTxt + '</b></div>' +
+            '<div class="buy-row"><span>Última actualización</span><b>' + fmtHour(u.lastRead || Date.now()) + '</b></div>' +
+          '</div>' +
+          '<button class="btn btn-gold" type="button" data-copy="' + u.address + '" style="width:100%">Copiar dirección completa</button>';
+        openSheet("Detalle de la billetera", body);
+      }
+      function openCycleHistory(u) {
+        var hist = Array.isArray(u.cycleHistory) ? u.cycleHistory : [];
+        var body;
+        if (!hist.length) {
+          body = '<p>Aún no hay ciclos registrados para esta máquina. Cuando un ciclo termine — completado, incompleto o anulado — quedará registrado aquí.</p>';
+        } else {
+          body = '<p>Los ciclos de tu <b>' + MACHINES[u.plan].name + '</b>, del más reciente al más antiguo:</p>' + hist.map(function (h) {
+            var label = h.result === "completado" ? "Ciclo completado" : (h.result === "anulado" ? "Ciclo anulado" : "Ciclo incompleto");
+            var amt = h.result === "completado" ? "+" + fmt(h.grams, 2) + " g" : "0.00 g";
+            var cls = h.result === "completado" ? "pos" : (h.result === "anulado" ? "neg" : "");
+            var ic = h.result === "completado" ? BUY_ICONS.check : (h.result === "anulado" ? BUY_ICONS.warn : BUY_ICONS.clockSm);
+            return '<div class="cyc-hist-row"><span class="ch-ic">' + ic + '</span>' +
+              '<span class="ch-info"><b>' + label + '</b><small>' + fmtOrderDate(h.end) + '</small></span>' +
+              '<span class="ch-amt ' + cls + '">' + amt + '</span></div>';
+          }).join("");
+        }
+        openSheet("Historial de ciclos", body);
+      }
+      function renderCabin() {
+        var u = findUnit(cabinState.unitId);
+        if (!u) { closeCabin(); return; }
+        cabinPauseVideo();
         var p = PLANS[u.plan], m = MACHINES[u.plan];
         var total = fleetCount(u.plan), n = unitNumber(u);
-        var title = total > 1 ? m.name + " · Unidad " + n : m.name;
-        var html;
-        if (u.connected) {
-          var s = unitStats(u);
-          html = '<p><b>' + p.plan + '</b> · Estado: <b>Activa</b></p>' +
-            '<ul><li>Oro recolectado: <b>' + s.oro + '</b></li>' +
-            '<li>Rentabilidad diaria: <b>' + m.pct + '</b></li>' +
-            '<li>Progreso de extracción: <b>' + s.prog + '%</b></li></ul>' +
-            '<h4 class="sheet-h">Billetera de esta máquina</h4>' +
-            walletBoxHTML(p, u) +
-            '<p>Mantenimiento y producción se registran en tu historial.</p>';
-        } else {
-          html = '<p><b>' + p.plan + '</b> · Estado: <b>Adquirida · Pendiente de conectar billetera</b></p>' +
-            '<p>Esta máquina aún no produce. Primero conecta su billetera.</p>' +
-            '<h4 class="sheet-h">Billetera de esta máquina</h4>' +
-            walletBoxHTML(p, u);
+        var st = cycleState(u);
+        var html = '<header class="ps-head cabin-head">' +
+          '<button class="ps-nav-btn" type="button" id="cabinBackBtn" aria-label="Volver">' + PS_ICONS.back + '</button>' +
+          '<div class="cabin-title"><b>' + m.name + '</b><small>Unidad ' + n + (total > 1 ? ' de ' + total : '') + '</small></div>' +
+          '<span class="plan-pill">' + p.plan + '</span>' +
+        '</header>';
+        /* Zona visual 16:9: póster = imagen maestra del plan */
+        var dim = u.connected && (st === "ready" || st === "voided");
+        html += '<div class="cabin-visual"><img class="cv' + (dim ? ' dim' : '') + '" src="' + p.img + '" alt="' + m.name + '" />';
+        if (st === "working") {
+          html += '<video class="cv" id="cabinVideo" muted loop playsinline preload="auto" poster="' + p.img + '" src="assets/video-plan-' + (u.plan + 1) + '.mp4" aria-hidden="true"></video>' +
+            '<button class="video-play-btn" id="cabinPlayBtn" type="button" hidden>' + CABIN_ICONS.play + '<span>Ver la máquina trabajando</span></button>';
         }
-        openSheet(title, html);
+        if (!u.connected) html += '<span class="cabin-seal pending"><i></i>Adquirida · Pendiente de conectar billetera</span>';
+        else if (st === "ready") html += '<span class="cabin-seal"><i></i>Apagada</span>';
+        else if (st === "working") html += '<span class="cabin-seal work"><i></i>Trabajando</span>';
+        else if (st === "done") html += '<span class="cabin-seal done"><i></i>Ciclo completo</span>';
+        else if (st === "voided") html += '<span class="cabin-seal void"><i></i>Ciclo anulado</span>';
+        html += '</div>';
+        html += '<div class="ps-body">';
+        /* Ciclo de 24 h (solo con billetera) */
+        if (u.connected) {
+          html += '<h4 class="ps-h">Ciclo de 24 horas</h4>';
+          var reason = stopReason(u);
+          if (reason) {
+            html += '<div class="stop-card' + (reason.cls ? ' ' + reason.cls : '') + '"><div class="box-head">' + BUY_ICONS.warn + 'Motivo de la detención</div><p>' + reason.text + '</p></div>';
+          }
+          if (st === "voided") {
+            html += '<button class="btn btn-gold" type="button" id="cycAckBtn" style="width:100%;min-height:50px">Entendido</button>';
+          } else if (st === "ready") {
+            html += '<button class="btn btn-gold" type="button" id="cycActivateBtn" style="width:100%;min-height:52px">Activar máquina</button>';
+          } else if (st === "working") {
+            var y = cycleYield(u), pctDone = cycleProgress(u);
+            var CIRC = 226.2;
+            html += '<div class="buy-card" style="padding:13px 14px">' +
+              '<div class="cycle-flex">' +
+                '<div class="ring-wrap" role="img" aria-label="Avance del ciclo: ' + pctDone + '%">' +
+                  '<svg width="88" height="88" viewBox="0 0 88 88" aria-hidden="true"><circle class="ring-bg" cx="44" cy="44" r="36" fill="none" stroke-width="8"/><circle class="ring-fg" id="cycRingFg" cx="44" cy="44" r="36" fill="none" stroke-width="8" stroke-linecap="round" stroke-dasharray="' + CIRC + '" stroke-dashoffset="' + (CIRC * (1 - pctDone / 100)).toFixed(1) + '"/></svg>' +
+                  '<span class="ring-pct" id="cycRingPct">' + pctDone + '%</span>' +
+                '</div>' +
+                '<div class="cycle-side"><small>Tiempo restante del ciclo</small><div class="timer" id="cycTimer">' + fmtCountdown(CYCLE_MS - (Date.now() - u.cycle.start)) + '</div>' +
+                '<p class="cycle-line" style="margin-top:5px">Base del ciclo: <b>' + fmtBal(u.cycle.base) + ' USDT</b> · Rentabilidad <b>' + planPctNum(p) + '%</b> · Al completar: <b class="gold">+' + fmt(y, 2) + ' g</b></p></div>' +
+              '</div>' +
+              '<div class="run-progress" role="progressbar" aria-label="Avance del ciclo de 24 horas"><i id="cycBar" style="width:' + pctDone + '%"></i></div>' +
+              '<div class="run-pct" id="cycPct">' + pctDone + '%</div>' +
+              '<div class="cycle-dates">Inicio: <b>' + fmtOrderDate(u.cycle.start) + '</b><br>Finaliza: <b>' + fmtOrderDate(u.cycle.start + CYCLE_MS) + '</b></div>' +
+            '</div>';
+            html += '<button class="btn btn-gold is-disabled" type="button" disabled aria-disabled="true" style="width:100%;min-height:50px;margin-top:12px">Recolectar oro</button>' +
+              '<p class="collect-note">Disponible al completar las 24 horas</p>';
+          } else if (st === "done") {
+            var y2 = cycleYield(u);
+            html += '<div class="green-box"><span class="gb-ic">' + BUY_ICONS.check + '</span><div>' +
+              '<b>Ciclo completado</b>' +
+              '<p>Las 24 horas terminaron con el saldo en rango. Tu oro está listo para recolectar.</p>' +
+            '</div></div>' +
+            '<div class="cycle-dates" style="margin:0 2px 10px">Inicio: <b>' + fmtOrderDate(u.cycle.start) + '</b><br>Finaliza: <b>' + fmtOrderDate(u.cycle.start + CYCLE_MS) + '</b></div>' +
+            '<button class="btn btn-gold" type="button" id="cycCollectBtn" style="width:100%;min-height:52px">Recolectar +' + fmt(y2, 2) + ' g</button>';
+          }
+          /* Producción de la máquina: tres cifras */
+          var yCycle = (st === "working" || st === "done") ? cycleYield(u) : 0;
+          var yPend = st === "done" ? cycleYield(u) : 0;
+          var histCount = Array.isArray(u.cycleHistory) ? u.cycleHistory.length : 0;
+          html += '<h4 class="ps-h" style="margin-top:18px">Producción de la máquina</h4>' +
+            '<div class="buy-card">' +
+              '<div class="buy-row"><span>Oro de este ciclo' + (st === "working" ? ' · al completar' : '') + '</span><b class="gold">' + fmt(yCycle, 2) + ' g</b></div>' +
+              '<div class="buy-row"><span>Oro total acumulado</span><b>' + fmt(u.goldEarned || 0, 2) + ' g</b></div>' +
+              '<div class="buy-row"><span>Oro pendiente de recolectar</span><b class="gold">' + fmt(yPend, 2) + ' g</b></div>' +
+            '</div>' +
+            '<button class="upgrade-btn" type="button" id="cycHistBtn"><span class="up-ic">' + ICONS.doc + '</span>' +
+            '<span style="flex:1;min-width:0"><b>Historial de ciclos</b><small>' + (histCount ? histCount + (histCount === 1 ? ' ciclo registrado' : ' ciclos registrados') : 'Sin ciclos registrados todavía') + '</small></span>' +
+            CONNECT_ICONS.chev + '</button>';
+        }
+        /* Billetera (bloque existente) */
+        html += '<h4 class="ps-h" style="margin-top:18px">Billetera de esta máquina</h4>' + walletBoxHTML(p, u);
+        /* Mantenimiento */
+        var mnt = maintNum(p);
+        html += '<h4 class="ps-h" style="margin-top:18px">Mantenimiento</h4>' +
+          '<div class="buy-card">' +
+            '<div class="buy-row"><span>Próximo mantenimiento</span><b>' + maintLabel(u) + '</b></div>' +
+            '<div class="buy-row"><span>Monto del mantenimiento</span><b>' + p.maint + '</b></div>' +
+          '</div>';
+        if (u.maintDays <= 2) {
+          html += '<div class="warn-box" style="margin:0 0 10px"><div class="box-head">' + BUY_ICONS.warn + (u.maintDays < 0 ? 'Mantenimiento vencido' : 'Mantenimiento por vencer') + '</div>' +
+            '<p style="margin:0;color:#e7ddc7;font-size:13.5px;line-height:1.5">' + (u.maintDays < 0
+              ? 'El mantenimiento de esta máquina está vencido. Mientras no lo pagues, la máquina no puede activarse.'
+              : 'El mantenimiento vence ' + (u.maintDays === 0 ? 'hoy' : 'en ' + u.maintDays + (u.maintDays === 1 ? ' día' : ' días')) + '. Págallo a tiempo para que tu máquina no se detenga.') + '</p></div>' +
+            '<button class="btn btn-gold" type="button" id="maintPayBtn" style="width:100%;min-height:50px">Pagar mantenimiento · US$' + mnt + '</button>';
+        }
+        /* Mejora de capacidad */
+        var cap = effCap(u);
+        html += '<button class="upgrade-btn" type="button" id="upgOpenBtn"><span class="up-ic">' + CABIN_ICONS.up + '</span>' +
+          '<span style="flex:1;min-width:0"><b>Mejorar capacidad</b><small>' + (cap === null ? 'Tu capacidad ya es ilimitada' : 'Tope actual: ' + fmtInt(cap) + ' USDT · Mejoras: ' + (u.upgrades || 0) + ' de ' + upgMax(u)) + '</small></span>' +
+          CONNECT_ICONS.chev + '</button>';
+        html += '</div>';
+        document.getElementById("cabinBody").innerHTML = html;
+        document.getElementById("cabinBackBtn").addEventListener("click", closeCabin);
         var cb = document.getElementById("unitConnectBtn");
         if (cb) cb.addEventListener("click", function () { openConnectFlow(u); });
+        var ack = document.getElementById("cycAckBtn");
+        if (ack) ack.addEventListener("click", function () {
+          recordCycleEnd(u, "anulado", 0);
+          u.cycle = null;
+          persistTest(); renderMachines(); renderCabin();
+        });
+        var act = document.getElementById("cycActivateBtn");
+        if (act) act.addEventListener("click", function () {
+          if (u.maintDays < 0) { openServiceFlow("mantenimiento", u); return; }
+          if (activateCycle(u)) {
+            var voidedNow = checkCycleVoid(u);
+            persistTest(); renderMachines(); renderCabin(); syncCabinTimer();
+            showToast(voidedNow ? "Ciclo anulado: el saldo está bajo el mínimo del plan" : "Máquina activada · Ciclo de 24 h en curso");
+          }
+        });
+        var wd = document.getElementById("walletDetailBtn");
+        if (wd) wd.addEventListener("click", function () { openWalletDetail(u); });
+        var ch = document.getElementById("cycHistBtn");
+        if (ch) ch.addEventListener("click", function () { openCycleHistory(u); });
+        var col = document.getElementById("cycCollectBtn");
+        if (col) col.addEventListener("click", function () { collectCycle(u); });
+        var mp = document.getElementById("maintPayBtn");
+        if (mp) mp.addEventListener("click", function () { openServiceFlow("mantenimiento", u); });
+        var up = document.getElementById("upgOpenBtn");
+        if (up) up.addEventListener("click", function () { openUpgradeSheet(u); });
+        if (st === "working") setupCabinVideo();
       }
       function onFleetTouched() {
+        checkAllCycleVoids();
         cancelRunningSmelt();
         persistTest();
         renderPlans(); renderMachines(); renderSmelt();
@@ -2590,6 +3318,21 @@
       if (!Array.isArray(fleet) || !fleet.every(function (u) { return u && typeof u.id === "string" && PLANS[u.plan] && typeof u.address === "string" && typeof u.balance === "number" && typeof u.connected === "boolean"; })) {
         fleet = buildFleet(_sc0);
       }
+      /* Estado de cabina por unidad: ciclo, mantenimiento, mejoras y oro propio.
+         Las flotas guardadas antes de la cabina reciben los valores por defecto. */
+      (function sanitizeFleet() {
+        var counts = {};
+        fleet.forEach(function (u) {
+          counts[u.plan] = (counts[u.plan] || 0) + 1;
+          if (typeof u.goldEarned !== "number" || isNaN(u.goldEarned)) u.goldEarned = defaultGoldEarned(u.plan, counts[u.plan]);
+          if (typeof u.maintDays !== "number" || isNaN(u.maintDays)) u.maintDays = 15;
+          if (typeof u.upgrades !== "number" || u.upgrades < 0) u.upgrades = 0;
+          if (!u.cycle || typeof u.cycle !== "object" || ["working", "voided"].indexOf(u.cycle.status) === -1 ||
+              typeof u.cycle.start !== "number" || typeof u.cycle.base !== "number") u.cycle = null;
+          if (typeof u.lastRead !== "number" || isNaN(u.lastRead)) u.lastRead = Date.now();
+          if (!Array.isArray(u.cycleHistory)) u.cycleHistory = [];
+        });
+      })();
       var planPaid = lsGet("gm_plan_paid", null);
       if (!Array.isArray(planPaid) || planPaid.length !== PLANS.length || !planPaid.every(function (v) { return typeof v === "boolean"; })) {
         planPaid = [false, false, false, false];
@@ -2689,7 +3432,8 @@
         if (!order) return;
         var wasConfirmed = order.status === "confirmada";
         order.status = st;
-        if (st === "confirmada" && !order.unitCreated) {
+        var kind = order.kind || "compra";
+        if (st === "confirmada" && kind === "compra" && !order.unitCreated) {
           var u = createUnit(order.planId);
           fleet.push(u);
           order.unitCreated = true;
@@ -2697,10 +3441,36 @@
           renderMachines();
           showToast("Máquina agregada a tu flota: " + PLANS[order.planId].name);
         }
-        if (st === "confirmada" && !wasConfirmed) pushPurchaseNotification(order);
+        if (st === "confirmada" && !wasConfirmed) {
+          if (kind === "compra") {
+            pushPurchaseNotification(order);
+          } else if (kind === "mantenimiento") {
+            var mu = order.unitId ? findUnit(order.unitId) : null;
+            if (mu) {
+              mu.maintDays = 15;
+              pushMove({ icon: "wrench", title: "Mantenimiento pagado · " + MACHINES[mu.plan].name, date: "Hoy", amt: "−US$" + order.amount, cls: "neg" });
+              renderMachines();
+            }
+          } else if (kind === "mejora") {
+            var uu = order.unitId ? findUnit(order.unitId) : null;
+            if (uu) {
+              uu.upgrades = Math.min(upgMax(uu), (uu.upgrades || 0) + 1);
+              renderMachines();
+            }
+          }
+        }
         persistTest();
         renderPlans();
         refreshBuySheet();
+      }
+      /* Registros extra del Historial (recolecciones y mantenimientos), persistidos */
+      function pushMove(m) {
+        var arr = lsGet("gm_moves_extra", null);
+        if (!Array.isArray(arr)) arr = [];
+        arr.unshift(m);
+        if (arr.length > 30) arr.length = 30;
+        lsSet("gm_moves_extra", arr);
+        renderMoves();
       }
       function levelKeyForEnergy(e) { var cur = LEVELS[0]; LEVELS.forEach(function (l) { if (e >= l.min) cur = l; }); return cur.key; }
       function goldAvailable() { return Math.max(0, smeltState.goldBase - smeltState.goldSpent); }
@@ -2992,8 +3762,10 @@
       function renderMoves() {
         var wrap = document.getElementById("moveList");
         var extra = lsGet("gm_smelt_move", null);
+        var extras = lsGet("gm_moves_extra", null);
+        if (!Array.isArray(extras)) extras = [];
         var base = scenarioByKey(testState.scenario).moves;
-        var moves = (extra && testState.scenario === DEFAULT_SCENARIO) ? [extra].concat(base) : base;
+        var moves = extras.concat((extra && testState.scenario === DEFAULT_SCENARIO) ? [extra].concat(base) : base);
         if (!moves.length) {
           wrap.innerHTML =
             '<div class="empty">' +
@@ -3047,6 +3819,7 @@
         smeltState.wallet = sc.wallet;
         smeltState.previewKey = levelKeyForEnergy(sc.energy);
         chainedPreview = false;
+        try { localStorage.removeItem("gm_moves_extra"); } catch (e) {}
         cancelRunningSmelt();
         persistTest();
         renderTestCard(); renderBalance(); renderMachines(); renderPlans(); renderMoves(); renderSmelt(); renderChained(); updateSmeltGate();
@@ -3105,6 +3878,23 @@
                 '<button class="adj-btn" type="button" data-fu-bal="' + u.id + ':25" aria-label="Añadir 25 USDT a la unidad ' + n + ' del ' + p.plan + '">+</button>' +
               '</div>' +
               '<button class="pw-toggle' + (u.connected ? ' on' : '') + '" type="button" data-fu-toggle="' + u.id + '" aria-pressed="' + u.connected + '"><span><small>Billetera</small><b>' + (u.connected ? 'Conectada' : 'Sin conectar') + '</b></span><span class="pw-knob" aria-hidden="true"></span></button>' +
+              (u.connected ?
+                '<div class="pw-head" style="margin:11px 0 6px"><b style="font-size:12.5px">Ciclo de 24 h</b><span>' + cycleStateLabel(u) + '</span></div>' +
+                '<div class="order-test-btns" style="margin-top:0">' +
+                  '<button class="ot-btn" type="button" data-fu-cycle="activate:' + u.id + '">Activar</button>' +
+                  '<button class="ot-btn" type="button" data-fu-cycle="advance:' + u.id + '">Avanzar +6 h</button>' +
+                  '<button class="ot-btn" type="button" data-fu-cycle="complete:' + u.id + '">Completar ciclo</button>' +
+                  '<button class="ot-btn danger" type="button" data-fu-cycle="void:' + u.id + '">Anular por saldo bajo</button>' +
+                '</div>' +
+                '<div class="pw-head" style="margin:11px 0 6px"><b style="font-size:12.5px">Mantenimiento</b><span>' + maintLabel(u) + '</span></div>' +
+                '<div class="pw-bal-row" style="margin-bottom:0">' +
+                  '<span style="flex:1;color:var(--muted);font-size:12.5px">Días restantes</span>' +
+                  '<input class="adj-num" type="number" data-fu-maint="' + u.id + '" min="-5" max="30" step="1" value="' + u.maintDays + '" aria-label="Días restantes de mantenimiento de la unidad ' + n + ' del ' + p.plan + '" />' +
+                  '<button class="ot-btn danger" type="button" data-fu-maint-vencido="' + u.id + '" style="min-height:38px">Marcar vencido</button>' +
+                '</div>' +
+                '<div class="pw-head" style="margin:11px 0 6px"><b style="font-size:12.5px">Mejora de capacidad</b><span>Mejoras: ' + (u.upgrades || 0) + ' de ' + upgMax(u) + '</span></div>' +
+                '<button class="ot-btn" type="button" data-fu-upg="' + u.id + '" style="width:100%">+1 mejora de prueba</button>'
+              : '') +
             '</div>';
           }).join("");
           return '<div class="pw-block">' +
@@ -3313,7 +4103,14 @@
           b.addEventListener("click", function () {
             var u = findUnit(b.getAttribute("data-fu-toggle"));
             if (!u) return;
+            if (u.connected && u.cycle && u.cycle.status === "working") {
+              /* Desconectar la billetera a mitad de ciclo: el ciclo queda incompleto */
+              recordCycleEnd(u, "incompleto", 0);
+              u.cycle = null;
+              showToast("Billetera desconectada: el ciclo en curso quedó incompleto");
+            }
             u.connected = !u.connected;
+            if (u.connected) u.lastRead = Date.now();
             onFleetTouched();
             openTestMode();
           });
@@ -3323,6 +4120,7 @@
             var parts = b.getAttribute("data-fu-bal").split(":"), u = findUnit(parts[0]), delta = Number(parts[1]);
             if (!u) return;
             u.balance = Math.max(0, Math.min(1000000, Math.round((u.balance + delta) * 100) / 100));
+            u.lastRead = Date.now();
             onFleetTouched();
             openTestMode();
           });
@@ -3331,7 +4129,7 @@
           inp.addEventListener("change", function () {
             var u = findUnit(inp.getAttribute("data-fu-bal-num"));
             var v = parseFloat(inp.value);
-            if (u && !isNaN(v)) u.balance = Math.max(0, Math.min(1000000, Math.round(v * 100) / 100));
+            if (u && !isNaN(v)) { u.balance = Math.max(0, Math.min(1000000, Math.round(v * 100) / 100)); u.lastRead = Date.now(); }
             onFleetTouched();
             openTestMode();
           });
@@ -3341,6 +4139,63 @@
             var u = findUnit(inp.getAttribute("data-fu-addr"));
             var v = inp.value.replace(/\s+/g, "");
             if (u && v) u.address = v;
+            onFleetTouched();
+            openTestMode();
+          });
+        });
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-fu-cycle]"), function (b) {
+          b.addEventListener("click", function () {
+            var parts = b.getAttribute("data-fu-cycle").split(":"), act = parts[0], u = findUnit(parts[1]);
+            if (!u) return;
+            if (act === "activate") {
+              if (activateCycle(u)) showToast("Ciclo activado: " + PLANS[u.plan].name);
+              else if (u.maintDays < 0) showToast("No se puede activar: mantenimiento vencido");
+              else showToast("La unidad no está lista para activar");
+            } else if (act === "advance") {
+              if (u.cycle && u.cycle.status === "working") { u.cycle.start -= 6 * 3600 * 1000; showToast("Ciclo avanzado +6 h"); }
+              else showToast("No hay un ciclo en curso");
+            } else if (act === "complete") {
+              if (u.cycle && u.cycle.status === "working") { u.cycle.start = Date.now() - CYCLE_MS - 1000; showToast("Ciclo completado: listo para recolectar"); }
+              else showToast("No hay un ciclo en curso");
+            } else if (act === "void") {
+              u.balance = Math.max(0, PLANS[u.plan].min - 1);
+              u.lastRead = Date.now();
+              if (checkCycleVoid(u)) showToast("Saldo bajo el mínimo: ciclo anulado");
+              else showToast("Saldo fijado bajo el mínimo (" + u.balance + " USDT)");
+            }
+            onFleetTouched();
+            openTestMode();
+          });
+        });
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-fu-maint]"), function (inp) {
+          inp.addEventListener("change", function () {
+            var u = findUnit(inp.getAttribute("data-fu-maint"));
+            var v = parseInt(inp.value, 10);
+            if (u && !isNaN(v)) u.maintDays = Math.max(-5, Math.min(30, v));
+            onFleetTouched();
+            openTestMode();
+          });
+        });
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-fu-maint-vencido]"), function (b) {
+          b.addEventListener("click", function () {
+            var u = findUnit(b.getAttribute("data-fu-maint-vencido"));
+            if (!u) return;
+            u.maintDays = -1;
+            onFleetTouched();
+            openTestMode();
+            showToast("Mantenimiento marcado como vencido");
+          });
+        });
+        Array.prototype.forEach.call(sheet.querySelectorAll("[data-fu-upg]"), function (b) {
+          b.addEventListener("click", function () {
+            var u = findUnit(b.getAttribute("data-fu-upg"));
+            if (!u) return;
+            if ((u.upgrades || 0) < upgMax(u)) {
+              u.upgrades = (u.upgrades || 0) + 1;
+              showToast("Mejora de prueba aplicada · Nuevo tope: " + fmtInt(effCap(u)) + " USDT");
+            } else {
+              showToast(UPGRADES[u.plan] ? "Esta máquina ya tiene el máximo de mejoras" : "Este plan ya tiene capacidad ilimitada");
+            }
             onFleetTouched();
             openTestMode();
           });
@@ -3399,6 +4254,7 @@
         closeBuyFlow();
         closeCeleb();
         closeConnectFlow();
+        closeCabin();
       }
       function route() {
         var h = (location.hash || "#/inicio").replace("#/", "");
@@ -3429,6 +4285,7 @@
         if (connectSheetEl.classList.contains("open")) closeConnectFlow();
         else if (sheet.classList.contains("open")) closeSheet();
         else if (buySheetEl.classList.contains("open")) closeBuyFlow();
+        else if (cabinEl.classList.contains("open")) closeCabin();
         else closePlanSheet();
       });
 
@@ -3502,7 +4359,7 @@
             '<li><b>Conecta tu billetera:</b> cada máquina conecta su propia billetera TRON, una dirección por máquina.</li>' +
             '<li><b>Mantén el saldo en rango:</b> el sistema verifica el saldo constantemente; si baja del mínimo, la máquina se frena y ese día no paga.</li>' +
             '<li><b>Activa cada día:</b> activa la máquina y cobra tu ganancia al completar 24 h, calculada sobre tu saldo con el tope del plan.</li>' +
-            '<li><b>Mantenimiento semanal:</b> se descuenta automáticamente cada semana.</li>' +
+            '<li><b>Mantenimiento quincenal:</b> se descuenta automáticamente cada 15 días.</li>' +
           '</ol>'
         },
         tienda: {
@@ -3528,13 +4385,13 @@
       });
       document.getElementById("bellBtn").addEventListener("click", openNotificationsSheet);
 
-      /* Detalle de máquina */
+      /* Cabina de la máquina: tocar una tarjeta del Inicio abre la cabina de esa unidad */
       document.getElementById("machineList").addEventListener("click", function (e) {
         var card = e.target.closest("[data-unit]");
         if (!card) return;
         var u = findUnit(card.getAttribute("data-unit"));
         if (!u) return;
-        openMachineSheet(u);
+        openCabin(u);
       });
 
       /* ============ Toast ============ */
