@@ -1208,7 +1208,18 @@
       .cyc-hist-row .ch-amt.pos{ color:var(--green); }
       .cyc-hist-row .ch-amt.neg{ color:#ff9c9c; }
 
-      /* ---------- Mis máquinas (lista en Planes) ---------- */
+      /* ---------- Mis máquinas (pantalla propia) ---------- */
+      .fleet-head{ display:flex; align-items:center; gap:10px; margin:10px 2px 2px; }
+      .fleet-head .fh-brand{ flex:1; min-width:0; display:flex; align-items:center; justify-content:center; gap:7px; color:#f0d48a; }
+      .fleet-head .fh-brand svg{ flex:none; }
+      .fleet-head .fh-brand span{
+        font-family:"Barlow Condensed",sans-serif; font-weight:800; font-size:18px;
+        letter-spacing:.05em; text-transform:uppercase; line-height:1; white-space:nowrap;
+      }
+      .fleet-head .fh-spacer{ flex:none; width:38px; }
+      #view-maquinas .view-title{ margin-top:8px; }
+      .fleet-summary{ margin:0 2px 14px; color:var(--muted); font-size:14px; font-variant-numeric:tabular-nums; }
+      .fleet-summary:empty{ display:none; }
       .my-machine{
         display:flex; align-items:center; gap:11px; width:100%; text-align:left;
         border:1px solid var(--line-soft); border-radius:14px; background:var(--panel);
@@ -1218,7 +1229,7 @@
       .my-machine .mm-info{ flex:1; min-width:0; }
       .my-machine .mm-info b{ display:block; font-size:15px; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
       .my-machine .mm-info small{ display:block; color:var(--muted); font-size:11.5px; margin-top:2px; }
-      .my-machine .mm-state{ flex:none; font-size:11.5px; font-weight:800; text-align:right; color:var(--gold-2); max-width:110px; }
+      .my-machine .mm-pill{ display:block; margin-top:6px; }
       .my-machine > svg{ flex:none; color:var(--gold-2); }
 
       /* ---------- Historial ---------- */
@@ -1445,7 +1456,7 @@
           <!-- Mis máquinas activas -->
           <div class="section-head">
             <h2>Mis máquinas activas</h2>
-            <button type="button" data-goto="planes">Ver todas
+            <button type="button" data-goto="maquinas">Ver todas
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
             </button>
           </div>
@@ -1462,8 +1473,24 @@
             </button>
           </div>
           <p class="view-sub">Selecciona tu maquinaria y comienza a extraer oro. Cada plan requiere mantener un capital mínimo en tu billetera conectada de la plataforma.</p>
-          <div id="myMachines"></div>
           <div id="planList"></div>
+        </section>
+
+        <!-- ================= VISTA: MIS MÁQUINAS ================= -->
+        <section class="view" id="view-maquinas" aria-label="Mis máquinas">
+          <div class="fleet-head">
+            <button class="ps-nav-btn" type="button" data-goto="inicio" aria-label="Volver a Inicio">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+            </button>
+            <div class="fh-brand" aria-hidden="true">
+              <svg width="34" height="20" viewBox="0 0 60 34" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 27 L19 8 L27.5 18.5 L35.5 4.5 L56 27"/><path d="M15.5 27 H46.5"/></svg>
+              <span>Gold Mining 2.0</span>
+            </div>
+            <span class="fh-spacer" aria-hidden="true"></span>
+          </div>
+          <h2 class="view-title">Mis máquinas</h2>
+          <p class="fleet-summary" id="fleetSummary"></p>
+          <div id="fleetList"></div>
         </section>
 
         <!-- ================= VISTA: FUNDIR ================= -->
@@ -2033,23 +2060,45 @@
           }).join("");
         }
         bindGoto(wrap);
+        renderFleet();
       }
 
-      /* ============ Lista «Mis máquinas» en Planes: toca una unidad y abre su cabina ============ */
-      function renderMyMachines() {
-        var wrap = document.getElementById("myMachines");
+      /* ============ Pantalla «Mis máquinas»: la flota completa; tocar una unidad abre su cabina ============ */
+      function fleetPillHTML(u) {
+        var st = cycleState(u);
+        if (st === "nowallet") return '<span class="status-pill off"><i></i>Sin billetera</span>';
+        if (st === "ready") return '<span class="status-pill off"><i></i>Apagada</span>';
+        if (st === "working") return '<span class="status-pill"><i></i>Trabajando · ' + cycleProgress(u) + '%</span>';
+        if (st === "done") return '<span class="status-pill done"><i></i>Lista para recolectar</span>';
+        return '<span class="status-pill void"><i></i>Ciclo anulado</span>';
+      }
+      function renderFleet() {
+        var wrap = document.getElementById("fleetList");
+        var summary = document.getElementById("fleetSummary");
         if (!wrap) return;
-        if (!fleet.length) { wrap.innerHTML = ""; return; }
+        if (!fleet.length) {
+          if (summary) summary.textContent = "";
+          wrap.innerHTML =
+            '<div class="empty">' +
+              '<span class="eicon">' + ICONS.drill + '</span>' +
+              '<h3>Aún no tienes máquinas</h3>' +
+              '<p>Cuando adquieras tu primera máquina, aparecerá aquí con su estado en tiempo real.</p>' +
+              '<button class="btn btn-gold" type="button" data-goto="planes">Ver planes</button>' +
+            '</div>';
+          bindGoto(wrap);
+          return;
+        }
         var units = fleet.slice().sort(function (a, b) { return a.plan - b.plan; });
-        wrap.innerHTML = '<div class="section-head" style="margin-top:0"><h2>Mis máquinas</h2></div>' +
-          units.map(function (u) {
+        var working = 0;
+        units.forEach(function (u) { checkCycleVoid(u); if (cycleState(u) === "working") working++; });
+        if (summary) summary.textContent = units.length + (units.length === 1 ? " máquina" : " máquinas") + " · " + working + " trabajando";
+        wrap.innerHTML = units.map(function (u) {
             var m = MACHINES[u.plan], p = PLANS[u.plan];
             var total = fleetCount(u.plan), n = unitNumber(u);
-            checkCycleVoid(u);
             return '<button class="my-machine" type="button" data-my-unit="' + u.id + '" aria-label="Abrir la cabina de ' + m.name + ', unidad ' + n + '">' +
               '<img src="' + m.img + '" alt="" loading="lazy" />' +
-              '<span class="mm-info"><b>' + m.name + '</b><small>' + p.plan + ' · Unidad ' + n + (total > 1 ? ' de ' + total : '') + '</small></span>' +
-              '<span class="mm-state">' + cycleStateLabel(u) + '</span>' +
+              '<span class="mm-info"><b>' + m.name + '</b><small>' + p.plan + ' · Unidad ' + n + (total > 1 ? ' de ' + total : '') + '</small>' +
+              '<span class="mm-pill">' + fleetPillHTML(u) + '</span></span>' +
               '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>' +
             '</button>';
           }).join("");
@@ -2157,7 +2206,6 @@
         if (ob) ob.addEventListener("click", function () { if (orderActive()) openBuyFlow(order.planId); });
         var wb = document.getElementById("walletBanner");
         if (wb) wb.addEventListener("click", function () { openWalletPendingOrder(); });
-        renderMyMachines();
       }
 
       /* ============ Ficha del plan (hoja a pantalla completa) ============ */
@@ -3001,7 +3049,14 @@
 
       /* ============ LA CABINA DE LA MÁQUINA ============ */
       var cabinEl = document.getElementById("cabinSheet");
-      var cabinState = { unitId: null };
+      var cabinState = { unitId: null, from: null };
+      function currentViewName() {
+        for (var i = 0; i < VIEWS.length; i++) {
+          var el = document.getElementById("view-" + VIEWS[i]);
+          if (el && el.classList.contains("active")) return VIEWS[i];
+        }
+        return "inicio";
+      }
       var cabinTimer = null;
       var CABIN_ICONS = {
         up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>',
@@ -3040,15 +3095,20 @@
         if (!u) return;
         if (checkCycleVoid(u)) persistTest();
         cabinState.unitId = u.id;
+        cabinState.from = currentViewName();
         renderCabin();
         cabinEl.classList.add("open");
         cabinEl.scrollTop = 0;
         syncCabinTimer();
       }
-      function closeCabin() {
+      function closeCabin(fromNav) {
         cabinPauseVideo();
         cabinEl.classList.remove("open");
         if (cabinTimer) { clearInterval(cabinTimer); cabinTimer = null; }
+        var from = cabinState.from;
+        cabinState.from = null;
+        /* Al salir, se vuelve a la pantalla de origen (Mis máquinas o Inicio). */
+        if (!fromNav && from && from !== currentViewName()) go(from);
       }
       function syncCabinTimer() {
         if (cabinTimer) { clearInterval(cabinTimer); cabinTimer = null; }
@@ -3262,7 +3322,7 @@
           CONNECT_ICONS.chev + '</button>';
         html += '</div>';
         document.getElementById("cabinBody").innerHTML = html;
-        document.getElementById("cabinBackBtn").addEventListener("click", closeCabin);
+        document.getElementById("cabinBackBtn").addEventListener("click", function () { closeCabin(); });
         var cb = document.getElementById("unitConnectBtn");
         if (cb) cb.addEventListener("click", function () { openConnectFlow(u); });
         var ack = document.getElementById("cycAckBtn");
@@ -4227,7 +4287,7 @@
       }
 
       /* ============ Navegación SPA por hash ============ */
-      var VIEWS = ["inicio", "planes", "fundir", "historial", "perfil"];
+      var VIEWS = ["inicio", "planes", "maquinas", "fundir", "historial", "perfil"];
       function go(view) {
         if (VIEWS.indexOf(view) === -1) view = "inicio";
         if (location.hash !== "#/" + view) { location.hash = "#/" + view; return; }
@@ -4254,7 +4314,7 @@
         closeBuyFlow();
         closeCeleb();
         closeConnectFlow();
-        closeCabin();
+        closeCabin(true);
       }
       function route() {
         var h = (location.hash || "#/inicio").replace("#/", "");
