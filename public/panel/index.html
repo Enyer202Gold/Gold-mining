@@ -618,10 +618,9 @@
       .buy-total small{ display:block; color:var(--muted); font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; }
       .buy-total b{ display:block; font-size:42px; font-weight:800; color:var(--gold-2); line-height:1.08; font-variant-numeric:tabular-nums; }
       .tron-line{ display:flex; align-items:center; justify-content:center; gap:9px; font-size:15.5px; font-weight:700; }
-      .tron-badge{ width:29px; height:29px; border-radius:50%; background:#eb0029; display:grid; place-items:center; color:#fff; flex:none; }
-      .tron-badge svg{ width:15px; height:15px; }
-      .tron-badge.sm{ width:21px; height:21px; }
-      .tron-badge.sm svg{ width:11px; height:11px; }
+      .tron-badge{ display:inline-flex; align-items:center; flex:none; }
+      .tron-badge img{ width:22px; height:22px; display:block; }
+      .tron-badge.sm img{ width:16px; height:16px; }
       .buy-sub{ text-align:center; color:var(--muted); font-size:13.5px; line-height:1.45; margin:7px 10px 16px; }
       .buy-label{ display:block; color:var(--muted); font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin:0 2px 6px; }
       .addr-box{ display:flex; align-items:center; gap:10px; border:1px solid var(--line); border-radius:14px; background:#0d0a06; padding:11px 12px; margin-bottom:14px; }
@@ -1112,7 +1111,7 @@
         font-size:10px; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
       }
       .cabin-visual{ position:relative; overflow:hidden; background:#0d0a06; }
-      .cabin-visual img.cv{ width:100%; aspect-ratio:16/9; object-fit:cover; }
+      .cabin-visual img.cv{ width:100%; aspect-ratio:4/3; object-fit:cover; }
       .cabin-visual img.cv.dim{ filter:brightness(.48) saturate(.5); }
       .cabin-visual video.cv{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
       .cabin-visual video.cv[hidden]{ display:none; }
@@ -1121,20 +1120,74 @@
         background:linear-gradient(0deg, rgba(4,3,2,.55), transparent 42%);
       }
       .cabin-seal{
-        position:absolute; left:12px; bottom:12px; z-index:2;
+        position:absolute; left:12px; top:12px; z-index:2;
         display:inline-flex; align-items:center; gap:6px;
         border-radius:999px; padding:4px 11px; font-size:12px; font-weight:800; white-space:nowrap;
-        background:rgba(8,6,3,.87); border:1px solid rgba(246,240,226,.3); color:#e7ddc7;
+        background:rgba(10,8,5,.72); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+        border:1px solid rgba(212,160,23,.35); color:#e7ddc7;
       }
-      .cabin-seal i{ width:7px; height:7px; border-radius:50%; background:#9a8f7a; flex:none; }
+      .cabin-seal i{ position:relative; width:7px; height:7px; border-radius:50%; background:#9a8f7a; flex:none; }
       .cabin-seal.work{ border-color:rgba(61,220,132,.55); color:#7bf0ae; }
       .cabin-seal.work i{ background:var(--green); box-shadow:0 0 7px var(--green); }
+      .cabin-seal.work i::after{
+        content:""; position:absolute; inset:-3px; border-radius:50%;
+        border:1.5px solid var(--green); opacity:0;
+        animation:sealPulse 1.8s ease-out infinite;
+      }
+      @keyframes sealPulse{ 0%{ transform:scale(.55); opacity:.85; } 70%{ transform:scale(1.9); opacity:0; } 100%{ transform:scale(1.9); opacity:0; } }
       .cabin-seal.done{ border-color:var(--gold); color:var(--gold-3); }
       .cabin-seal.done i{ background:var(--gold-2); box-shadow:0 0 7px var(--gold-2); }
       .cabin-seal.void{ border-color:rgba(255,93,93,.55); color:#ff9c9c; }
       .cabin-seal.void i{ background:var(--red); box-shadow:0 0 7px var(--red); }
       .cabin-seal.pending{ border-color:rgba(255,176,46,.55); color:#ffd485; }
       .cabin-seal.pending i{ background:var(--amber); box-shadow:0 0 7px var(--amber); }
+      /* Cristal vivo al pie del héroe (trabajando / completo) */
+      .cabin-live{
+        position:absolute; left:12px; right:12px; bottom:14px; z-index:2;
+        display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
+        background:rgba(10,8,5,.72); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+        border:1px solid rgba(212,160,23,.35); border-radius:14px; padding:10px 13px;
+      }
+      .cabin-live small{ display:block; color:#d6bd72; font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin-bottom:2px; }
+      .cabin-live .cl-timer{ color:var(--gold-2); font-size:29px; line-height:1.05; font-weight:800; font-variant-numeric:tabular-nums; }
+      .cabin-live .cl-pct{ text-align:right; }
+      .cabin-live .cl-pct b{ display:block; color:var(--gold-3); font-size:29px; line-height:1.05; font-weight:800; font-variant-numeric:tabular-nums; }
+      .cabin-live .cl-pct span{ display:block; color:#d6bd72; font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin-top:2px; }
+      .cabin-live.done{ align-items:center; justify-content:flex-start; }
+      .cabin-live .cl-check{
+        flex:none; width:32px; height:32px; border-radius:50%;
+        border:1px solid rgba(61,220,132,.6); background:rgba(61,220,132,.12);
+        display:grid; place-items:center; color:#7bf0ae;
+      }
+      .cabin-live .cl-check svg{ width:17px; height:17px; }
+      .cabin-live .cl-done-txt b{ display:block; color:var(--gold-2); font-size:18px; font-weight:800; font-variant-numeric:tabular-nums; line-height:1.2; }
+      .cabin-live .cl-done-txt span{ display:block; color:#e7ddc7; font-size:12px; margin-top:1px; }
+      .cabin-progress{ position:absolute; left:0; right:0; bottom:0; height:3px; z-index:4; background:rgba(255,255,255,.14); }
+      .cabin-progress i{
+        display:block; height:100%; width:0;
+        background:linear-gradient(90deg,var(--gold-deep),var(--gold) 55%,var(--gold-2));
+        box-shadow:0 0 8px rgba(212,160,23,.55); transition:width .5s linear;
+      }
+      /* Entrada escalonada de los bloques de la cabina */
+      @keyframes cabinIn{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:none; } }
+      #cabinBody .cabin-visual{ animation:cabinIn .4s ease both; }
+      #cabinBody .ps-body > *{ animation:cabinIn .45s ease both; }
+      #cabinBody .ps-body > *:nth-child(2){ animation-delay:.05s; }
+      #cabinBody .ps-body > *:nth-child(3){ animation-delay:.1s; }
+      #cabinBody .ps-body > *:nth-child(4){ animation-delay:.15s; }
+      #cabinBody .ps-body > *:nth-child(5){ animation-delay:.2s; }
+      #cabinBody .ps-body > *:nth-child(6){ animation-delay:.25s; }
+      #cabinBody .ps-body > *:nth-child(7){ animation-delay:.3s; }
+      #cabinBody .ps-body > *:nth-child(8){ animation-delay:.35s; }
+      #cabinBody .ps-body > *:nth-child(9){ animation-delay:.4s; }
+      #cabinBody .ps-body > *:nth-child(10){ animation-delay:.45s; }
+      #cabinBody .ps-body > *:nth-child(11){ animation-delay:.5s; }
+      #cabinBody .ps-body > *:nth-child(12){ animation-delay:.55s; }
+      @media (prefers-reduced-motion: reduce){
+        #cabinBody .cabin-visual, #cabinBody .ps-body > *{ animation:none; }
+        .cabin-seal.work i::after{ animation:none; }
+        .cabin-progress i{ transition:none; }
+      }
       .cycle-timer{ text-align:center; padding:2px 0 4px; }
       .cycle-timer small{ display:block; color:#d6bd72; font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; margin-bottom:2px; }
       .cycle-line{ margin:9px 0 0; color:#e7ddc7; font-size:13.5px; line-height:1.55; }
@@ -1162,19 +1215,63 @@
       .status-pill.void i{ background:var(--red); box-shadow:0 0 7px var(--red); }
 
       /* ---------- Cabina: anillo del ciclo, detención e historial ---------- */
+      .cycle-hero{
+        border:1px solid var(--line); border-radius:20px;
+        background:linear-gradient(180deg, rgba(212,160,23,.08), var(--panel) 58%);
+        padding:16px 14px; margin-bottom:4px;
+      }
+      .cycle-hero .btn{ width:100%; }
+      .cycle-hero .green-box{ margin-bottom:0; }
+      .btn.collect-lit{ box-shadow:0 8px 24px rgba(212,160,23,.35), 0 0 22px rgba(212,160,23,.4), inset 0 1px 0 rgba(255,255,255,.55); }
       .cycle-flex{ display:flex; gap:14px; align-items:center; }
-      .ring-wrap{ position:relative; width:88px; height:88px; flex:none; }
-      .ring-wrap svg{ transform:rotate(-90deg); }
+      .ring-wrap{ position:relative; width:132px; height:132px; flex:none; }
+      .ring-wrap svg{ transform:rotate(-90deg); width:132px; height:132px; }
       .ring-bg{ stroke:rgba(255,255,255,.12); }
       .ring-fg{ stroke:var(--gold-2); filter:drop-shadow(0 0 6px rgba(212,160,23,.45)); transition:stroke-dashoffset .5s linear; }
       .ring-pct{
         position:absolute; inset:0; display:grid; place-items:center;
-        font-weight:800; font-size:19px; color:var(--gold-3); font-variant-numeric:tabular-nums;
+        font-weight:800; font-size:30px; color:var(--gold-3); font-variant-numeric:tabular-nums;
+      }
+      @media (max-width:360px){
+        .ring-wrap{ width:112px; height:112px; }
+        .ring-wrap svg{ width:112px; height:112px; }
+        .ring-pct{ font-size:26px; }
       }
       .cycle-side{ flex:1; min-width:0; }
       .cycle-side small{ display:block; color:#d6bd72; font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; margin-bottom:2px; }
+      .cycle-kv{ margin:0; color:#e7ddc7; font-size:14px; line-height:1.5; }
+      .cycle-kv b{ color:#f5ead3; font-variant-numeric:tabular-nums; }
+      .cycle-kv b.gold{ color:var(--gold-2); font-size:16.5px; }
       .cycle-dates{ margin-top:9px; color:var(--muted); font-size:12.5px; line-height:1.55; }
       .cycle-dates b{ color:#e7ddc7; font-variant-numeric:tabular-nums; }
+      /* Marcador de producción: 3 columnas */
+      .prod-score{
+        display:grid; grid-template-columns:1fr 1fr 1fr;
+        border:1px solid var(--line-soft); border-radius:14px; background:#0d0a06;
+        padding:13px 4px;
+      }
+      .prod-score .cell{ text-align:center; padding:0 4px; min-width:0; }
+      .prod-score .cell + .cell{ border-left:1px solid rgba(212,160,23,.16); }
+      .prod-score small{ display:block; color:var(--muted); font-size:9.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; line-height:1.3; }
+      .prod-score b{ display:block; margin-top:5px; font-size:20px; font-weight:800; color:#f5ead3; font-variant-numeric:tabular-nums; line-height:1.1; white-space:nowrap; }
+      .prod-score b.gold{ color:var(--gold-2); }
+      /* Barra de rango de la billetera */
+      .wallet-range{ margin-top:12px; }
+      .wr-track{ height:8px; border-radius:99px; background:rgba(255,255,255,.12); overflow:hidden; }
+      .wr-fill{ display:block; height:100%; border-radius:99px; background:linear-gradient(90deg,var(--gold-deep),var(--gold) 55%,var(--gold-2)); box-shadow:0 0 8px rgba(212,160,23,.4); transition:width .4s ease; }
+      .wr-fill.below{ background:linear-gradient(90deg,#8f2b2b,var(--red)); box-shadow:0 0 8px rgba(255,93,93,.4); }
+      .wr-fill.above{ background:linear-gradient(90deg,#8a5a06,var(--amber)); box-shadow:0 0 8px rgba(255,176,46,.4); }
+      .wr-labels{ display:flex; justify-content:space-between; gap:10px; margin-top:5px; color:var(--muted); font-size:11px; font-weight:600; font-variant-numeric:tabular-nums; }
+      /* Barra de días de mantenimiento */
+      .maint-bar{ border-top:1px solid rgba(212,160,23,.08); padding:10px 0 6px; }
+      .maint-bar-txt{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:6px; font-size:12.5px; color:var(--muted); }
+      .maint-bar-txt b{ color:var(--gold-2); font-size:13.5px; font-variant-numeric:tabular-nums; }
+      .maint-bar-txt b.amber{ color:#ffd485; }
+      .maint-bar-txt b.red{ color:#ff9c9c; }
+      .maint-track{ height:8px; border-radius:99px; background:rgba(255,255,255,.12); overflow:hidden; }
+      .maint-fill{ display:block; height:100%; border-radius:99px; background:linear-gradient(90deg,var(--gold-deep),var(--gold) 55%,var(--gold-2)); transition:width .4s ease; }
+      .maint-fill.amber{ background:linear-gradient(90deg,#8a5a06,var(--amber)); }
+      .maint-fill.red{ background:linear-gradient(90deg,#8f2b2b,var(--red)); }
       .btn.is-disabled{ opacity:.45; filter:grayscale(.45); box-shadow:none; }
       .collect-note{ margin:7px 2px 0; text-align:center; color:var(--muted); font-size:12.5px; }
       .stop-card{ border:1px solid rgba(255,176,46,.5); border-radius:14px; background:rgba(255,176,46,.06); padding:12px 13px; margin-bottom:12px; }
@@ -1208,6 +1305,52 @@
       .cyc-hist-row .ch-amt{ flex:none; font-size:15px; font-weight:800; font-variant-numeric:tabular-nums; }
       .cyc-hist-row .ch-amt.pos{ color:var(--green); }
       .cyc-hist-row .ch-amt.neg{ color:#ff9c9c; }
+
+      /* ---------- Cabina: pasada de escala compacta (todo un escalón menor) ---------- */
+      #cabinBody .cabin-title b{ font-size:19px; }
+      #cabinBody .cabin-visual img.cv{ aspect-ratio:8/5; }
+      #cabinBody .cabin-seal{ padding:3px 9px; font-size:11.5px; top:10px; left:10px; }
+      #cabinBody .cabin-live{ left:10px; right:10px; bottom:10px; padding:7px 11px; border-radius:12px; }
+      #cabinBody .cabin-live .cl-timer{ font-size:23px; }
+      #cabinBody .cabin-live .cl-pct b{ font-size:23px; }
+      #cabinBody .cabin-live .cl-check{ width:28px; height:28px; }
+      #cabinBody .cabin-live .cl-check svg{ width:15px; height:15px; }
+      #cabinBody .cabin-live .cl-done-txt b{ font-size:16px; }
+      #cabinBody .cabin-live .cl-done-txt span{ font-size:11.5px; }
+      #cabinBody .ps-body{ padding:10px 14px calc(18px + env(safe-area-inset-bottom, 0px)); }
+      #cabinBody .ps-h{ font-size:18px; margin:2px 0 7px; }
+      #cabinBody .ps-h[style]{ margin-top:12px !important; }
+      #cabinBody .cycle-hero{ padding:12px 12px; border-radius:16px; }
+      #cabinBody .cycle-flex{ gap:11px; }
+      #cabinBody .ring-wrap{ width:86px; height:86px; }
+      #cabinBody .ring-wrap svg{ width:86px; height:86px; }
+      #cabinBody .ring-pct{ font-size:21px; }
+      #cabinBody .cycle-kv{ font-size:13.5px; line-height:1.45; }
+      #cabinBody .cycle-kv b.gold{ font-size:15.5px; }
+      #cabinBody .cycle-dates{ margin-top:6px; font-size:12px; line-height:1.5; }
+      #cabinBody .cycle-hero .btn{ min-height:44px !important; }
+      #cabinBody .collect-note{ margin-top:5px; font-size:12px; }
+      #cabinBody .stop-card{ padding:10px 11px; margin-bottom:10px; }
+      #cabinBody .stop-card p{ font-size:13px; }
+      #cabinBody .prod-score{ padding:10px 4px; }
+      #cabinBody .prod-score b{ font-size:17px; margin-top:3px; }
+      #cabinBody .upgrade-btn{ padding:10px 11px; margin-top:10px; }
+      #cabinBody .upgrade-btn .up-ic{ width:32px; height:32px; }
+      #cabinBody .upgrade-btn b{ font-size:14.5px; }
+      #cabinBody .wallet-box{ padding:10px; }
+      #cabinBody .wallet-range{ margin-top:8px; }
+      #cabinBody .wallet-detail-btn{ margin-top:8px; min-height:36px; }
+      #cabinBody .buy-card{ padding:2px 12px; }
+      #cabinBody .buy-row{ padding:8px 0; }
+      #cabinBody .maint-bar{ padding:8px 0 4px; }
+      #cabinBody .btn{ min-height:44px !important; }
+      #cabinBody .cyc-hist-row{ padding:9px 10px; margin-bottom:7px; }
+      #cabinBody .green-box{ padding:10px 11px; }
+      @media (max-width:360px){
+        #cabinBody .ring-wrap{ width:80px; height:80px; }
+        #cabinBody .ring-wrap svg{ width:80px; height:80px; }
+        #cabinBody .ring-pct{ font-size:19px; }
+      }
 
       /* ---------- Mis máquinas (pantalla propia) ---------- */
       .fleet-head{ display:flex; align-items:center; gap:10px; margin:10px 2px 2px; }
@@ -1401,11 +1544,14 @@
       .guide-toggle svg{ flex:none; width:20px; height:20px; color:var(--gold-2); }
       .guide-toggle .gt-chev{ width:18px; height:18px; margin-left:auto; transition:transform .2s ease; }
       .guide-toggle[aria-expanded="true"] .gt-chev{ transform:rotate(180deg); }
-      .guide-carousel{ margin:-2px 0 14px; }
-      .guide-frame{ position:relative; border-radius:14px; overflow:hidden; border:1px solid var(--line-soft); aspect-ratio:4/3; background:#0d0a06; }
+      .guide-carousel{ margin:-2px auto 14px; max-width:264px; }
+      .guide-frame{ position:relative; border-radius:12px; overflow:hidden; border:1px solid var(--line-soft); aspect-ratio:4/3; max-width:232px; margin:0 auto; background:#0d0a06; }
+      .guide-note{ margin:0 2px 10px; color:var(--muted); font-size:12.5px; line-height:1.5; }
+      .guide-note b{ color:var(--gold-2); }
+      .guide-steps li.here{ border:1px solid var(--line); border-radius:10px; background:rgba(212,160,23,.08); padding:7px 9px; margin:0 -2px; }
       .guide-frame img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; opacity:0; transition:opacity .45s ease; }
       .guide-frame img.on{ opacity:1; }
-      .guide-cap{ margin:8px 2px 0; font-size:13px; color:#e7ddc7; line-height:1.45; min-height:38px; }
+      .guide-cap{ margin:8px 2px 0; font-size:12.5px; color:#e7ddc7; line-height:1.45; min-height:36px; text-align:center; }
       .guide-cap b{ color:var(--gold-2); }
       .guide-dots{ display:flex; justify-content:center; gap:4px; margin-top:2px; }
       .guide-dots button{ width:28px; height:28px; border:none; background:none; display:grid; place-items:center; padding:0; }
@@ -1414,8 +1560,8 @@
 
       /* ---------- Badge TRX sobre Tether (Cambio 8a) ---------- */
       .coin-card .tether-ic{ position:relative; }
-      .trx-badge-mini{ position:absolute; right:-5px; bottom:-5px; width:19px; height:19px; border-radius:50%; background:#eb0029; border:2px solid #100d09; display:grid; place-items:center; color:#fff; }
-      .trx-badge-mini svg{ width:10px; height:10px; }
+      .trx-badge-mini{ position:absolute; right:-6px; bottom:-6px; width:22px; height:22px; display:block; box-shadow:0 2px 7px rgba(0,0,0,.5); }
+      .trx-badge-mini img{ width:100%; height:100%; display:block; }
 
       /* ---------- Confirmación de conexión (Cambio 8c) ---------- */
       .cc-input{ width:100%; height:44px; border:1px solid rgba(240,194,75,.35); border-radius:10px; padding:0 11px; background:#080705; color:#f5ead3; font:600 13.5px "Barlow",sans-serif; letter-spacing:.02em; outline:none; }
@@ -2377,11 +2523,10 @@
         clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
         clockSm: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
         warn: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
-        info: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
-        tron: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.4 3.1 11 20.9c-.3.5-1 .4-1.2-.1L7.7 13.5 3.2 10.6c-.5-.3-.4-1 .2-1.2L20.7 2.5c.5-.2 1 .2.7.6Z"/><path d="M20.6 3.6 12.9 12 8.2 10.9l12.4-7.3Z" opacity=".55"/></svg>'
+        info: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>'
       };
       BUY_ICONS.image = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><path d="m21 15.5-4.8-4.8a2 2 0 0 0-2.8 0L6 18"/></svg>';
-      function tronBadge(cls) { return '<span class="tron-badge' + (cls ? ' ' + cls : '') + '">' + BUY_ICONS.tron + '</span>'; }
+      function tronBadge(cls) { return '<span class="tron-badge' + (cls ? ' ' + cls : '') + '"><img src="assets/tron-logo.png" alt="TRON"></span>'; }
       function buyHeadHTML(subtitle) {
         return '<header class="ps-head">' +
           '<button class="ps-nav-btn" type="button" id="buyBackBtn" aria-label="Volver">' + PS_ICONS.back + '</button>' +
@@ -3033,11 +3178,21 @@
           : (rs === "below"
             ? '<span class="state-chip red"><i></i>Bajo el mínimo</span>'
             : '<span class="state-chip amber"><i></i>Sobre el tope — rinde hasta ' + fmtInt(cap) + ' USDT</span>');
+        var wrPct, wrCls = "";
+        if (rs === "below") { wrPct = Math.max(2, Math.min(100, u.balance / p.min * 100)); wrCls = " below"; }
+        else if (rs === "above") { wrPct = 100; wrCls = " above"; }
+        else if (cap === null) { wrPct = Math.min(100, 34 + (u.balance - p.min) / (p.min * 2) * 66); }
+        else { wrPct = Math.min(100, Math.max(2, (u.balance - p.min) / (cap - p.min) * 100)); }
+        var rangeBar = '<div class="wallet-range" role="img" aria-label="Saldo entre el mínimo de ' + fmtInt(p.min) + ' USDT y ' + (cap === null ? 'sin tope' : 'el tope de ' + fmtInt(cap) + ' USDT') + '">' +
+          '<div class="wr-track"><i class="wr-fill' + wrCls + '" style="width:' + wrPct.toFixed(1) + '%"></i></div>' +
+          '<div class="wr-labels"><span>Mínimo · ' + fmtInt(p.min) + ' USDT</span><span>' + (cap === null ? 'Sin tope' : 'Tope · ' + fmtInt(cap) + ' USDT') + '</span></div>' +
+        '</div>';
         return '<div class="wallet-box">' +
           '<small class="lbl">Dirección conectada · TRON</small>' +
           '<div class="wallet-addr">' + shortenAddr(u.address) + '</div>' +
           '<div class="wallet-bal">Saldo actual de esta billetera: <b>' + fmtBal(u.balance) + ' USDT</b></div>' +
-          '<div class="wallet-bal" style="margin-top:2px;color:var(--muted);font-size:12.5px">Última actualización: <b style="color:#e7ddc7">' + fmtHour(u.lastRead || Date.now()) + '</b></div>' +
+          rangeBar +
+          '<div class="wallet-bal" style="margin-top:6px;color:var(--muted);font-size:12.5px">Última actualización: <b style="color:#e7ddc7">' + fmtHour(u.lastRead || Date.now()) + '</b></div>' +
           chip +
           '<button class="wallet-detail-btn" type="button" id="walletDetailBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>Detalle de la billetera</button>' +
         '</div>';
@@ -3140,8 +3295,27 @@
           '<div class="conn-req"><span class="conn-req-ic">' + CONNECT_ICONS.gas + '</span><div><b>TRX para el gas</b><p>Ten unos US$5–8 en TRX. La plataforma no lo cobra ni lo descuenta.</p></div></div>' +
           '<div class="conn-req"><span class="conn-req-ic">' + CONNECT_ICONS.shield + '</span><div><b>Seguridad</b><p>Nunca te pediremos tu frase semilla ni tu clave privada.</p></div></div>' +
         '</div>';
-        html += '<h4 class="buy-h4" style="margin:2px 2px 8px">Guía rápida: así es el proceso</h4>' +
+        html += '<button class="btn btn-gold" type="button" id="connGoCoinBtn" style="width:100%;min-height:52px">Conectar billetera</button>';
+        html += '</div></div>';
+        document.getElementById("connectSheetBody").innerHTML = html;
+        bindConnectHead(function () { closeConnectFlow(); });
+        bindGuide();
+        document.getElementById("connGoCoinBtn").addEventListener("click", function () {
+          connectState.step = "coin";
+          renderConnectSheet();
+        });
+        connectScrollTop();
+      }
+      /* Marca persistida por máquina: la tarjeta USDT ya fue presionada, así que
+         el botón «Ya conecté mi billetera» queda visible al volver a esta pantalla. */
+      function coinTappedMap() { var m = lsGet("gm_coin_tapped", {}); return (m && typeof m === "object" && !Array.isArray(m)) ? m : {}; }
+      function coinTapped(id) { return !!coinTappedMap()[id]; }
+      function markCoinTapped(id) { var m = coinTappedMap(); m[id] = true; lsSet("gm_coin_tapped", m); }
+      function guideHTML() {
+        return '<h4 class="buy-h4" style="margin:18px 2px 8px">Guía rápida: así es el proceso</h4>' +
+          '<p class="guide-note">El <b>paso 1 es aquí mismo</b>: presiona la tarjeta USDT de arriba. Los pasos 2 a 7 los verás en la página de conexión, y el paso 8 es volver aquí.</p>' +
           '<ol class="guide-steps">' +
+            '<li class="here"><span><b>Aquí mismo:</b> presiona la tarjeta <b>USDT (red TRON)</b> para salir a la página de conexión</span></li>' +
             '<li><span>Selecciona <b>Tether USD</b></span></li>' +
             '<li><span>Pulsa <b>«Select wallet»</b></span></li>' +
             '<li><span>Elige tu billetera (si no está, entra por <b>WalletConnect</b>)</span></li>' +
@@ -3158,28 +3332,19 @@
             '<p class="guide-cap" id="guideCap"></p>' +
             '<div class="guide-dots">' + GUIDE_STEPS.map(function (g, i) { return '<button type="button" data-guide-dot="' + i + '" aria-label="Ir al paso ' + (i + 1) + '"><i></i></button>'; }).join("") + '</div>' +
           '</div>';
-        html += '<button class="btn btn-gold" type="button" id="connGoCoinBtn" style="width:100%;min-height:52px">Conectar billetera</button>';
-        html += '</div></div>';
-        document.getElementById("connectSheetBody").innerHTML = html;
-        bindConnectHead(function () { closeConnectFlow(); });
-        bindGuide();
-        document.getElementById("connGoCoinBtn").addEventListener("click", function () {
-          connectState.step = "coin";
-          renderConnectSheet();
-        });
-        connectScrollTop();
       }
       function renderConnectCoin() {
         stopGuideCarousel();
         var u = findUnit(connectState.unitId);
         if (!u) { closeConnectFlow(); return; }
         var link = String(connectLink || "").trim();
+        var tapped = coinTapped(u.id);
         var html = connectHeadHTML();
         html += '<div class="buy-scroll"><div class="buy-body">';
         html += '<h3 class="buy-h" style="margin-top:2px">Seleccionar moneda</h3>';
         html += '<p class="buy-lead">Para continuar, selecciona la moneda</p>';
         html += '<button class="coin-card' + (link ? '' : ' disabled') + '" type="button" id="connCoinBtn" aria-label="USDT, red TRON (TRC-20)">' +
-          '<span class="tether-ic">' + CONNECT_ICONS.tether + '<span class="trx-badge-mini">' + BUY_ICONS.tron + '</span></span>' +
+          '<span class="tether-ic">' + CONNECT_ICONS.tether + '<span class="trx-badge-mini"><img src="assets/tron-logo.png" alt="TRON"></span></span>' +
           '<span><b>USDT</b><small>' + (link ? 'Red TRON (TRC-20)' : 'Enlace aún no configurado') + '</small></span>' +
           '<span class="coin-chev">' + CONNECT_ICONS.chev + '</span>' +
         '</button>';
@@ -3189,13 +3354,20 @@
         } else {
           html += '<p class="buy-sub" style="margin-top:14px">Al tocar la moneda se abrirá la página de conexión en una pestaña nueva.</p>';
         }
-        html += '<button class="btn btn-dark" type="button" id="connAlreadyBtn" style="width:100%;min-height:50px;margin-top:14px">Ya conecté mi billetera</button>' +
-          '<p class="buy-sub" style="margin-top:8px">¿Ya completaste el proceso en la página de conexión? Confirma aquí tu billetera.</p>';
+        html += guideHTML();
+        html += '<div id="connConfirmZone"' + (tapped ? '' : ' hidden') + '>' +
+          '<button class="btn btn-dark" type="button" id="connAlreadyBtn" style="width:100%;min-height:50px;margin-top:14px">Ya conecté mi billetera</button>' +
+          '<p class="buy-sub" style="margin-top:8px">¿Ya completaste el proceso en la página de conexión? Confirma aquí tu billetera.</p>' +
+        '</div>';
         html += '</div></div>';
         document.getElementById("connectSheetBody").innerHTML = html;
         bindConnectHead(function () { connectState.step = "info"; renderConnectSheet(); });
+        bindGuide();
         document.getElementById("connAlreadyBtn").addEventListener("click", function () { openConfirmConnection(u); });
         document.getElementById("connCoinBtn").addEventListener("click", function () {
+          markCoinTapped(u.id);
+          var zone = document.getElementById("connConfirmZone");
+          if (zone) zone.hidden = false;
           var l = String(connectLink || "").trim();
           if (!l) { showToast("Enlace aún no configurado"); return; }
           window.open(l, "_blank", "noopener");
@@ -3541,7 +3713,7 @@
           '<div class="cabin-title"><b>' + m.name + '</b><small>Unidad ' + n + (total > 1 ? ' de ' + total : '') + '</small></div>' +
           '<span class="plan-pill">' + p.plan + '</span>' +
         '</header>';
-        /* Zona visual 16:9: póster = imagen maestra del plan */
+        /* Zona visual héroe 4:3: póster = imagen maestra del plan */
         var dim = u.connected && (st === "ready" || st === "voided");
         html += '<div class="cabin-visual"><img class="cv' + (dim ? ' dim' : '') + '" src="' + p.img + '" alt="' + m.name + '" />';
         if (st === "working") {
@@ -3553,6 +3725,19 @@
         else if (st === "working") html += '<span class="cabin-seal work"><i></i>Trabajando</span>';
         else if (st === "done") html += '<span class="cabin-seal done"><i></i>Ciclo completo</span>';
         else if (st === "voided") html += '<span class="cabin-seal void"><i></i>Ciclo anulado</span>';
+        if (st === "working") {
+          var heroPct = cycleProgress(u);
+          html += '<div class="cabin-live">' +
+            '<div><small>Tiempo restante</small><div class="cl-timer" id="cycTimer">' + fmtCountdown(CYCLE_MS - (Date.now() - u.cycle.start)) + '</div></div>' +
+            '<div class="cl-pct"><b id="cycPct">' + heroPct + '%</b><span>del ciclo</span></div>' +
+          '</div>' +
+          '<div class="cabin-progress" role="progressbar" aria-label="Avance del ciclo de 24 horas"><i id="cycBar" style="width:' + heroPct + '%"></i></div>';
+        } else if (st === "done") {
+          html += '<div class="cabin-live done">' +
+            '<span class="cl-check">' + BUY_ICONS.check + '</span>' +
+            '<div class="cl-done-txt"><b>+' + fmt(cycleYield(u), 2) + ' g listos para recolectar</b><span>El ciclo de 24 horas terminó</span></div>' +
+          '</div>';
+        }
         html += '</div>';
         html += '<div class="ps-body">';
         /* Ciclo de 24 h (solo con billetera) */
@@ -3563,45 +3748,48 @@
             html += '<div class="stop-card' + (reason.cls ? ' ' + reason.cls : '') + '"><div class="box-head">' + BUY_ICONS.warn + 'Motivo de la detención</div><p>' + reason.text + '</p></div>';
           }
           if (st === "voided") {
-            html += '<button class="btn btn-gold" type="button" id="cycAckBtn" style="width:100%;min-height:50px">Entendido</button>';
+            html += '<div class="cycle-hero"><button class="btn btn-gold" type="button" id="cycAckBtn" style="min-height:50px">Entendido</button></div>';
           } else if (st === "ready") {
-            html += '<button class="btn btn-gold" type="button" id="cycActivateBtn" style="width:100%;min-height:52px">Activar máquina</button>';
+            html += '<div class="cycle-hero"><button class="btn btn-gold" type="button" id="cycActivateBtn" style="min-height:52px">Activar máquina</button></div>';
           } else if (st === "working") {
             var y = cycleYield(u), pctDone = cycleProgress(u);
             var CIRC = 226.2;
-            html += '<div class="buy-card" style="padding:13px 14px">' +
+            html += '<div class="cycle-hero">' +
               '<div class="cycle-flex">' +
                 '<div class="ring-wrap" role="img" aria-label="Avance del ciclo: ' + pctDone + '%">' +
-                  '<svg width="88" height="88" viewBox="0 0 88 88" aria-hidden="true"><circle class="ring-bg" cx="44" cy="44" r="36" fill="none" stroke-width="8"/><circle class="ring-fg" id="cycRingFg" cx="44" cy="44" r="36" fill="none" stroke-width="8" stroke-linecap="round" stroke-dasharray="' + CIRC + '" stroke-dashoffset="' + (CIRC * (1 - pctDone / 100)).toFixed(1) + '"/></svg>' +
+                  '<svg width="132" height="132" viewBox="0 0 88 88" aria-hidden="true"><circle class="ring-bg" cx="44" cy="44" r="36" fill="none" stroke-width="8"/><circle class="ring-fg" id="cycRingFg" cx="44" cy="44" r="36" fill="none" stroke-width="8" stroke-linecap="round" stroke-dasharray="' + CIRC + '" stroke-dashoffset="' + (CIRC * (1 - pctDone / 100)).toFixed(1) + '"/></svg>' +
                   '<span class="ring-pct" id="cycRingPct">' + pctDone + '%</span>' +
                 '</div>' +
-                '<div class="cycle-side"><small>Tiempo restante del ciclo</small><div class="timer" id="cycTimer">' + fmtCountdown(CYCLE_MS - (Date.now() - u.cycle.start)) + '</div>' +
-                '<p class="cycle-line" style="margin-top:5px">Base del ciclo: <b>' + fmtBal(u.cycle.base) + ' USDT</b> · Rentabilidad <b>' + planPctNum(p) + '%</b> · Al completar: <b class="gold">+' + fmt(y, 2) + ' g</b></p></div>' +
+                '<div class="cycle-side">' +
+                  '<p class="cycle-kv">Base del ciclo: <b>' + fmtBal(u.cycle.base) + ' USDT</b></p>' +
+                  '<p class="cycle-kv">Rentabilidad: <b>' + planPctNum(p) + '%</b></p>' +
+                  '<p class="cycle-kv">Al completar: <b class="gold">+' + fmt(y, 2) + ' g</b></p>' +
+                  '<div class="cycle-dates">Inicio: <b>' + fmtOrderDate(u.cycle.start) + '</b><br>Finaliza: <b>' + fmtOrderDate(u.cycle.start + CYCLE_MS) + '</b></div>' +
+                '</div>' +
               '</div>' +
-              '<div class="run-progress" role="progressbar" aria-label="Avance del ciclo de 24 horas"><i id="cycBar" style="width:' + pctDone + '%"></i></div>' +
-              '<div class="run-pct" id="cycPct">' + pctDone + '%</div>' +
-              '<div class="cycle-dates">Inicio: <b>' + fmtOrderDate(u.cycle.start) + '</b><br>Finaliza: <b>' + fmtOrderDate(u.cycle.start + CYCLE_MS) + '</b></div>' +
+              '<button class="btn btn-gold is-disabled" type="button" disabled aria-disabled="true" style="min-height:50px;margin-top:14px">Recolectar oro</button>' +
+              '<p class="collect-note">Disponible al completar las 24 horas</p>' +
             '</div>';
-            html += '<button class="btn btn-gold is-disabled" type="button" disabled aria-disabled="true" style="width:100%;min-height:50px;margin-top:12px">Recolectar oro</button>' +
-              '<p class="collect-note">Disponible al completar las 24 horas</p>';
           } else if (st === "done") {
             var y2 = cycleYield(u);
-            html += '<div class="green-box"><span class="gb-ic">' + BUY_ICONS.check + '</span><div>' +
-              '<b>Ciclo completado</b>' +
-              '<p>Las 24 horas terminaron con el saldo en rango. Tu oro está listo para recolectar.</p>' +
-            '</div></div>' +
-            '<div class="cycle-dates" style="margin:0 2px 10px">Inicio: <b>' + fmtOrderDate(u.cycle.start) + '</b><br>Finaliza: <b>' + fmtOrderDate(u.cycle.start + CYCLE_MS) + '</b></div>' +
-            '<button class="btn btn-gold" type="button" id="cycCollectBtn" style="width:100%;min-height:52px">Recolectar +' + fmt(y2, 2) + ' g</button>';
+            html += '<div class="cycle-hero">' +
+              '<div class="green-box"><span class="gb-ic">' + BUY_ICONS.check + '</span><div>' +
+                '<b>Ciclo completado</b>' +
+                '<p>Las 24 horas terminaron con el saldo en rango. Tu oro está listo para recolectar.</p>' +
+              '</div></div>' +
+              '<div class="cycle-dates" style="margin:10px 2px 12px">Inicio: <b>' + fmtOrderDate(u.cycle.start) + '</b><br>Finaliza: <b>' + fmtOrderDate(u.cycle.start + CYCLE_MS) + '</b></div>' +
+              '<button class="btn btn-gold collect-lit" type="button" id="cycCollectBtn" style="min-height:52px">Recolectar +' + fmt(y2, 2) + ' g</button>' +
+            '</div>';
           }
           /* Producción de la máquina: tres cifras */
           var yCycle = (st === "working" || st === "done") ? cycleYield(u) : 0;
           var yPend = st === "done" ? cycleYield(u) : 0;
           var histCount = Array.isArray(u.cycleHistory) ? u.cycleHistory.length : 0;
           html += '<h4 class="ps-h" style="margin-top:18px">Producción de la máquina</h4>' +
-            '<div class="buy-card">' +
-              '<div class="buy-row"><span>Oro de este ciclo' + (st === "working" ? ' · al completar' : '') + '</span><b class="gold">' + fmt(yCycle, 2) + ' g</b></div>' +
-              '<div class="buy-row"><span>Oro total acumulado</span><b>' + fmt(u.goldEarned || 0, 2) + ' g</b></div>' +
-              '<div class="buy-row"><span>Oro pendiente de recolectar</span><b class="gold">' + fmt(yPend, 2) + ' g</b></div>' +
+            '<div class="prod-score">' +
+              '<div class="cell"><small>Oro de este ciclo' + (st === "working" ? ' · al completar' : '') + '</small><b class="gold">' + fmt(yCycle, 2) + ' g</b></div>' +
+              '<div class="cell"><small>Oro total acumulado</small><b>' + fmt(u.goldEarned || 0, 2) + ' g</b></div>' +
+              '<div class="cell"><small>Oro pendiente de recolectar</small><b class="gold">' + fmt(yPend, 2) + ' g</b></div>' +
             '</div>' +
             '<button class="upgrade-btn" type="button" id="cycHistBtn"><span class="up-ic">' + ICONS.doc + '</span>' +
             '<span style="flex:1;min-width:0"><b>Historial de ciclos</b><small>' + (histCount ? histCount + (histCount === 1 ? ' ciclo registrado' : ' ciclos registrados') : 'Sin ciclos registrados todavía') + '</small></span>' +
@@ -3611,10 +3799,15 @@
         html += '<h4 class="ps-h" style="margin-top:18px">Billetera de esta máquina</h4>' + walletBoxHTML(p, u);
         /* Mantenimiento */
         var mnt = maintNum(p);
+        var mPct = Math.max(0, Math.min(100, u.maintDays / 15 * 100));
+        var mCls = u.maintDays < 0 ? " red" : (u.maintDays <= 2 ? " amber" : "");
+        var mTxt = u.maintDays < 0 ? "Vencido" : (u.maintDays === 0 ? "Vence hoy" : "Te quedan " + u.maintDays + (u.maintDays === 1 ? " día" : " días"));
         html += '<h4 class="ps-h" style="margin-top:18px">Mantenimiento</h4>' +
           '<div class="buy-card">' +
             '<div class="buy-row"><span>Próximo mantenimiento</span><b>' + maintLabel(u) + '</b></div>' +
             '<div class="buy-row"><span>Monto del mantenimiento</span><b>' + p.maint + '</b></div>' +
+            '<div class="maint-bar"><div class="maint-bar-txt"><span>Días restantes</span><b class="' + mCls.trim() + '">' + mTxt + '</b></div>' +
+            '<div class="maint-track"><i class="maint-fill' + mCls + '" style="width:' + mPct.toFixed(1) + '%"></i></div></div>' +
           '</div>';
         if (u.maintDays <= 2) {
           html += '<div class="warn-box" style="margin:0 0 10px"><div class="box-head">' + BUY_ICONS.warn + (u.maintDays < 0 ? 'Mantenimiento vencido' : 'Mantenimiento por vencer') + '</div>' +
