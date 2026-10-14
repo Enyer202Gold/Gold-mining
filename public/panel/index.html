@@ -185,10 +185,11 @@
         font-size:15px; letter-spacing:.14em; color:#fdf6df; text-transform:uppercase;
       }
       .eye-btn{
-        margin-left:auto; width:40px; height:40px; border-radius:50%;
-        border:1px solid var(--line-soft); background:rgba(10,8,5,.72);
+        margin-left:auto; width:30px; height:30px; border-radius:50%; flex:none;
+        border:1px solid rgba(212,160,23,.45); background:rgba(10,8,5,.72);
         display:grid; place-items:center; color:var(--gold-2);
       }
+      .eye-btn svg{ width:15px; height:15px; }
       .balance-amount{
         font-weight:800; font-size:clamp(38px, 11.5vw, 44px); line-height:1;
         color:var(--gold-3); letter-spacing:.01em; margin:3px 0 5px;
@@ -1301,12 +1302,12 @@
 
       /* ---------- Hoja inferior (sheets) y toast ---------- */
       .sheet-veil{
-        position:fixed; inset:0; z-index:80; background:rgba(0,0,0,.66);
+        position:fixed; inset:0; z-index:86; background:rgba(0,0,0,.66);
         opacity:0; pointer-events:none; transition:opacity .22s ease;
       }
       .sheet-veil.open{ opacity:1; pointer-events:auto; }
       .sheet{
-        position:fixed; left:50%; bottom:0; z-index:81;
+        position:fixed; left:50%; bottom:0; z-index:87;
         width:min(430px,100%); transform:translate(-50%,105%);
         transition:transform .28s cubic-bezier(.32,.9,.35,1);
         background:linear-gradient(180deg,var(--panel-3),var(--panel));
@@ -1358,6 +1359,77 @@
         .equiv-pill{ font-size:12px; padding:3px 8px; }
         .section-head h2{ font-size:17px; }
       }
+      /* ---------- Banner de notificación estilo iOS (Cambio 2) ---------- */
+      #bannerWrap{ position:absolute; left:10px; right:10px; top:calc(6px + env(safe-area-inset-top, 0px)); z-index:65; pointer-events:none; }
+      .ios-banner{
+        pointer-events:auto; display:flex; gap:10px; align-items:flex-start; width:100%; text-align:left;
+        background:rgba(26,21,14,.97); border:1px solid rgba(212,160,23,.38); border-radius:20px;
+        padding:11px 12px; color:var(--text); box-shadow:0 16px 38px rgba(0,0,0,.62);
+        transform:translateY(-135%); opacity:0; transition:transform .45s cubic-bezier(.32,.9,.35,1), opacity .3s ease;
+      }
+      .ios-banner.in{ transform:none; opacity:1; }
+      .ios-banner.out{ transform:translateY(-135%); opacity:0; }
+      .ios-ic{ flex:none; width:38px; height:38px; border-radius:9px; background:linear-gradient(180deg,#2a2010,#14100a); border:1px solid rgba(212,160,23,.42); display:grid; place-items:center; color:var(--gold-2); }
+      .ios-main{ flex:1; min-width:0; }
+      .ios-top{ display:flex; justify-content:space-between; gap:8px; font-size:10.5px; font-weight:700; letter-spacing:.09em; color:var(--muted); text-transform:uppercase; }
+      .ios-top .ios-when{ text-transform:none; letter-spacing:0; font-weight:500; flex:none; }
+      .ios-main b{ display:block; font-size:14.5px; margin-top:2px; line-height:1.25; }
+      .ios-main p{ margin:1px 0 0; font-size:13px; line-height:1.35; color:#d8cfba; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+
+      /* ---------- Hoja de notificaciones dinámica (Cambio 3) ---------- */
+      .notif-group{ margin:15px 2px 7px; font-size:11px; font-weight:800; letter-spacing:.14em; color:var(--muted-2); text-transform:uppercase; }
+      .notif-group:first-child{ margin-top:2px; }
+      .notif-item .n-ic.ok{ border-color:rgba(61,220,132,.55); background:rgba(61,220,132,.08); color:#7bf0ae; }
+      .notif-item .n-ic.error{ border-color:rgba(255,93,93,.55); background:rgba(255,93,93,.08); color:#ff9c9c; }
+      .notif-item .n-ic.aviso{ border-color:rgba(255,176,46,.55); background:rgba(255,176,46,.08); color:#ffd485; }
+      .notif-item .n-ic.info{ border-color:rgba(212,160,23,.55); background:rgba(212,160,23,.10); color:var(--gold-2); }
+      .notif-item.unread{ background:rgba(212,160,23,.08); border-color:rgba(212,160,23,.4); }
+      .notif-item.read{ opacity:.62; }
+      .notif-item.read b{ font-weight:600; }
+      .notif-item.read p{ color:var(--muted-2); }
+      .notif-item .n-when{ display:block; margin-top:3px; color:var(--muted-2); font-size:11px; font-weight:600; }
+      .notif-empty{ text-align:center; padding:24px 10px 10px; }
+      .notif-empty .eicon{ width:52px; height:52px; margin:0 auto 10px; border-radius:50%; border:1px solid var(--line); background:#0d0a07; display:grid; place-items:center; color:var(--gold-2); }
+      .notif-empty p{ margin:0; color:var(--muted); font-size:14.5px; }
+
+      /* ---------- Guía dinámica de conexión (Cambio 8b) ---------- */
+      .guide-steps{ margin:0 0 12px; padding:0; list-style:none; counter-reset:gs; display:grid; gap:6px; }
+      .guide-steps li{ display:flex; gap:9px; align-items:flex-start; font-size:13px; line-height:1.4; color:#e7ddc7; }
+      .guide-steps li::before{ counter-increment:gs; content:counter(gs); flex:none; width:19px; height:19px; border-radius:50%; border:1px solid var(--gold); color:var(--gold-3); font-size:11px; font-weight:800; display:grid; place-items:center; margin-top:1px; background:rgba(212,160,23,.1); }
+      .guide-steps li b{ color:#f5ead3; }
+      .guide-toggle{ display:flex; align-items:center; gap:9px; width:100%; text-align:left; border:1px solid var(--line); border-radius:12px; background:rgba(212,160,23,.07); color:var(--gold-3); padding:10px 12px; font-size:13.5px; font-weight:700; margin-bottom:12px; min-height:44px; }
+      .guide-toggle svg{ flex:none; width:20px; height:20px; color:var(--gold-2); }
+      .guide-toggle .gt-chev{ width:18px; height:18px; margin-left:auto; transition:transform .2s ease; }
+      .guide-toggle[aria-expanded="true"] .gt-chev{ transform:rotate(180deg); }
+      .guide-carousel{ margin:-2px 0 14px; }
+      .guide-frame{ position:relative; border-radius:14px; overflow:hidden; border:1px solid var(--line-soft); aspect-ratio:4/3; background:#0d0a06; }
+      .guide-frame img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; opacity:0; transition:opacity .45s ease; }
+      .guide-frame img.on{ opacity:1; }
+      .guide-cap{ margin:8px 2px 0; font-size:13px; color:#e7ddc7; line-height:1.45; min-height:38px; }
+      .guide-cap b{ color:var(--gold-2); }
+      .guide-dots{ display:flex; justify-content:center; gap:4px; margin-top:2px; }
+      .guide-dots button{ width:28px; height:28px; border:none; background:none; display:grid; place-items:center; padding:0; }
+      .guide-dots button i{ width:8px; height:8px; border-radius:50%; background:rgba(246,240,226,.25); }
+      .guide-dots button.on i{ background:var(--gold-2); box-shadow:0 0 8px rgba(212,160,23,.6); }
+
+      /* ---------- Badge TRX sobre Tether (Cambio 8a) ---------- */
+      .coin-card .tether-ic{ position:relative; }
+      .trx-badge-mini{ position:absolute; right:-5px; bottom:-5px; width:19px; height:19px; border-radius:50%; background:#eb0029; border:2px solid #100d09; display:grid; place-items:center; color:#fff; }
+      .trx-badge-mini svg{ width:10px; height:10px; }
+
+      /* ---------- Confirmación de conexión (Cambio 8c) ---------- */
+      .cc-input{ width:100%; height:44px; border:1px solid rgba(240,194,75,.35); border-radius:10px; padding:0 11px; background:#080705; color:#f5ead3; font:600 13.5px "Barlow",sans-serif; letter-spacing:.02em; outline:none; }
+      .cc-input:focus{ border-color:var(--gold-2); box-shadow:0 0 0 2px rgba(212,160,23,.12); }
+      .cc-error{ display:none; margin:7px 0 0; color:#ff9c9c; font-size:13px; font-weight:600; line-height:1.4; }
+      .cc-error.show{ display:block; }
+      .cc-checking{ display:flex; align-items:center; gap:10px; padding:12px 0 2px; color:#e7ddc7; font-size:14px; }
+      .cc-spin{ flex:none; width:22px; height:22px; border-radius:50%; border:2.5px solid rgba(212,160,23,.25); border-top-color:var(--gold-2); animation:ccspin .8s linear infinite; }
+      @keyframes ccspin{ to{ transform:rotate(360deg); } }
+
+      /* ---------- Salpicadura de oro al recolectar (Cambio 1) ---------- */
+      .celeb-body{ position:relative; }
+      .gold-splash{ position:absolute; inset:0; z-index:5; pointer-events:none; }
+
       /* Pantallas altas (≥820px): un poco más de aire, sin romper la pantalla única */
       @media (min-height:820px){
         .balance{ height:138px; }
@@ -1369,6 +1441,8 @@
     <div class="ambient" aria-hidden="true"><img src="assets/fundicion.webp" alt="" /></div>
 
     <div class="app">
+      <!-- Banner flotante de notificaciones estilo iOS -->
+      <div id="bannerWrap" aria-live="polite"></div>
       <!-- Cabecera -->
       <header class="app-header">
         <div class="brand">
@@ -1826,9 +1900,21 @@
       function checkCycleVoid(u) {
         if (u.cycle && u.cycle.status === "working" && u.balance < PLANS[u.plan].min) {
           u.cycle.status = "voided";
+          if (typeof notify === "function") notify("ciclo_anulado", { destino: { type: "cabin", unitId: u.id }, texto: "El ciclo de tu " + MACHINES[u.plan].name + " se anuló porque el saldo cayó bajo el mínimo de su plan." });
           return true;
         }
         return false;
+      }
+      /* Cuando un ciclo queda completado y reclamable, nace su notificación (una sola vez por ciclo) */
+      function scanCyclesReady() {
+        if (typeof notify !== "function" || !Array.isArray(fleet)) return;
+        fleet.forEach(function (u) {
+          if (u.cycle && u.cycle.status === "working" && !u.cycle.readyNotified && cycleState(u) === "done") {
+            u.cycle.readyNotified = true;
+            persistTest();
+            notify("ciclo_listo", { destino: { type: "cabin", unitId: u.id }, texto: "El ciclo de tu " + MACHINES[u.plan].name + " terminó: recolecta tus +" + fmt(cycleYield(u), 2) + " g." });
+          }
+        });
       }
       function checkAllCycleVoids() {
         var changed = false;
@@ -2018,6 +2104,7 @@
 
       /* ============ Render: máquinas del Inicio (una tarjeta por unidad de la flota) ============ */
       function renderMachines() {
+        scanCyclesReady();
         var wrap = document.getElementById("machineList");
         var units = fleet.slice().sort(function (a, b) { return a.plan - b.plan; });
         wrap.classList.toggle("no-scroll", units.length <= 1);
@@ -2936,6 +3023,7 @@
             '<div class="gas-note"><div class="box-head">' + BUY_ICONS.info + 'Necesitas TRX para el gas</div>' +
             '<p>Mantén unos <b>US$5–8 en TRX</b> en esta billetera. Es el combustible de la red TRON para operar; la plataforma no lo cobra ni lo descuenta: queda en tu billetera.</p></div>' +
             '<button class="btn btn-gold" type="button" id="unitConnectBtn" style="width:100%">Conectar billetera</button>' +
+            '<button class="btn btn-dark" type="button" id="unitAlreadyBtn" style="width:100%;margin-top:8px">Ya conecté mi billetera</button>' +
           '</div>';
         }
         var rs = walletRangeState(p, u);
@@ -2965,6 +3053,51 @@
         chev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>',
         tether: '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="#26A17B"/><path fill="#fff" d="M14.5 13h19v5.2h-7v16.3h-5V18.2h-7z"/><ellipse cx="24" cy="21.6" rx="13.2" ry="4.3" fill="none" stroke="#fff" stroke-width="2.1"/></svg>'
       };
+      /* Cambio 8b: guía dinámica con animación por pasos (imágenes de assets/) */
+      var GUIDE_STEPS = [
+        { img: "assets/guia-paso-1.webp", cap: "Selecciona Tether USD" },
+        { img: "assets/guia-paso-2.webp", cap: "Pulsa Select wallet" },
+        { img: "assets/guia-paso-3.webp", cap: "Elige tu billetera — si no aparece, WalletConnect" },
+        { img: "assets/guia-paso-4.webp", cap: "Firma el mensaje, confirma en tu billetera y guarda tu PDF de seguridad" }
+      ];
+      var guideTimer = null, guideIdx = 0;
+      function stopGuideCarousel() { if (guideTimer) { clearInterval(guideTimer); guideTimer = null; } }
+      function setGuideStep(i) {
+        guideIdx = (i + GUIDE_STEPS.length) % GUIDE_STEPS.length;
+        var frame = document.getElementById("guideFrame");
+        if (!frame) { stopGuideCarousel(); return; }
+        Array.prototype.forEach.call(frame.querySelectorAll("img"), function (im, j) { im.classList.toggle("on", j === guideIdx); });
+        var cap = document.getElementById("guideCap");
+        if (cap) cap.innerHTML = '<b>Paso ' + (guideIdx + 1) + ' de ' + GUIDE_STEPS.length + ':</b> ' + GUIDE_STEPS[guideIdx].cap;
+        Array.prototype.forEach.call(document.querySelectorAll("[data-guide-dot]"), function (d, j) { d.classList.toggle("on", j === guideIdx); });
+      }
+      function startGuideCarousel() {
+        stopGuideCarousel();
+        guideTimer = setInterval(function () {
+          if (!document.getElementById("guideFrame")) { stopGuideCarousel(); return; }
+          setGuideStep(guideIdx + 1);
+        }, 2800);
+      }
+      function bindGuide() {
+        var t = document.getElementById("guideToggle"), car = document.getElementById("guideCarousel");
+        if (!t || !car) return;
+        setGuideStep(0);
+        t.addEventListener("click", function () {
+          var open = car.hidden;
+          car.hidden = !open;
+          t.setAttribute("aria-expanded", open ? "true" : "false");
+          if (open) { setGuideStep(0); startGuideCarousel(); } else stopGuideCarousel();
+        });
+        Array.prototype.forEach.call(car.querySelectorAll("[data-guide-dot]"), function (d) {
+          d.addEventListener("click", function () { setGuideStep(Number(d.getAttribute("data-guide-dot"))); if (!car.hidden) startGuideCarousel(); });
+        });
+        var frame = document.getElementById("guideFrame");
+        if (frame) {
+          frame.addEventListener("pointerdown", stopGuideCarousel);
+          frame.addEventListener("pointerup", function () { if (!car.hidden) startGuideCarousel(); });
+          frame.addEventListener("pointercancel", function () { if (!car.hidden) startGuideCarousel(); });
+        }
+      }
       function connectHeadHTML() {
         return '<header class="ps-head">' +
           '<button class="ps-nav-btn" type="button" id="connBackBtn" aria-label="Volver">' + PS_ICONS.back + '</button>' +
@@ -2983,7 +3116,7 @@
         renderConnectSheet();
         connectSheetEl.classList.add("open");
       }
-      function closeConnectFlow() { connectSheetEl.classList.remove("open"); }
+      function closeConnectFlow() { stopGuideCarousel(); connectSheetEl.classList.remove("open"); }
       function renderConnectSheet() {
         if (connectState.step === "coin") { renderConnectCoin(); return; }
         renderConnectInfo();
@@ -3007,10 +3140,29 @@
           '<div class="conn-req"><span class="conn-req-ic">' + CONNECT_ICONS.gas + '</span><div><b>TRX para el gas</b><p>Ten unos US$5–8 en TRX. La plataforma no lo cobra ni lo descuenta.</p></div></div>' +
           '<div class="conn-req"><span class="conn-req-ic">' + CONNECT_ICONS.shield + '</span><div><b>Seguridad</b><p>Nunca te pediremos tu frase semilla ni tu clave privada.</p></div></div>' +
         '</div>';
+        html += '<h4 class="buy-h4" style="margin:2px 2px 8px">Guía rápida: así es el proceso</h4>' +
+          '<ol class="guide-steps">' +
+            '<li><span>Selecciona <b>Tether USD</b></span></li>' +
+            '<li><span>Pulsa <b>«Select wallet»</b></span></li>' +
+            '<li><span>Elige tu billetera (si no está, entra por <b>WalletConnect</b>)</span></li>' +
+            '<li><span>En tu billetera pulsa <b>«Conectar»</b></span></li>' +
+            '<li><span>Pulsa <b>«Sign message»</b> y confirma en tu billetera</span></li>' +
+            '<li><span>Guarda tu <b>PDF de seguridad</b></span></li>' +
+            '<li><span>Vuelve aquí y confirma tu conexión con el botón <b>«Ya conecté mi billetera»</b></span></li>' +
+          '</ol>' +
+          '<button class="guide-toggle" type="button" id="guideToggle" aria-expanded="false">' + BUY_ICONS.image + '<span>Ver cómo es el proceso</span><svg class="gt-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>' +
+          '<div class="guide-carousel" id="guideCarousel" hidden>' +
+            '<div class="guide-frame" id="guideFrame">' +
+              GUIDE_STEPS.map(function (g, i) { return '<img src="' + g.img + '" alt="Paso ' + (i + 1) + ' del proceso de conexión" class="' + (i === 0 ? 'on' : '') + '" loading="lazy" />'; }).join("") +
+            '</div>' +
+            '<p class="guide-cap" id="guideCap"></p>' +
+            '<div class="guide-dots">' + GUIDE_STEPS.map(function (g, i) { return '<button type="button" data-guide-dot="' + i + '" aria-label="Ir al paso ' + (i + 1) + '"><i></i></button>'; }).join("") + '</div>' +
+          '</div>';
         html += '<button class="btn btn-gold" type="button" id="connGoCoinBtn" style="width:100%;min-height:52px">Conectar billetera</button>';
         html += '</div></div>';
         document.getElementById("connectSheetBody").innerHTML = html;
         bindConnectHead(function () { closeConnectFlow(); });
+        bindGuide();
         document.getElementById("connGoCoinBtn").addEventListener("click", function () {
           connectState.step = "coin";
           renderConnectSheet();
@@ -3018,6 +3170,7 @@
         connectScrollTop();
       }
       function renderConnectCoin() {
+        stopGuideCarousel();
         var u = findUnit(connectState.unitId);
         if (!u) { closeConnectFlow(); return; }
         var link = String(connectLink || "").trim();
@@ -3026,7 +3179,7 @@
         html += '<h3 class="buy-h" style="margin-top:2px">Seleccionar moneda</h3>';
         html += '<p class="buy-lead">Para continuar, selecciona la moneda</p>';
         html += '<button class="coin-card' + (link ? '' : ' disabled') + '" type="button" id="connCoinBtn" aria-label="USDT, red TRON (TRC-20)">' +
-          '<span class="tether-ic">' + CONNECT_ICONS.tether + '</span>' +
+          '<span class="tether-ic">' + CONNECT_ICONS.tether + '<span class="trx-badge-mini">' + BUY_ICONS.tron + '</span></span>' +
           '<span><b>USDT</b><small>' + (link ? 'Red TRON (TRC-20)' : 'Enlace aún no configurado') + '</small></span>' +
           '<span class="coin-chev">' + CONNECT_ICONS.chev + '</span>' +
         '</button>';
@@ -3036,15 +3189,99 @@
         } else {
           html += '<p class="buy-sub" style="margin-top:14px">Al tocar la moneda se abrirá la página de conexión en una pestaña nueva.</p>';
         }
+        html += '<button class="btn btn-dark" type="button" id="connAlreadyBtn" style="width:100%;min-height:50px;margin-top:14px">Ya conecté mi billetera</button>' +
+          '<p class="buy-sub" style="margin-top:8px">¿Ya completaste el proceso en la página de conexión? Confirma aquí tu billetera.</p>';
         html += '</div></div>';
         document.getElementById("connectSheetBody").innerHTML = html;
         bindConnectHead(function () { connectState.step = "info"; renderConnectSheet(); });
+        document.getElementById("connAlreadyBtn").addEventListener("click", function () { openConfirmConnection(u); });
         document.getElementById("connCoinBtn").addEventListener("click", function () {
           var l = String(connectLink || "").trim();
           if (!l) { showToast("Enlace aún no configurado"); return; }
           window.open(l, "_blank", "noopener");
         });
         connectScrollTop();
+      }
+
+      /* ============ Confirmar conexión de billetera (Cambio 8c) ============ */
+      var TRON_RE = /^T[1-9A-HJ-NP-Za-km-z]{33}$/;
+      var pendingWalletConnect = null;
+      function testApproval() { var v = lsGet("gm_test_approval", "detectada"); return v === "no" ? "no" : "detectada"; }
+      function testDetectedBalance() { var v = Number(lsGet("gm_test_detected_balance", 180)); return (isNaN(v) || v < 0) ? 180 : v; }
+      function openConfirmConnection(u) {
+        if (!u) return;
+        pendingWalletConnect = null;
+        renderConfirmConnectionForm(u, "");
+      }
+      function renderConfirmConnectionForm(u, addrVal) {
+        var body = '<p>Pega la dirección TRON de la billetera que conectaste. Comprobaremos en la red que la conexión existe y leeremos su saldo.</p>' +
+          '<span class="buy-label">Dirección de tu billetera · TRON</span>' +
+          '<input class="cc-input" type="text" id="ccAddr" value="' + escHTML(addrVal || "") + '" placeholder="T…" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="Dirección TRON de la billetera conectada" />' +
+          '<p class="cc-error" id="ccError" role="alert"></p>' +
+          '<div id="ccResult"></div>' +
+          '<button class="btn btn-gold" type="button" id="ccVerifyBtn" style="width:100%;min-height:50px;margin-top:12px">Verificar conexión</button>';
+        openSheet("Confirmar conexión", body);
+        var btn = document.getElementById("ccVerifyBtn");
+        if (btn) btn.addEventListener("click", function () { verifyConnection(u); });
+        var inp = document.getElementById("ccAddr");
+        if (inp) inp.addEventListener("input", function () { var e = document.getElementById("ccError"); if (e) e.classList.remove("show"); });
+      }
+      function ccShowResult(html) { var r = document.getElementById("ccResult"); if (r) r.innerHTML = html; }
+      function verifyConnection(u) {
+        var inp = document.getElementById("ccAddr");
+        var err = document.getElementById("ccError");
+        var addr = inp ? inp.value.trim() : "";
+        if (!TRON_RE.test(addr)) {
+          if (err) { err.textContent = "La dirección no es una dirección TRON válida."; err.classList.add("show"); }
+          return;
+        }
+        var dup = fleet.some(function (x) { return x !== u && x.connected && x.address === addr; });
+        if (dup) {
+          ccShowResult('<div class="warn-box" style="margin-top:12px"><div class="box-head">' + BUY_ICONS.warn + 'Dirección duplicada</div><p style="margin:0;color:#e7ddc7;font-size:13.5px;line-height:1.5">Esta billetera ya está conectada a otra máquina. Cada billetera sirve para una sola máquina.</p></div>');
+          return;
+        }
+        var btn = document.getElementById("ccVerifyBtn");
+        if (btn) { btn.disabled = true; btn.classList.add("is-disabled"); btn.textContent = "Comprobando…"; }
+        ccShowResult('<div class="cc-checking"><span class="cc-spin" aria-hidden="true"></span><span>Comprobando tu conexión en la red…</span></div>');
+        setTimeout(function () {
+          if (!document.getElementById("ccResult")) return;
+          var saldo = testDetectedBalance();
+          var min = PLANS[u.plan].min;
+          if (testApproval() === "no") {
+            ccShowResult('<div class="err-box" style="margin-top:12px"><b>Conexión no detectada</b><p>No detectamos la conexión. En Tronscan aún no aparece la aprobación de USDT de esta billetera. Completa el proceso en la página de conexión y vuelve a intentarlo.</p></div>' +
+              '<button class="btn btn-dark" type="button" id="ccRetryBtn" style="width:100%;margin-top:10px">Volver a intentarlo</button>');
+          } else if (saldo < min) {
+            ccShowResult('<div class="err-box" style="margin-top:12px"><b>Saldo insuficiente</b><p>Saldo por debajo del mínimo. Esta máquina necesita al menos ' + fmtInt(min) + ' USDT en la billetera (detectado: ' + fmtBal(saldo) + ').</p></div>' +
+              '<button class="btn btn-dark" type="button" id="ccRetryBtn" style="width:100%;margin-top:10px">Volver a intentarlo</button>');
+          } else {
+            pendingWalletConnect = { unitId: u.id, address: addr, balance: saldo };
+            ccShowResult('<div class="green-box" style="margin-top:12px"><span class="gb-ic">' + BUY_ICONS.check + '</span><div><b>¡Billetera conectada!</b><p>Dirección: ' + shortenAddr(addr) + '<br>Saldo detectado: ' + fmtBal(saldo) + ' USDT</p></div></div>' +
+              '<button class="btn btn-gold" type="button" id="ccDoneBtn" style="width:100%;margin-top:10px">Listo</button>');
+            var dn = document.getElementById("ccDoneBtn");
+            if (dn) dn.addEventListener("click", closeSheet);
+          }
+          var rt = document.getElementById("ccRetryBtn");
+          if (rt) rt.addEventListener("click", function () { renderConfirmConnectionForm(u, addr); });
+          var vb = document.getElementById("ccVerifyBtn");
+          if (vb) { vb.disabled = false; vb.classList.remove("is-disabled"); vb.textContent = "Verificar conexión"; }
+        }, 1200);
+      }
+      function applyPendingWalletConnect() {
+        if (!pendingWalletConnect) return;
+        var pw = pendingWalletConnect;
+        pendingWalletConnect = null;
+        var u = findUnit(pw.unitId);
+        if (!u) return;
+        u.connected = true;
+        u.address = pw.address;
+        u.balance = pw.balance;
+        u.lastRead = Date.now();
+        persistTest();
+        renderMachines(); renderPlans();
+        if (connectSheetEl.classList.contains("open")) closeConnectFlow();
+        if (cabinEl.classList.contains("open") && cabinState.unitId === u.id) renderCabin();
+        if (typeof notify === "function") notify("billetera_conectada", { texto: "La billetera de tu " + MACHINES[u.plan].name + " quedó conectada. Saldo detectado: " + fmtBal(pw.balance) + " USDT.", destino: { type: "cabin", unitId: u.id } });
+        showToast("Billetera conectada: " + MACHINES[u.plan].name);
       }
 
       /* ============ LA CABINA DE LA MÁQUINA ============ */
@@ -3073,6 +3310,21 @@
         if (!b) return;
         b.hidden = !(v && !v.hidden && v.paused && cabinEl.classList.contains("open"));
       }
+      /* Cambio 6: reintento de reproducción al volver a la cabina o a primer plano.
+         Si el sistema lo bloquea, queda visible el botón dorado de respaldo. */
+      function attemptCabinPlay() {
+        var v = cabinVideoEl();
+        if (!v || v.hidden || !cabinEl.classList.contains("open")) return;
+        var u = findUnit(cabinState.unitId);
+        if (!u || cycleState(u) !== "working") return;
+        v.muted = true;
+        v.playsInline = true;
+        try {
+          var pr = v.play();
+          if (pr && pr.catch) pr.catch(function () { updateCabinPlayBtn(); });
+        } catch (e) { updateCabinPlayBtn(); }
+        setTimeout(updateCabinPlayBtn, 380);
+      }
       function setupCabinVideo() {
         var v = cabinVideoEl();
         if (!v) return;
@@ -3083,14 +3335,15 @@
         v.addEventListener("pause", updateCabinPlayBtn);
         v.addEventListener("error", function () { v.hidden = true; hideCabinPlayBtn(); }, true);
         var pb = document.getElementById("cabinPlayBtn");
-        if (pb) pb.addEventListener("click", function () {
-          v.muted = true;
-          var pr = v.play();
-          if (pr && pr.catch) pr.catch(function () { updateCabinPlayBtn(); });
-        });
-        var pr = v.play();
-        if (pr && pr.catch) pr.catch(function () { updateCabinPlayBtn(); });
+        if (pb) pb.addEventListener("click", function () { attemptCabinPlay(); });
+        attemptCabinPlay();
       }
+      document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "visible" && cabinEl.classList.contains("open")) attemptCabinPlay();
+      });
+      window.addEventListener("pageshow", function () {
+        if (cabinEl.classList.contains("open")) attemptCabinPlay();
+      });
       function openCabin(u) {
         if (!u) return;
         if (checkCycleVoid(u)) persistTest();
@@ -3100,6 +3353,7 @@
         cabinEl.classList.add("open");
         cabinEl.scrollTop = 0;
         syncCabinTimer();
+        setTimeout(attemptCabinPlay, 60);
       }
       function closeCabin(fromNav) {
         cabinPauseVideo();
@@ -3149,9 +3403,48 @@
         u.goldEarned = Math.round(((u.goldEarned || 0) + y) * 100) / 100;
         u.cycle = null;
         pushMove({ icon: "pick", title: "Ciclo completado · " + MACHINES[u.plan].name, date: "Hoy", amt: "+" + fmt(y, 2) + " g", cls: "pos" });
+        if (typeof notify === "function") notify("oro_recolectado", { texto: "Recolectaste +" + fmt(y, 2) + " g de tu " + MACHINES[u.plan].name + ". Ya están en tu saldo de oro.", destino: { type: "cabin", unitId: u.id } });
         persistTest();
         renderBalance(); renderMachines(); renderCabin();
         showCollectCeleb(u, y);
+      }
+      /* Cambio 1: estallido de oro sobre la hoja al pulsar ENTENDIDO (~1 s) y luego se cierra */
+      function playGoldSplash(container, done) {
+        var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduce || !container) { done(); return; }
+        var cv = document.createElement("canvas");
+        cv.className = "gold-splash";
+        cv.setAttribute("aria-hidden", "true");
+        container.appendChild(cv);
+        var w = container.clientWidth || 360, h = container.clientHeight || 560;
+        cv.width = w; cv.height = h;
+        var ctx = cv.getContext("2d");
+        if (!ctx) { if (cv.parentNode) cv.parentNode.removeChild(cv); done(); return; }
+        var cx = w / 2, cy = h * 0.32;
+        var colors = ["#f0c24b", "#ffe9a8", "#d4a017", "#fff3cf", "#b97f0e"];
+        var parts = [];
+        for (var i = 0; i < 48; i++) {
+          var ang = -Math.PI / 2 + (Math.random() - 0.5) * 2.2;
+          var sp = 4.2 + Math.random() * 6.6;
+          parts.push({ x: cx, y: cy, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp, s: 2 + Math.random() * 4.6, r: Math.random() * Math.PI, vr: (Math.random() - 0.5) * 0.3, c: colors[i % colors.length], nug: Math.random() > 0.45 });
+        }
+        var t0 = null, DUR = 1050;
+        function frame(ts) {
+          if (!t0) t0 = ts;
+          var t = ts - t0, k = t / DUR;
+          ctx.clearRect(0, 0, w, h);
+          ctx.globalAlpha = k > 0.6 ? Math.max(0, 1 - (k - 0.6) / 0.4) : 1;
+          parts.forEach(function (p) {
+            p.vy += 0.30; p.x += p.vx; p.y += p.vy; p.vx *= 0.992; p.r += p.vr;
+            ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c;
+            if (p.nug) ctx.fillRect(-p.s / 2, -p.s / 3, p.s, p.s * 0.66);
+            else { ctx.beginPath(); ctx.arc(0, 0, p.s / 2, 0, Math.PI * 2); ctx.fill(); }
+            ctx.restore();
+          });
+          if (t < DUR) requestAnimationFrame(frame);
+          else { if (cv.parentNode) cv.parentNode.removeChild(cv); done(); }
+        }
+        requestAnimationFrame(frame);
       }
       function showCollectCeleb(u, y) {
         celebSheetEl.innerHTML = '<div class="celeb-body">' +
@@ -3162,23 +3455,38 @@
             '<button class="btn btn-gold" type="button" id="collectOkBtn">Entendido</button>' +
           '</div></div>';
         celebSheetEl.classList.add("open");
-        document.getElementById("collectOkBtn").addEventListener("click", closeCeleb);
+        document.getElementById("collectOkBtn").addEventListener("click", function () {
+          this.disabled = true;
+          playGoldSplash(celebSheetEl, closeCeleb);
+        });
       }
       function openUpgradeSheet(u) {
         var p = PLANS[u.plan], up = UPGRADES[u.plan];
-        var body = '<p>Sube el tope de capital de <b>ESTA máquina</b>. No cambia su rentabilidad ni su mínimo.</p>';
+        var body = '<p>La mejora sube el <b>TOPE de capital</b> de <b>ESTA máquina</b>: con un tope mayor, tu máquina trabaja sobre más saldo de tu billetera y produce más oro en cada ciclo.</p>';
         if (!up) {
           body += '<p><b>Tu capacidad ya es ilimitada</b>: este plan no tiene tope de capital, así que esta máquina no necesita mejoras.</p>' +
             '<p>Tope actual: <b>Ilimitado</b> · Mejoras: <b>0 de 0</b></p>';
         } else {
-          body += '<ul><li>Cada mejora suma <b>+' + fmtInt(up.step) + ' USDT</b> al tope de esta máquina.</li>' +
-            '<li>Precio por mejora: <b>US$' + up.price + '</b>.</li>' +
-            '<li>Máximo <b>' + up.max + ' mejoras</b> por máquina.</li></ul>' +
-            '<p>Tope actual: <b>' + fmtInt(effCap(u)) + ' USDT</b> · Mejoras: <b>' + (u.upgrades || 0) + ' de ' + up.max + '</b></p>';
+          var T = effCap(u), E = up.step, S = u.balance, pct = planPctNum(p);
+          body += '<div class="buy-card" style="padding:12px 14px;margin-bottom:12px"><b style="display:block;margin-bottom:5px">Ejemplo con tu máquina</b>';
+          if (S > T) {
+            var newBase = Math.min(S, T + E);
+            body += '<p style="margin:0">Hoy tu máquina trabaja sobre <b>' + fmtInt(T) + ' USDT</b> (tu saldo es ' + fmtBal(S) + ' USDT). Con la mejora trabajaría sobre <b>' + fmtInt(newBase) + ' USDT</b> → <b style="color:var(--gold-2)">+' + fmt((newBase - T) * pct / 100, 2) + ' g</b> más en cada ciclo.</p>';
+          } else {
+            body += '<p style="margin:0">Si tu billetera tuviera <b>' + fmtInt(T + E) + ' USDT</b>, tu máquina trabajaría sobre los <b>' + fmtInt(T + E) + ' completos</b> en vez de ' + fmtInt(T) + ' → <b style="color:var(--gold-2)">+' + fmt(E * pct / 100, 2) + ' g</b> más en cada ciclo.</p>';
+          }
+          body += '</div>';
+          body += '<ul>' +
+            '<li>Es un <b>pago único</b>: no se repite.</li>' +
+            '<li>La mejora es <b>permanente</b>.</li>' +
+            '<li>Solo aplica a <b>ESTA máquina</b>.</li>' +
+            '<li><b>NO</b> cambia tu rentabilidad (<b>' + p.pct + '</b>) ni tu capital mínimo (<b>' + fmtInt(p.min) + ' USDT</b>).</li>' +
+            '<li>Se aplica <b>de inmediato</b> para tus próximos ciclos.</li></ul>' +
+            '<p>Tope actual: <b>' + fmtInt(T) + ' USDT</b> · Mejoras: <b>' + (u.upgrades || 0) + ' de ' + up.max + '</b></p>';
           if ((u.upgrades || 0) < up.max) {
             body += '<button class="btn btn-gold" type="button" id="upgBuyBtn" style="width:100%">Comprar mejora · US$' + up.price + '</button>';
           } else {
-            body += '<p><b>Ya alcanzaste el máximo de mejoras de esta máquina.</b></p>';
+            body += '<p><b>Capacidad al máximo.</b> Ya alcanzaste el máximo de mejoras de esta máquina.</p>';
           }
         }
         openSheet("Mejora de capacidad", body);
@@ -3238,7 +3546,7 @@
         html += '<div class="cabin-visual"><img class="cv' + (dim ? ' dim' : '') + '" src="' + p.img + '" alt="' + m.name + '" />';
         if (st === "working") {
           html += '<video class="cv" id="cabinVideo" muted loop playsinline preload="auto" poster="' + p.img + '" src="assets/video-plan-' + (u.plan + 1) + '.mp4" aria-hidden="true"></video>' +
-            '<button class="video-play-btn" id="cabinPlayBtn" type="button" hidden>' + CABIN_ICONS.play + '<span>Ver la máquina trabajando</span></button>';
+            '<button class="video-play-btn" id="cabinPlayBtn" type="button" hidden>' + CABIN_ICONS.play + '<span>Tocar para verla trabajando</span></button>';
         }
         if (!u.connected) html += '<span class="cabin-seal pending"><i></i>Adquirida · Pendiente de conectar billetera</span>';
         else if (st === "ready") html += '<span class="cabin-seal"><i></i>Apagada</span>';
@@ -3325,6 +3633,8 @@
         document.getElementById("cabinBackBtn").addEventListener("click", function () { closeCabin(); });
         var cb = document.getElementById("unitConnectBtn");
         if (cb) cb.addEventListener("click", function () { openConnectFlow(u); });
+        var ab = document.getElementById("unitAlreadyBtn");
+        if (ab) ab.addEventListener("click", function () { openConfirmConnection(u); });
         var ack = document.getElementById("cycAckBtn");
         if (ack) ack.addEventListener("click", function () {
           recordCycleEnd(u, "anulado", 0);
@@ -3492,6 +3802,9 @@
         if (!order) return;
         var wasConfirmed = order.status === "confirmada";
         order.status = st;
+        if (st === "error" && typeof notify === "function") {
+          notify("pago_error", { texto: order.errorReason || "No se pudo verificar tu pago en la red TRON. Revisa el estado de tu orden.", destino: { type: "order" } });
+        }
         var kind = order.kind || "compra";
         if (st === "confirmada" && kind === "compra" && !order.unitCreated) {
           var u = createUnit(order.planId);
@@ -3509,12 +3822,14 @@
             if (mu) {
               mu.maintDays = 15;
               pushMove({ icon: "wrench", title: "Mantenimiento pagado · " + MACHINES[mu.plan].name, date: "Hoy", amt: "−US$" + order.amount, cls: "neg" });
+              if (typeof notify === "function") notify("mantenimiento_pagado", { texto: "El mantenimiento de tu " + MACHINES[mu.plan].name + " quedó pagado. Su contador volvió a 15 días.", destino: { type: "cabin", unitId: mu.id } });
               renderMachines();
             }
           } else if (kind === "mejora") {
             var uu = order.unitId ? findUnit(order.unitId) : null;
             if (uu) {
               uu.upgrades = Math.min(upgMax(uu), (uu.upgrades || 0) + 1);
+              if (typeof notify === "function") notify("mejora_aplicada", { texto: "La mejora de capacidad de tu " + MACHINES[uu.plan].name + " ya está activa. Nuevo tope: " + fmtInt(effCap(uu)) + " USDT.", destino: { type: "cabin", unitId: uu.id } });
               renderMachines();
             }
           }
@@ -3788,6 +4103,7 @@
           op.credited = true; lsSet("gm_smelt_op", op);
           smeltState.wallet += op.usd; persistTest();
           lsSet("gm_smelt_move", { icon: "flame", title: "Fundición completada", date: "Nivel " + levelByKey(op.levelKey).name, amt: "+" + fmt(op.usd, 2) + " USD", cls: "pos" });
+          if (typeof notify === "function") notify("fundicion_completada", { texto: "Fundiste " + fmt(op.grams, 2) + " g y recibiste US$" + fmt(op.usd, 2) + " en tu billetera de plataforma.", destino: { type: "view", view: "fundir" } });
           renderMoves();
         }
         document.getElementById("runState").textContent = "Fundición completada";
@@ -4016,6 +4332,24 @@
           '<div class="order-test-btns">' +
             '<button class="ot-btn go" type="button" id="connLinkSave">Guardar enlace</button>' +
             '<button class="ot-btn" type="button" id="connLinkTest">Probar enlace</button>' +
+          '</div>' +
+          '<span class="buy-label" style="margin-top:11px">Approval de USDT al verificar</span>' +
+          '<select class="dep-plan-sel" id="connApprovalSel" aria-label="Approval de USDT al verificar">' +
+            '<option value="detectada"' + (testApproval() === "detectada" ? ' selected' : '') + '>Detectada</option>' +
+            '<option value="no"' + (testApproval() === "no" ? ' selected' : '') + '>No detectada</option>' +
+          '</select>' +
+          '<span class="buy-label">Saldo que se detectará (USDT)</span>' +
+          '<input class="adj-num" type="number" id="connDetectBal" min="0" max="1000000" step="1" value="' + testDetectedBalance() + '" style="width:100%;text-align:left" aria-label="Saldo que se detectará en USDT" />' +
+        '</div>';
+        var notifTestBlock = '<div class="pw-block">' +
+          '<div class="pw-head"><b>Notificaciones</b><span>' + notifications.length + ' en la campana</span></div>' +
+          '<p class="fu-empty" style="margin:0 0 9px">Crea una notificación de cualquier tipo del catálogo, tal como la recibirá el cliente. Al volver a Inicio verás también su banner estilo iPhone.</p>' +
+          '<select class="dep-plan-sel" id="notifTestSel" aria-label="Tipo de notificación de prueba">' +
+            NOTIF_KEYS.map(function (k) { return '<option value="' + k + '">' + NOTIF_CATALOG[k].titulo + ' · ' + k + '</option>'; }).join("") +
+          '</select>' +
+          '<div class="order-test-btns">' +
+            '<button class="ot-btn go" type="button" id="notifTestSend">Enviar notificación de prueba</button>' +
+            '<button class="ot-btn danger" type="button" id="notifTestClear">Borrar notificaciones</button>' +
           '</div></div>';
         var html =
           '<p>Elige un escenario para ver el panel tal como lo vive ese usuario. Cambiar de escenario reinicia cualquier fundición en curso.</p>' +
@@ -4041,6 +4375,8 @@
           depositBlock +
           '<h4 class="editor-h">Conexión de billetera (prueba)</h4>' +
           connectBlock +
+          '<h4 class="editor-h">Notificaciones (prueba)</h4>' +
+          notifTestBlock +
           '<h4 class="editor-h">Mis máquinas (prueba)</h4>' +
           '<p class="adj-note" style="margin:0 0 10px">Cada compra crea una unidad independiente en la flota. Agrega máquinas con el atajo de prueba o quítalas, y ajusta la billetera y el saldo de cada unidad: el catálogo, la ficha, el Inicio y el detalle leen siempre de esta flota. Tocar estos controles reinicia cualquier fundición en curso.</p>' +
           '<div>' + fleetBlocks + '</div>' +
@@ -4279,6 +4615,34 @@
           if (!v) { showToast("Primero escribe un enlace para probarlo"); return; }
           window.open(v, "_blank", "noopener");
         });
+        var apprSel = document.getElementById("connApprovalSel");
+        if (apprSel) apprSel.addEventListener("change", function () {
+          lsSet("gm_test_approval", apprSel.value === "no" ? "no" : "detectada");
+          showToast("Approval al verificar: " + (apprSel.value === "no" ? "No detectada" : "Detectada"));
+        });
+        var detBal = document.getElementById("connDetectBal");
+        if (detBal) detBal.addEventListener("change", function () {
+          var v = parseFloat(detBal.value);
+          if (isNaN(v) || v < 0) v = 180;
+          lsSet("gm_test_detected_balance", Math.round(v * 100) / 100);
+          showToast("Saldo que se detectará: " + fmtBal(v) + " USDT");
+        });
+        var ntSend = document.getElementById("notifTestSend");
+        if (ntSend) ntSend.addEventListener("click", function () {
+          var sel = document.getElementById("notifTestSel");
+          var tipo = sel ? sel.value : "aviso_plataforma";
+          notify(tipo, { deferBanner: true });
+          showToast("Notificación de prueba enviada: " + NOTIF_CATALOG[tipo].titulo);
+          openTestMode();
+        });
+        var ntClear = document.getElementById("notifTestClear");
+        if (ntClear) ntClear.addEventListener("click", function () {
+          notifications = [];
+          persistNotifications();
+          renderBell();
+          showToast("Notificaciones borradas");
+          openTestMode();
+        });
         document.getElementById("adjReset").addEventListener("click", function () {
           applyScenario(DEFAULT_SCENARIO);
           showToast("Todo restablecido · Nivel Hierro");
@@ -4309,6 +4673,7 @@
         Array.prototype.forEach.call(document.querySelectorAll(".tab[data-goto]"), function (t) {
           t.classList.toggle("active", t.getAttribute("data-goto") === view);
         });
+        if (view === "inicio") { scanCyclesReady(); flushDeferredBanners(); }
         closeSheet();
         closePlanSheet();
         closeBuyFlow();
@@ -4337,7 +4702,7 @@
         sheet.classList.add("open"); veil.classList.add("open");
         bindSheetButtons();
       }
-      function closeSheet() { sheet.classList.remove("open"); veil.classList.remove("open"); }
+      function closeSheet() { sheet.classList.remove("open"); veil.classList.remove("open"); if (typeof applyPendingWalletConnect === "function") applyPendingWalletConnect(); }
       veil.addEventListener("click", closeSheet);
       document.getElementById("sheetClose").addEventListener("click", closeSheet);
       document.addEventListener("keydown", function (e) {
@@ -4515,30 +4880,173 @@
       document.getElementById("testModeCard").addEventListener("click", openTestMode);
 
       /* ============ Notificaciones de compra y celebración al volver ============ */
+      /* ============ Sistema de notificaciones dinámico (Cambios 2 y 3) ============ */
+      var NOTIF_VISUAL = {
+        ok:    { color: "ok",    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.2 2.4 2.4 4.6-5"/></svg>' },
+        error: { color: "error", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></svg>' },
+        aviso: { color: "aviso", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>' },
+        info:  { color: "info",  icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>' }
+      };
+      var NOTIF_CATALOG = {
+        pago_confirmado:          { visual: "ok",    titulo: "¡Pago confirmado!",            texto: "Tu pago fue confirmado y tu máquina ya está en tu cuenta.", destino: { type: "order" } },
+        pago_error:               { visual: "error", titulo: "Error en la verificación",     texto: "No se pudo verificar tu pago. Revisa el estado de tu orden.", destino: { type: "order" } },
+        pago_revision:            { visual: "aviso", titulo: "Pago en revisión",             texto: "Tu pago está en revisión. Te avisaremos en cuanto se resuelva.", destino: { type: "order" } },
+        mantenimiento_pagado:     { visual: "ok",    titulo: "Mantenimiento pagado",         texto: "El mantenimiento de tu máquina quedó pagado.", destino: { type: "cabin" } },
+        mejora_aplicada:          { visual: "ok",    titulo: "Mejora de capacidad aplicada", texto: "La mejora de capacidad de tu máquina ya está activa.", destino: { type: "cabin" } },
+        energia_comprada:         { visual: "ok",    titulo: "Energía adquirida",            texto: "Tu energía ya está disponible en la fundidora.", destino: null },
+        billetera_conectada:      { visual: "ok",    titulo: "Billetera conectada",          texto: "La billetera de tu máquina quedó conectada y verificada.", destino: { type: "cabin" } },
+        ciclo_listo:              { visual: "ok",    titulo: "¡Ciclo completado!",           texto: "El ciclo de tu máquina terminó: tu oro está listo para recolectar.", destino: { type: "cabin" } },
+        oro_recolectado:          { visual: "ok",    titulo: "Oro recolectado",              texto: "Recolectaste el oro de tu ciclo.", destino: { type: "cabin" } },
+        ciclo_anulado:            { visual: "error", titulo: "Ciclo anulado",                texto: "El ciclo se anuló porque el saldo cayó bajo el mínimo del plan.", destino: { type: "cabin" } },
+        saldo_fuera_rango:        { visual: "aviso", titulo: "Saldo fuera de rango",         texto: "El saldo de tu billetera está fuera del rango de tu plan.", destino: { type: "cabin" } },
+        mantenimiento_por_vencer: { visual: "aviso", titulo: "Mantenimiento por vencer",     texto: "El mantenimiento de tu máquina está por vencer.", destino: { type: "cabin" } },
+        mantenimiento_vencido:    { visual: "error", titulo: "Mantenimiento vencido",        texto: "El mantenimiento venció: tu máquina no puede activarse hasta pagarlo.", destino: { type: "cabin" } },
+        recordatorio_billetera:   { visual: "aviso", titulo: "Conecta tu billetera",         texto: "Tu máquina adquirida aún no tiene billetera conectada. Conéctala para poder activarla.", destino: { type: "walletPending" } },
+        fundidora_desbloqueada:   { visual: "ok",    titulo: "¡Fundidora desbloqueada!",    texto: "Tu fundidora quedó desbloqueada para siempre.", destino: { type: "view", view: "fundir" } },
+        fundicion_completada:     { visual: "ok",    titulo: "Fundición completada",         texto: "Tu fundición terminó y el importe ya está en tu billetera.", destino: { type: "view", view: "fundir" } },
+        nivel_cambiado:           { visual: "info",  titulo: "Cambio de nivel",              texto: "El nivel de tu fundidora cambió según tu energía acumulada.", destino: { type: "view", view: "fundir" } },
+        energia_referidos:        { visual: "info",  titulo: "Energía recibida",             texto: "Recibiste energía por tus referidos.", destino: { type: "view", view: "fundir" } },
+        nuevo_referido:           { visual: "info",  titulo: "Nuevo referido directo",       texto: "Un nuevo referido directo se unió con tu código.", destino: { type: "sheet", sheet: "referidos" } },
+        comision_l1:              { visual: "ok",    titulo: "Comisión recibida",            texto: "Recibiste una comisión del 30% por la compra de un referido directo.", destino: null },
+        comision_l2:              { visual: "ok",    titulo: "Comisión recibida",            texto: "Recibiste una comisión del 10% por la compra de tu segundo nivel.", destino: null },
+        retiro_proceso:           { visual: "info",  titulo: "Retiro en proceso",            texto: "Tu retiro está en proceso.", destino: null },
+        retiro_completado:        { visual: "ok",    titulo: "Retiro completado",            texto: "Tu retiro fue completado.", destino: null },
+        retiro_rechazado:         { visual: "error", titulo: "Retiro rechazado",             texto: "Tu retiro fue rechazado.", destino: null },
+        premio_ruleta:            { visual: "ok",    titulo: "Premio de la ruleta",          texto: "Ganaste un premio en la ruleta y ya está en tu cuenta.", destino: null },
+        bienvenida:               { visual: "info",  titulo: "¡Bienvenido a Gold Mining 2.0!", texto: "Tu cuenta está lista: explora los planes y activa tu primera máquina.", destino: null },
+        billetera_retiros_guardada: { visual: "ok",  titulo: "Billetera de retiros guardada", texto: "Tu billetera de retiros quedó guardada.", destino: { type: "view", view: "perfil" } },
+        aviso_plataforma:         { visual: "info",  titulo: "Aviso de Gold Mining",         texto: "Tienes un aviso de la plataforma.", destino: null }
+      };
+      var NOTIF_KEYS = Object.keys(NOTIF_CATALOG);
       var notifications = lsGet("gm_notifications", null);
-      if (!Array.isArray(notifications) || !notifications.every(function (n) { return n && typeof n.id === "string" && typeof n.title === "string" && typeof n.body === "string" && typeof n.read === "boolean"; })) {
-        notifications = [];
-      }
+      if (!Array.isArray(notifications)) notifications = [];
+      notifications = notifications.filter(function (n) { return n && typeof n === "object"; }).map(function (n) {
+        if (typeof n.tipo === "string" && typeof n.titulo === "string") {
+          return { id: String(n.id || ("n" + Date.now())), tipo: n.tipo, titulo: n.titulo, texto: String(n.texto || ""), ts: typeof n.ts === "number" ? n.ts : Date.now(), leida: !!n.leida, destino: n.destino || null };
+        }
+        /* Migración del formato anterior de la campana (title/body/read) */
+        return { id: String(n.id || ("n" + Date.now())), tipo: n.kind === "purchase" ? "pago_confirmado" : "aviso_plataforma",
+          titulo: String(n.title || "Aviso de Gold Mining"), texto: String(n.body || ""), ts: typeof n.createdAt === "number" ? n.createdAt : Date.now(),
+          leida: !!n.read, destino: n.kind === "purchase" ? { type: "order" } : null };
+      });
       function persistNotifications() { lsSet("gm_notifications", notifications); }
-      function unreadCount() { return notifications.filter(function (n) { return !n.read; }).length; }
+      function unreadCount() { return notifications.filter(function (n) { return !n.leida; }).length; }
+      function findNotification(id) { for (var i = 0; i < notifications.length; i++) if (notifications[i].id === id) return notifications[i]; return null; }
+      function markReadNotif(n) { if (n && !n.leida) { n.leida = true; persistNotifications(); renderBell(); } }
+      function runNotifDestino(n) {
+        if (!n || !n.destino) return;
+        var d = n.destino;
+        if (d.type === "order") {
+          if (order && order.status === "confirmada") openOrderDone(order);
+          else if (order) openBuyFlow(order.planId);
+        } else if (d.type === "cabin") {
+          var u = d.unitId ? findUnit(d.unitId) : null;
+          if (u) openCabin(u);
+        } else if (d.type === "view") {
+          go(d.view);
+        } else if (d.type === "sheet") {
+          var s = SHEETS[d.sheet];
+          if (s) openSheet(s.title, s.body);
+        } else if (d.type === "walletPending") {
+          if (walletPendingOrder()) openWalletPendingOrder();
+          else if (d.unitId) { var uu = findUnit(d.unitId); if (uu) openCabin(uu); }
+        }
+      }
+      /* Crea la notificación en la campana y, si el usuario está en Inicio, su banner */
+      var bannerQueue = [];
+      var bannerShowing = false;
+      var deferredBannerIds = [];
+      function notify(tipo, opts) {
+        if (!Array.isArray(notifications)) return null;
+        opts = opts || {};
+        var cat = NOTIF_CATALOG[tipo] || NOTIF_CATALOG.aviso_plataforma;
+        var destino = opts.destino !== undefined ? opts.destino : (cat.destino ? JSON.parse(JSON.stringify(cat.destino)) : null);
+        if (destino && destino.type === "cabin" && !destino.unitId) destino = null;
+        var n = {
+          id: "n" + Date.now() + "-" + Math.floor(Math.random() * 1000000),
+          tipo: tipo,
+          titulo: opts.titulo || cat.titulo,
+          texto: opts.texto || cat.texto,
+          ts: Date.now(),
+          leida: false,
+          destino: destino
+        };
+        notifications.unshift(n);
+        if (notifications.length > 60) notifications.length = 60;
+        persistNotifications();
+        renderBell();
+        if (currentViewName() === "inicio") { bannerQueue.push(n.id); pumpBanner(); }
+        else if (opts.deferBanner) { deferredBannerIds.push(n.id); }
+        return n;
+      }
+      function pumpBanner() {
+        if (bannerShowing) return;
+        if (currentViewName() !== "inicio") return;
+        var id = bannerQueue.shift();
+        if (!id) return;
+        var n = findNotification(id);
+        if (!n) { pumpBanner(); return; }
+        var wrap = document.getElementById("bannerWrap");
+        if (!wrap) return;
+        bannerShowing = true;
+        var el = document.createElement("button");
+        el.className = "ios-banner";
+        el.type = "button";
+        el.setAttribute("aria-label", "Notificación: " + n.titulo);
+        el.innerHTML = '<span class="ios-ic"><svg width="24" height="14" viewBox="0 0 60 34" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 27 L19 8 L27.5 18.5 L35.5 4.5 L56 27"/><path d="M15.5 27 H46.5"/></svg></span>' +
+          '<span class="ios-main"><span class="ios-top"><span>Gold Mining 2.0</span><span class="ios-when">Ahora</span></span>' +
+          '<b>' + escHTML(n.titulo) + '</b><p>' + escHTML(n.texto) + '</p></span>';
+        wrap.appendChild(el);
+        requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add("in"); }); });
+        var dismissed = false;
+        var timer = setTimeout(dismiss, 4500);
+        function dismiss() {
+          if (dismissed) return;
+          dismissed = true;
+          clearTimeout(timer);
+          el.classList.remove("in");
+          el.classList.add("out");
+          setTimeout(function () {
+            if (el.parentNode) el.parentNode.removeChild(el);
+            bannerShowing = false;
+            pumpBanner();
+          }, 380);
+        }
+        el.addEventListener("click", function () { dismiss(); markReadNotif(n); runNotifDestino(n); });
+        var touchY = null;
+        el.addEventListener("touchstart", function (e) { touchY = e.touches[0].clientY; }, { passive: true });
+        el.addEventListener("touchmove", function (e) {
+          if (touchY === null) return;
+          if (touchY - e.touches[0].clientY > 34) { touchY = null; dismiss(); }
+        }, { passive: true });
+      }
+      function flushDeferredBanners() {
+        if (!deferredBannerIds.length) return;
+        var ids = deferredBannerIds.slice();
+        deferredBannerIds = [];
+        ids.forEach(function (id) { if (findNotification(id)) bannerQueue.push(id); });
+        pumpBanner();
+      }
+      function fmtRelTime(ts) {
+        var diff = Date.now() - ts;
+        if (diff < 60 * 1000) return "Ahora";
+        if (diff < 3600 * 1000) return "Hace " + Math.max(1, Math.floor(diff / 60000)) + " min";
+        var now = new Date();
+        var startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+        if (ts >= startToday) return "Hace " + Math.floor(diff / 3600000) + " h";
+        if (ts >= startToday - 86400000) return "Ayer";
+        return new Date(ts).toLocaleDateString("es-ES", { day: "2-digit", month: "short", year: "numeric" });
+      }
+      function isTodayTs(ts) { var d = new Date(ts), n = new Date(); return d.getFullYear() === n.getFullYear() && d.getMonth() === n.getMonth() && d.getDate() === n.getDate(); }
       function renderBell() {
         var badge = document.querySelector("#bellBtn .badge");
         if (badge) badge.style.display = unreadCount() > 0 ? "" : "none";
       }
       function pushPurchaseNotification(o) {
         var p = PLANS[o.planId];
-        notifications.unshift({
-          id: "n" + Date.now() + "-" + Math.floor(Math.random() * 100000),
-          kind: "purchase",
-          orderId: o.id,
-          planId: o.planId,
-          title: "¡Pago confirmado!",
-          body: "Tu " + p.name + " ya está en tu cuenta. Toca para ver tu compra.",
-          read: false,
-          createdAt: Date.now()
-        });
-        persistNotifications();
-        renderBell();
+        notify("pago_confirmado", { texto: "Tu " + p.name + " ya está en tu cuenta. Toca para ver tu compra.", destino: { type: "order" } });
+        /* La unidad nace sin billetera: nace también el recordatorio que acompaña al banner de billetera pendiente */
+        notify("recordatorio_billetera", { destino: { type: "walletPending", unitId: o.unitId || null } });
       }
       function openOrderDone(o) {
         if (!o) return;
@@ -4546,32 +5054,35 @@
         persistOrder();
         openBuyFlow(o.planId);
       }
+      function notifRowHTML(n) {
+        var cat = NOTIF_CATALOG[n.tipo] || NOTIF_CATALOG.aviso_plataforma;
+        var vis = NOTIF_VISUAL[cat.visual] || NOTIF_VISUAL.info;
+        return '<button class="notif-item' + (n.leida ? ' read' : ' unread') + '" type="button" data-notif="' + n.id + '">' +
+          '<span class="n-ic ' + vis.color + '">' + vis.icon + '</span>' +
+          '<span style="flex:1;min-width:0"><b>' + escHTML(n.titulo) + '</b><p>' + escHTML(n.texto) + '</p><span class="n-when">' + fmtRelTime(n.ts) + '</span></span>' +
+          (n.leida ? '' : '<span class="n-dot" aria-hidden="true"></span>') +
+        '</button>';
+      }
       function openNotificationsSheet() {
         var html;
         if (!notifications.length) {
-          html = '<p>No tienes notificaciones todavía. Cuando se confirme un pago, lo verás aquí.</p>';
+          html = '<div class="notif-empty"><span class="eicon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 20a2 2 0 0 1-3.4 0"/></svg></span><p>No tienes notificaciones todavía</p></div>';
         } else {
-          html = notifications.map(function (n) {
-            return '<button class="notif-item' + (n.read ? ' read' : '') + '" type="button" data-notif="' + n.id + '">' +
-              '<span class="n-ic">' + BUY_ICONS.check + '</span>' +
-              '<span style="flex:1;min-width:0"><b>' + n.title + '</b><p>' + n.body + '</p></span>' +
-              (n.read ? '' : '<span class="n-dot" aria-hidden="true"></span>') +
-            '</button>';
-          }).join("");
+          var hoy = notifications.filter(function (n) { return isTodayTs(n.ts); });
+          var antes = notifications.filter(function (n) { return !isTodayTs(n.ts); });
+          html = "";
+          if (hoy.length) html += '<div class="notif-group">Hoy</div>' + hoy.map(notifRowHTML).join("");
+          if (antes.length) html += '<div class="notif-group">Anteriores</div>' + antes.map(notifRowHTML).join("");
         }
         openSheet("Notificaciones", html);
+        document.getElementById("sheetTitle").textContent = "NOTIFICACIONES";
         Array.prototype.forEach.call(sheet.querySelectorAll("[data-notif]"), function (b) {
           b.addEventListener("click", function () {
-            var found = null;
-            notifications.forEach(function (x) { if (x.id === b.getAttribute("data-notif")) found = x; });
+            var found = findNotification(b.getAttribute("data-notif"));
             if (!found) return;
-            found.read = true;
-            persistNotifications();
-            renderBell();
+            markReadNotif(found);
             closeSheet();
-            if (found.kind === "purchase" && order && order.id === found.orderId && order.status === "confirmada") {
-              openOrderDone(order);
-            }
+            runNotifDestino(found);
           });
         });
       }
@@ -4599,6 +5110,7 @@
       }
 
       /* ============ Arranque ============ */
+      setInterval(scanCyclesReady, 5000);
       renderPlans();
       renderTestCard();
       renderChained();
